@@ -129,6 +129,26 @@ client content still needed — see Open decisions).
   `VideoThumbnail` and `WatchModal`'s `PlaceholderPlayer` need to change.
 - Built after cloning `code-with-antonio/next15-youtube-clone` (real Next.js + shadcn YouTube
   clone) into the scratchpad for reference — see "Reference-repo workflow" above.
+- **Second fidelity pass:** after the first build, compared directly against live
+  youtube.com (Home/Discover feed and a watch page, at real desktop width) and closed the
+  gaps found:
+  - Added the persistent left icon sidebar (`sidebar-rail.tsx`, 240px, Home/Shorts/
+    Subscriptions/You/History — only Home and Shorts actually navigate, the rest are
+    decorative chrome since there's no real destination for them in a portfolio site).
+  - Header now has the full chrome: hamburger icon, mic button beside search, "⋮" more icon,
+    sign-in pill (all decorative except the layout/spacing, which is real).
+  - Video cards now show a 36px channel avatar (the Silly Billi mascot — literally the
+    agency's own "channel" branding) next to title/channel-name/views, with a separate
+    hover-revealed "⋮" button, matching real YouTube's card hierarchy instead of cramming
+    everything into two lines of plain text.
+  - Shorts cards are full-bleed now with the title bottom-anchored in bold white over a
+    gradient scrim (matches real Shorts thumbnails), not centered on a flat gradient.
+  - Watch modal now separates title → (avatar + channel name + subscriber count + Subscribe)
+    row → (like/dislike pill + Share) row, instead of one merged meta line, and the player
+    placeholder has a decorative control-bar (progress bar, pause/volume icons, time,
+    settings/fullscreen) for chrome fidelity even without real playback.
+  - Measured real values used for fidelity: 56px header height (`h-14`), 240px sidebar
+    (`w-60`), 36px card avatars — pulled via live DOM inspection of youtube.com, not guessed.
 
 ## Contact page (`/contact`) — planned, not yet built
 

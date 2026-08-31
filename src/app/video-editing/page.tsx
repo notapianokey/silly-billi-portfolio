@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 
 import { CategoryPills } from "@/components/youtube/category-pills";
 import { ShortsShelf } from "@/components/youtube/shorts-shelf";
+import { SidebarRail } from "@/components/youtube/sidebar-rail";
 import { TopHeader } from "@/components/youtube/top-header";
 import { VideoCard } from "@/components/youtube/video-card";
 import { WatchModal } from "@/components/youtube/watch-modal";
@@ -31,23 +32,27 @@ export default function VideoEditingPage() {
   return (
     <div className="min-h-screen">
       <TopHeader query={query} onQueryChange={setQuery} />
-      <CategoryPills value={category} onSelect={setCategory} />
+      <SidebarRail />
 
-      <main className="px-4 py-6 md:px-6">
-        {filteredVideos.length > 0 ? (
-          <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredVideos.map((video) => (
-              <VideoCard key={video.id} video={video} onSelect={setActiveVideo} />
-            ))}
-          </div>
-        ) : (
-          <p className="py-16 text-center text-sm text-muted-foreground">
-            No videos match that search.
-          </p>
-        )}
+      <div className="md:pl-60">
+        <CategoryPills value={category} onSelect={setCategory} />
 
-        {category === null && query === "" && <ShortsShelf />}
-      </main>
+        <main className="px-4 py-6 md:px-6">
+          {filteredVideos.length > 0 ? (
+            <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredVideos.map((video) => (
+                <VideoCard key={video.id} video={video} onSelect={setActiveVideo} />
+              ))}
+            </div>
+          ) : (
+            <p className="py-16 text-center text-sm text-muted-foreground">
+              No videos match that search.
+            </p>
+          )}
+
+          {category === null && query === "" && <ShortsShelf />}
+        </main>
+      </div>
 
       <WatchModal video={activeVideo} onClose={() => setActiveVideo(null)} />
     </div>

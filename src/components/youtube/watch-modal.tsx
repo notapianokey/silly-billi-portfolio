@@ -1,13 +1,21 @@
 "use client";
 
-import { ChevronDownIcon, ChevronUpIcon, PlayIcon } from "lucide-react";
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  MaximizeIcon,
+  PauseIcon,
+  SettingsIcon,
+  ShareIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+  Volume2Icon,
+} from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import {
@@ -35,14 +43,12 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
             <Tabs defaultValue="final-cut">
               <div className="relative aspect-video overflow-hidden rounded-t-xl bg-black">
                 <TabsContent value="final-cut" className="m-0 h-full">
-                  <PlaceholderPlayer
-                    label="Final Cut"
-                    paletteIndex={video.paletteIndex}
-                  />
+                  <PlaceholderPlayer label="Final Cut" paletteIndex={video.paletteIndex} />
                 </TabsContent>
                 <TabsContent value="raw-footage" className="m-0 h-full">
                   <PlaceholderPlayer label="Raw Footage" paletteIndex={video.paletteIndex} muted />
                 </TabsContent>
+                <PlayerControlBar />
               </div>
 
               <div className="flex items-center justify-between border-b px-4 py-2">
@@ -53,12 +59,43 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
               </div>
             </Tabs>
 
-            <div className="flex flex-col gap-4 p-4">
-              <div>
-                <h2 className="text-lg font-semibold leading-snug">{video.title}</h2>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Silly Billi Agency · {formatViews(video.views)} · {video.publishedLabel}
-                </p>
+            <div className="flex flex-col gap-3 p-4">
+              <h2 className="text-lg font-semibold leading-snug">{video.title}</h2>
+
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
+                  <Image
+                    src="/brand/mascot.png"
+                    alt="Silly Billi Agency"
+                    width={40}
+                    height={40}
+                    className="size-10 rounded-full object-cover"
+                  />
+                  <div>
+                    <p className="text-sm font-medium">Silly Billi Agency</p>
+                    <p className="text-xs text-muted-foreground">128K subscribers</p>
+                  </div>
+                  <Button size="sm" className="ml-2 rounded-full">
+                    Subscribe
+                  </Button>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center overflow-hidden rounded-full border">
+                    <span className="flex items-center gap-1.5 px-3 py-1.5 text-sm hover:bg-accent">
+                      <ThumbsUpIcon className="size-4" />
+                      {Math.round(video.views / 1400)}
+                    </span>
+                    <span className="h-5 w-px bg-border" />
+                    <span className="px-3 py-1.5 hover:bg-accent">
+                      <ThumbsDownIcon className="size-4" />
+                    </span>
+                  </div>
+                  <span className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm hover:bg-accent">
+                    <ShareIcon className="size-4" />
+                    Share
+                  </span>
+                </div>
               </div>
 
               <div className="flex flex-wrap gap-2">
@@ -98,6 +135,7 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
                 className="cursor-pointer rounded-xl bg-secondary/50 p-3 transition hover:bg-secondary/70"
               >
                 <p className="mb-2 text-sm font-medium">
+                  {formatViews(video.views)} · {video.publishedLabel} ·{" "}
                   {formatDuration(video.durationSeconds)} runtime
                 </p>
                 <p
@@ -148,8 +186,30 @@ function PlaceholderPlayer({
       )}
     >
       <div className="flex flex-col items-center gap-2 text-white/90">
-        <PlayIcon className="size-12 fill-white/90" />
+        <PauseIcon className="size-12 fill-white/90" />
         <span className="text-sm font-medium">{label} preview</span>
+      </div>
+    </div>
+  );
+}
+
+/** Decorative player chrome — matches YouTube's control bar layout; not wired to real playback. */
+function PlayerControlBar() {
+  return (
+    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2 pt-6">
+      <div className="mb-2 h-[3px] w-full rounded-full bg-white/30">
+        <div className="h-full w-1/3 rounded-full bg-red-600" />
+      </div>
+      <div className="flex items-center justify-between text-white">
+        <div className="flex items-center gap-3">
+          <PauseIcon className="size-5 fill-white" />
+          <Volume2Icon className="size-5" />
+          <span className="text-xs tabular-nums">0:32 / --:--</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <SettingsIcon className="size-4" />
+          <MaximizeIcon className="size-4" />
+        </div>
       </div>
     </div>
   );

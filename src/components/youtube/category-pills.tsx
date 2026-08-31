@@ -11,7 +11,7 @@ interface CategoryPillsProps {
 
 export function CategoryPills({ value, onSelect }: CategoryPillsProps) {
   return (
-    <div className="sticky top-16 z-30 flex gap-2 overflow-x-auto border-b bg-background px-4 py-3 md:px-6">
+    <div className="sticky top-14 z-30 flex gap-2 overflow-x-auto bg-background px-4 py-3 md:px-6">
       <Badge
         onClick={() => onSelect(null)}
         variant={value === null ? "default" : "secondary"}
