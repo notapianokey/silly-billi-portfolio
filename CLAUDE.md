@@ -48,16 +48,36 @@ new components/pages, not every diff.
 
 ## Repo state
 
-Phase 0 (Next.js scaffold) and Phase 1 (homepage) are done. See `BUILD_SEQUENCE.md` for the
-full phased plan and current progress — keep its checkboxes up to date as phases complete.
+Phase 0 (Next.js scaffold), Phase 1 (homepage), and Phase 2 (Video Editing page) are done. See
+`BUILD_SEQUENCE.md` for the full phased plan and current progress — keep its checkboxes up to
+date as phases complete.
 
 Structure in use:
-- `src/app/` — routes (App Router). `src/app/page.tsx` is the homepage.
+- `src/app/` — routes (App Router). `src/app/page.tsx` is the homepage,
+  `src/app/video-editing/page.tsx` is the YouTube clone.
 - `src/components/` — shared React components (e.g. `cursor-trail.tsx`).
-- `src/lib/` — non-component helper/data modules (e.g. `cats.ts`).
+- `src/components/ui/` — shadcn/ui primitives (Badge, Dialog, Tabs, Button, Skeleton, Scroll
+  Area, `lib/utils.ts`'s `cn` helper). Initialized because the reference repos for platform
+  clones are themselves typically shadcn-based — add more via `npx shadcn@latest add <name>`
+  rather than hand-rolling primitives shadcn already covers well (dropdowns, tooltips, etc.).
+- `src/components/youtube/` — Video Editing page components (top header, category pills,
+  video/short cards, thumbnail, watch modal).
+- `src/lib/` — non-component helper/data modules (e.g. `cats.ts`, `videos.ts`).
 - `public/cats/` — source images for the homepage cursor trail array.
 - `public/brand/` — real Silly Billi brand assets (`logo.png`, `mascot.png`) not yet wired
   into any page.
+
+**Theme note:** `globals.css`'s dark-mode tokens apply via `@media (prefers-color-scheme:
+dark)`, not a manual `.dark` class toggle — there's no theme switcher UI in this project.
+Follow that pattern (don't add a `dark` class toggle without discussing it first).
+
+**Reference-repo workflow:** when the brief names example repos for a clone target, verify
+they actually exist before relying on them — the ones named for the YouTube clone
+(`youtube-clone-react`, `patel-viral/youtube-clone`) turned out not to exist. Search GitHub
+for real, well-matched repos (same stack ideally: Next.js + TypeScript + Tailwind/shadcn),
+clone into the scratchpad to read for structure/patterns, and build our own version informed
+by them — don't copy wholesale (reference repos are typically full apps with auth/DB/backend
+we don't want).
 
 The original repo directory contained an unrelated generic HTML/CSS/JS portfolio template
 ("Colin Gridley") — that was discarded entirely except two real Silly Billi brand assets
@@ -83,25 +103,32 @@ The original repo directory contained an unrelated generic HTML/CSS/JS portfolio
   adding one import + array entry — no other code changes needed.
 - No nav pills yet (deferred to Phase 3, once the Video Editing page exists to link to).
 
-## Video Editing page spec (`/video-editing`) — next up, current priority
+## Video Editing page (`/video-editing`) — done
 
-Pixel-accurate clone of the YouTube desktop web UI, populated with this agency's video editing
-work instead of real YouTube content.
+Clone of the YouTube desktop web UI, populated with placeholder editing-work data (real
+client content still needed — see Open decisions).
 
-- **Top header:** search bar, pre-loaded/suggested with tag filters relevant to the work
-  (e.g. `#podcast`, `#documentary`, `#shorts`).
-- **Category pills row** (sticky under header): All | Talking Head | Vlogs | Commercial |
-  Short Form (adjust categories to match real portfolio content once known).
+- **Top header** (`top-header.tsx`): logo, split rounded search bar with a tag-suggestion
+  dropdown (`#podcast`, `#documentary`, `#shorts`, etc. from `SEARCH_TAG_SUGGESTIONS`).
+- **Category pills row** (`category-pills.tsx`, sticky under header): All | Talking Head |
+  Vlogs | Commercial | Short Form, shadcn Badge with default/secondary variant swap for
+  selected state.
 - **Main content — dual grid:**
-  - 16:9 long-form video grid (thumbnail + title), matching YouTube's card grid layout.
-  - A horizontal "Shorts" shelf of vertical 9:16 videos, styled like YouTube's Shorts shelf.
-- Hover-to-play behavior on thumbnails where feasible (short muted preview loop or scrub).
-- **Click action:** opens a YouTube-style "Watch" modal/overlay containing:
-  - Video player, chapter markers, project description.
-  - A toggle to switch between "Raw Footage" and "Final Cut" for that project.
-- Reference repos for structure: `youtube-clone-react` (freeCodeCamp), `patel-viral/youtube-clone`,
-  or similar — for the flexbox/grid structure, category pill bar, and video card components.
-  Live YouTube.com desktop layout is the visual source of truth for spacing/chrome fidelity.
+  - 16:9 long-form video grid (`video-card.tsx` + `video-thumbnail.tsx`), duration badge,
+    hover play-icon overlay.
+  - Horizontal "Shorts" shelf (`shorts-shelf.tsx`) of vertical 9:16 cards, scrolls independently.
+- **Click action** opens a Watch modal (`watch-modal.tsx`, shadcn Dialog): placeholder player
+  area, Final Cut / Raw Footage tabs (shadcn Tabs — Raw is grayscale-differentiated), chapter
+  list, tag chips, expandable description panel.
+- Data lives in `src/lib/videos.ts` (`VIDEO_PROJECTS`, `SHORT_PROJECTS`, category/tag
+  constants, `formatDuration`/`formatViews` helpers).
+- **No real footage/thumbnails exist yet** — thumbnails are gradient placeholders (title
+  overlay, palette cycled from `THUMBNAIL_PALETTE`) and the modal player is a placeholder
+  panel, not a `<video>`. Everything *around* the missing media (filtering, search, modal,
+  tabs, chapters, description) is fully real and interactive. When real assets land, only
+  `VideoThumbnail` and `WatchModal`'s `PlaceholderPlayer` need to change.
+- Built after cloning `code-with-antonio/next15-youtube-clone` (real Next.js + shadcn YouTube
+  clone) into the scratchpad for reference — see "Reference-repo workflow" above.
 
 ## Contact page (`/contact`) — planned, not yet built
 

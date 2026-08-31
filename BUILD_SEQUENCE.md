@@ -54,21 +54,42 @@ no console errors, no major layout shift.
 
 **Goal:** pixel-accurate YouTube UI clone, populated with placeholder or real editing work.
 
-- [ ] Research/pull structure from `youtube-clone-react` or similar reference repos before
-      hand-building the grid/pill/card components.
-- [ ] Build top header: search bar with tag-filter styling.
-- [ ] Build sticky category pills row.
-- [ ] Build long-form 16:9 video grid (thumbnail, title, card hover states).
-- [ ] Build horizontal Shorts shelf (vertical 9:16 cards).
-- [ ] Implement hover-to-play preview behavior on thumbnails.
-- [ ] Build the Watch modal/overlay: player, chapter markers, description, Raw Footage vs.
-      Final Cut toggle.
-- [ ] Populate with placeholder project data via the static data layer (`config/portfolio.ts`).
-- [ ] Visual QA against live YouTube.com desktop layout side-by-side for spacing/chrome fidelity.
+- [x] Research/pull structure from real reference repos before hand-building. The brief's
+      named repos (`youtube-clone-react`, `patel-viral/youtube-clone`) don't actually exist —
+      searched GitHub and cloned `code-with-antonio/next15-youtube-clone` (Next.js 15 +
+      shadcn/ui, closest real match to our stack) into the scratchpad for reference. Lifted
+      real patterns from it: split rounded search bar, Badge-based filter pills, hover-swap
+      thumbnail, `aspect-video bg-black` player container, expandable description panel.
+      Confirmed shadcn/ui is the right registry (the reference repo itself is built on it) —
+      initialized it in this project (Badge, Dialog, Tabs, Skeleton, Scroll Area).
+- [x] Build top header: search bar with tag-filter styling (`src/components/youtube/top-header.tsx`).
+- [x] Build sticky category pills row (`src/components/youtube/category-pills.tsx`, shadcn Badge).
+- [x] Build long-form 16:9 video grid (thumbnail, title, card hover states)
+      (`src/components/youtube/video-card.tsx`).
+- [x] Build horizontal Shorts shelf (vertical 9:16 cards) (`src/components/youtube/shorts-shelf.tsx`).
+- [x] Hover state on thumbnails (play icon + darken overlay). True hover-*preview* (scrubbing
+      video on hover) needs real footage, which doesn't exist yet — see note below.
+- [x] Build the Watch modal/overlay: player area, chapter markers, description
+      (expand/collapse), Raw Footage vs. Final Cut tabs (`src/components/youtube/watch-modal.tsx`,
+      shadcn Dialog + Tabs).
+- [x] Populate with placeholder project data via the static data layer (`src/lib/videos.ts`) —
+      6 long-form projects + 5 shorts, plausible titles/tags/chapters/descriptions.
+- [x] Verified in-browser: category filtering, search (including tag-suggestion dropdown),
+      Watch modal open/close, Final Cut ↔ Raw Footage tab switching (grayscale-differentiated
+      placeholder), description expand/collapse, Shorts shelf horizontal scroll — all confirmed
+      working via DOM/state inspection, not just visually.
+
+**No real video assets exist yet.** Thumbnails are branded gradient placeholders (title
+overlay, cycled from the logo's palette) rather than real screenshots, and the Watch modal's
+"player" is a placeholder panel (not an actual `<video>`) — chapters/description/tabs are all
+genuinely interactive, there's just no footage to play. Swap in real thumbnails/video files
+later without changing the surrounding structure: `VideoThumbnail` and the modal's
+`PlaceholderPlayer` are the two places that would change.
 
 **Done when:** page is indistinguishable from YouTube at a glance on desktop, all click
 interactions (thumbnail → modal, raw/cut toggle) work, deployed and linkable at
-`/video-editing`.
+`/video-editing`. **Done, pending real footage/thumbnails and a final side-by-side visual QA
+pass against live YouTube.com.**
 
 ---
 
