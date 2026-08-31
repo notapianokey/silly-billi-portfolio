@@ -16,9 +16,11 @@ sequencing only, not spec detail.
       were kept and moved to `public/brand/`; everything else discarded.
 - [ ] Set up `src/config/portfolio.ts` (or similar) as the single static data source pattern
       to be used by every page — deferred until the Video Editing page needs real data (Phase 2).
-- [ ] Basic repo hygiene for a *public* repo: README stub, license if desired. (`.gitignore`
-      already present from scaffold; git repo initialized locally, not yet pushed to GitHub.)
-- [ ] Confirm Vercel Hobby deploy works end-to-end on an empty scaffold before building pages.
+- [x] Basic repo hygiene for a *public* repo: real README added. (License left out —
+      revisit if desired.)
+- [x] Pushed to GitHub: [notapianokey/silly-billi-portfolio](https://github.com/notapianokey/silly-billi-portfolio)
+      (public). Connected to Vercel (Hobby tier) — every push to `main` auto-deploys.
+      **Live at https://sillybillistudio.vercel.app.**
 
 **Done when:** `next dev` runs, a blank page deploys successfully to Vercel Hobby, TypeScript
 strict mode is on with no errors.
