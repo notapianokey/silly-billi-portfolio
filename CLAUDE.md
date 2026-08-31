@@ -103,6 +103,45 @@ work instead of real YouTube content.
   or similar — for the flexbox/grid structure, category pill bar, and video card components.
   Live YouTube.com desktop layout is the visual source of truth for spacing/chrome fidelity.
 
+## Contact page (`/contact`) — planned, not yet built
+
+- **Book a call:** a plain link/button to Calendly (or a free alternative like Cal.com) that
+  opens in a new tab. Deliberately **not** an embedded/inline widget — an embed loads a
+  third-party iframe/script on every page view, and the client's top priority for this site is
+  raw speed. A link costs nothing until clicked. Revisit only if explicitly asked for the
+  inline embedded experience instead.
+- **Contact form → Google Sheet, no database:** the form posts to a Next.js Route Handler
+  (`src/app/api/contact/route.ts`, a serverless function that only runs on submit — zero
+  impact on page load/SSG) which forwards the payload to a **Google Apps Script Web App**
+  bound to a Google Sheet in the client's own Google account. This is the standard free,
+  no-backend way to get form data into Sheets: no paid service, no database, no API key
+  baked into the codebase (the client deploys the Apps Script themselves and provides the
+  resulting webhook URL, stored as a Vercel env var, e.g. `CONTACT_SHEET_WEBHOOK_URL`).
+- Client explicitly prioritizes site speed above all else for this page and the site
+  generally — don't introduce anything (eager third-party embeds, client-side SDKs loaded on
+  every route, etc.) that adds to initial page weight without a clear ask.
+
+## Future: campaign landing pages & live A/B testing — reserved, not built yet
+
+Client's stated goal: later run paid + organic acquisition campaigns with dedicated landing
+pages, and live-split traffic across variants (real A/B testing, not just "look at a few
+designs"). They want this to be possible later **without any rework of what's built now** —
+this section exists so that plan is captured and consistent, not because anything below needs
+building today.
+
+- **Routing convention (reserved):** campaign/landing-page variants will live under
+  `/lp/[slug]` (or similar dedicated namespace) — kept separate from the 4 real service pages
+  and homepage so there's zero collision risk whenever this starts.
+- **Live traffic-splitting mechanism (when needed):** Vercel Edge Middleware
+  (`middleware.ts`) with a `matcher` scoped to `/lp/:path*` only — buckets a visitor into a
+  variant via cookie, then rewrites (not redirects, to keep the URL stable for ad
+  tracking/UTMs) to the chosen variant. Because the matcher is scoped, this cannot affect the
+  performance or behavior of any existing page (homepage, the 4 service pages, contact) when
+  it's added — it's additive, not a restructure.
+- **Not needed now:** no routes, middleware, or analytics wiring for this exist yet. Don't
+  scaffold `/lp/` or `middleware.ts` speculatively — build it when there's an actual campaign
+  to run.
+
 ## Other service pages (later phases — full spec for reference)
 
 ### Visual Branding (`/visual-branding`) — Instagram profile clone

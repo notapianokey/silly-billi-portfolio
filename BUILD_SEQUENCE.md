@@ -72,6 +72,29 @@ interactions (thumbnail → modal, raw/cut toggle) work, deployed and linkable a
 
 ---
 
+## Phase 2.5 — Contact page (`/contact`)
+
+**Goal:** a "book a call" link and a working contact form, with zero page-speed cost. See
+`CLAUDE.md` for the full architecture rationale (why a link not an embed, why Apps Script not
+a database).
+
+- [ ] Client creates a Calendly (or Cal.com) account and provides the booking link.
+- [ ] Build `/contact` page: plain outbound link/button to that booking link, contact form
+      (name/email/message).
+- [ ] Client creates a Google Sheet + deploys a Google Apps Script Web App bound to it
+      (script appends incoming POST data as a new row), and provides the resulting webhook URL.
+- [ ] Add `CONTACT_SHEET_WEBHOOK_URL` as a Vercel environment variable (client enters this
+      themselves in the Vercel dashboard — not something to paste into chat or have Claude
+      enter).
+- [ ] Build `src/app/api/contact/route.ts` — validates the payload, forwards to the webhook
+      URL, returns success/error to the form.
+- [ ] Wire the form UI to that route, with basic client-side validation and a submit/error state.
+
+**Done when:** submitting the form adds a row to the Sheet, the booking link opens Calendly in
+a new tab, and Lighthouse/page-weight on `/contact` shows no regression from adding this page.
+
+---
+
 ## Phase 3 — Homepage nav pills
 
 **Goal:** wire the homepage to the service pages.
@@ -146,3 +169,14 @@ pass in one dedicated phase rather than piecemeal.
 - [ ] README worthy of a public agency-portfolio repo (what it is, stack, how to run).
 - [ ] Final Lighthouse/perf pass given the "0ms load time" positioning in the brief.
 - [ ] Final deploy + domain hookup if applicable.
+
+---
+
+## Future — not scheduled yet
+
+**Paid + organic campaign landing pages with live A/B testing.** Not a phase with tasks yet —
+just capturing the plan so nothing built now needs to change when this starts. See the
+"Future: campaign landing pages & live A/B testing" section in `CLAUDE.md` for the full
+rationale: dedicated `/lp/[slug]` route namespace, Vercel Edge Middleware scoped to `/lp/:path*`
+for cookie-based variant bucketing + rewrites. Additive only — cannot affect any existing
+page's performance when it's eventually built. Revisit when there's an actual campaign to run.
