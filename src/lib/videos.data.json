@@ -2,20 +2,20 @@
   "videoProjects": [
     {
       "id": "main",
-      "title": "Main",
+      "title": "Intros for Live Podcasts",
       "category": "commercial",
       "tags": [],
       "durationSeconds": 343,
       "views": 0,
       "publishedLabel": "Draft",
-      "description": "",
+      "description": "Pending",
       "chapters": [],
       "paletteIndex": 0,
-      "thumbnailSrc": "/videos/thumbnails/main.jpg"
+      "thumbnailSrc": "/videos/thumbnails/main.png"
     },
     {
       "id": "uncle-ye-heroin-hai-full-documentary",
-      "title": "Uncle, Yeh Heroin Hai — A Documentary on Heroin Addiction",
+      "title": "A Documentary on Heroin Addiction",
       "category": "vlogs",
       "tags": [
         "#documentary"
@@ -23,14 +23,14 @@
       "durationSeconds": 3495,
       "views": 110000,
       "publishedLabel": "Draft",
-      "description": "",
+      "description": "pending",
       "chapters": [],
       "paletteIndex": 1,
       "thumbnailSrc": "/videos/thumbnails/uncle-ye-heroin-hai-full-documentary.jpg"
     },
     {
       "id": "240726-reaction-video-new-logo",
-      "title": "Reaction Video New Logo",
+      "title": "Reaction video - Stylistic Edit",
       "category": "talking-head",
       "tags": [],
       "durationSeconds": 862,
@@ -39,11 +39,11 @@
       "description": "",
       "chapters": [],
       "paletteIndex": 2,
-      "thumbnailSrc": "/videos/thumbnails/240726-reaction-video-new-logo.jpg"
+      "thumbnailSrc": "/videos/thumbnails/240726-reaction-video-new-logo.png"
     },
     {
       "id": "legitimacy-episode-4",
-      "title": "Legitimacy Episode 4",
+      "title": "Video Essay on Legitimate Tax Planning",
       "category": "vlogs",
       "tags": [],
       "durationSeconds": 1697,
@@ -52,7 +52,7 @@
       "description": "",
       "chapters": [],
       "paletteIndex": 3,
-      "thumbnailSrc": "/videos/thumbnails/legitimacy-episode-4.jpg"
+      "thumbnailSrc": "/videos/thumbnails/legitimacy-episode-4.png"
     }
   ],
   "shortProjects": [
