@@ -167,6 +167,46 @@
       "paletteIndex": 1,
       "durationSeconds": 84,
       "thumbnailSrc": "/videos/thumbnails/iran-and-the-west.jpg"
+    },
+    {
+      "id": "imran-waseem-dream-team",
+      "title": "Imran + Waseem Dream Team",
+      "views": 0,
+      "paletteIndex": 2,
+      "durationSeconds": 60,
+      "thumbnailSrc": "/videos/thumbnails/imran-waseem-dream-team.jpg"
+    },
+    {
+      "id": "imran-khan-king-of-cricket",
+      "title": "Imran Khan: King of Cricket",
+      "views": 0,
+      "paletteIndex": 3,
+      "durationSeconds": 60,
+      "thumbnailSrc": "/videos/thumbnails/imran-khan-king-of-cricket.jpg"
+    },
+    {
+      "id": "pakistanis-want-foreigners-good-time",
+      "title": "Pakistanis Want Foreigners To Have A Good Time In Pakistan!",
+      "views": 0,
+      "paletteIndex": 0,
+      "durationSeconds": 48,
+      "thumbnailSrc": "/videos/thumbnails/pakistanis-want-foreigners-good-time.jpg"
+    },
+    {
+      "id": "she-lost-her-son-to-drugs",
+      "title": "She Lost Her Son to Drugs",
+      "views": 0,
+      "paletteIndex": 1,
+      "durationSeconds": 97,
+      "thumbnailSrc": "/videos/thumbnails/she-lost-her-son-to-drugs.jpg"
+    },
+    {
+      "id": "this-mothers-interview-heartbreaking",
+      "title": "This Mother's Interview Is One of the Most Heartbreaking Parts of Our Documentary",
+      "views": 0,
+      "paletteIndex": 2,
+      "durationSeconds": 124,
+      "thumbnailSrc": "/videos/thumbnails/this-mothers-interview-heartbreaking.jpg"
     }
   ]
 }
