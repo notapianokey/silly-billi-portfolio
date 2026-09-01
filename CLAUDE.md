@@ -159,6 +159,29 @@ client content still needed — see Open decisions).
     settings/fullscreen) for chrome fidelity even without real playback.
   - Measured real values used for fidelity: 56px header height (`h-14`), 240px sidebar
     (`w-60`), 36px card avatars — pulled via live DOM inspection of youtube.com, not guessed.
+- **Third fidelity pass:** more gaps found by comparing again, this time also catching a
+  shadcn/Tailwind trap:
+  - **shadcn's `--radius` scale silently changes what `rounded-lg`/`rounded-xl` mean.**
+    `globals.css` defines `--radius-lg: var(--radius)` (10px here) and
+    `--radius-xl: calc(var(--radius) * 1.4)` (14px), not Tailwind's stock 8px/12px. Real
+    YouTube uses exactly 8px (Shorts thumbnails) and 12px (grid thumbnails) — close enough to
+    fool the eye into "something's off" without explaining why. Fixed by using arbitrary
+    values (`rounded-[8px]`, `rounded-[12px]`) for these two specific cases rather than the
+    semantic classes. **Lesson: when matching a measured pixel value from a live site in this
+    project, verify the computed value in-browser — don't assume `rounded-lg`/`-xl` map to
+    Tailwind's defaults, since shadcn's init already remapped them.**
+  - Real Shorts cards are **2:3** aspect ratio, not 9:16 — and the title sits in a normal text
+    block *below* the thumbnail (font-weight 500), not overlaid on the image with a gradient
+    scrim. The overlay treatment was an invented placeholder-era design that never got
+    corrected once real thumbnails landed; removed it.
+  - Header rebranded to "Silly Tube" (was "Silly Billi Video") with the Silly Billi mascot as
+    the icon mark, replacing the red YouTube play-icon square — client's explicit brand call,
+    not a fidelity fix.
+  - The `ditto` website-cloning MCP tool was tried for this pass (per client request) but its
+    job queue appears globally stuck (jobs for youtube.com sat "queued" for the whole
+    session, alongside many other users' also-queued jobs) — fell back to direct live-browser
+    DOM inspection (computed styles, bounding rects, outerHTML) via the Browser pane, which is
+    what actually produced the precise pixel values above.
 - **Real content + local edit UI:** the client dropped real footage into
   `VIDEO EDITING PAGE CONTENT/` (13 files, 11GB — git-ignored, see above). Ran `ffprobe`/
   `ffmpeg` once to pull duration + a representative frame (resized, ~20-100KB JPG) per video

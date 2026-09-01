@@ -2,6 +2,7 @@
 
 import { MenuIcon, MicIcon, SearchIcon, UserCircleIcon, XIcon } from "lucide-react";
 import { EllipsisVertical } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -22,8 +23,15 @@ export function TopHeader({ query, onQueryChange }: TopHeaderProps) {
         <Button variant="ghost" size="icon" className="size-9 rounded-full">
           <MenuIcon className="size-5" />
         </Button>
-        <Link href="/" className="text-lg font-semibold tracking-tight">
-          Silly Billi <span className="text-muted-foreground">Video</span>
+        <Link href="/" className="flex items-center gap-1.5">
+          <Image
+            src="/brand/mascot.png"
+            alt=""
+            width={28}
+            height={28}
+            className="size-7 rounded-md object-cover"
+          />
+          <span className="text-xl font-bold tracking-tight">Silly Tube</span>
         </Link>
       </div>
 

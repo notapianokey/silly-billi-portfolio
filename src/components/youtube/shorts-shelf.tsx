@@ -20,7 +20,10 @@ export function ShortsShelf() {
               aspect="9:16"
             />
             <div className="mt-2 flex items-start justify-between gap-1">
-              <p className="text-xs text-muted-foreground">{formatViews(short.views)}</p>
+              <div className="min-w-0">
+                <p className="line-clamp-2 text-sm font-medium leading-snug">{short.title}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{formatViews(short.views)}</p>
+              </div>
               <EditVideoDialog
                 id={short.id}
                 kind="short"

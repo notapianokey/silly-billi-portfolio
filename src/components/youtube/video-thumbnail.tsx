@@ -9,6 +9,7 @@ interface VideoThumbnailProps {
   durationSeconds: number;
   paletteIndex: number;
   thumbnailSrc?: string;
+  /** "9:16" renders at YouTube's real Shorts card proportions (2:3) and radius (8px). */
   aspect?: "video" | "9:16";
 }
 
@@ -26,10 +27,10 @@ export function VideoThumbnail({
     <div className="group relative w-full">
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-xl",
+          "relative w-full overflow-hidden",
+          isShort ? "rounded-[8px] aspect-[2/3]" : "rounded-[12px] aspect-video",
           !thumbnailSrc && "bg-gradient-to-br",
           !thumbnailSrc && gradient,
-          isShort ? "aspect-[9/16]" : "aspect-video",
         )}
       >
         {thumbnailSrc ? (
@@ -40,13 +41,6 @@ export function VideoThumbnail({
             sizes={isShort ? "160px" : "(min-width: 1280px) 25vw, (min-width: 640px) 33vw, 100vw"}
             className="object-cover"
           />
-        ) : isShort ? (
-          <>
-            <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <span className="absolute inset-x-2 bottom-2 text-sm font-bold leading-tight text-white drop-shadow-sm">
-              {title}
-            </span>
-          </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
             <span className="text-sm font-semibold text-white/90 drop-shadow-sm">{title}</span>
