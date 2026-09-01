@@ -33,7 +33,6 @@ const FILES = {
   "painting-5-reel-1a": "Painting 5 Reel 1a.mov",
   power2: "Power2.mp4",
   "trends-2": "Trends_2.mp4",
-  "client-trial-sub-1": "client trial sub 1.mp4",
   "article-4-reel-1a": "Article 4 Reel 1a.mov",
   "article-4-reel-2a": "Article 4 Reel 2a.mov",
   "iran-and-the-west": "Iran and The West.mp4",
@@ -53,6 +52,8 @@ const FILES = {
     "She lost her son to drugs.Her interview is one of the most heartbreaking parts of our documentar.mp4",
   "this-mothers-interview-heartbreaking":
     "This mothers interview is one of the most heartbreaking parts of our documentary.If you stil ha.mp4",
+  "property-dealers-vs-kickboxer-football-challenge":
+    "Property Dealers Vs. Kickboxer Football Challenge.mp4",
 };
 
 /** Longer pieces get compressed harder to stay within the free storage budget. */

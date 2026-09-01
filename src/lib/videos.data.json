@@ -7,7 +7,6 @@
       "tags": [],
       "durationSeconds": 343,
       "views": 0,
-      "publishedLabel": "Draft",
       "description": "Pending",
       "chapters": [],
       "paletteIndex": 0,
@@ -24,7 +23,6 @@
       ],
       "durationSeconds": 3495,
       "views": 113000,
-      "publishedLabel": "Draft",
       "description": "pending",
       "chapters": [],
       "paletteIndex": 1,
@@ -38,7 +36,6 @@
       "tags": [],
       "durationSeconds": 862,
       "views": 0,
-      "publishedLabel": "Draft",
       "description": "",
       "chapters": [],
       "paletteIndex": 2,
@@ -53,96 +50,109 @@
       "tags": [],
       "durationSeconds": 1697,
       "views": 0,
-      "publishedLabel": "Draft",
       "description": "",
       "chapters": [],
       "paletteIndex": 3,
       "thumbnailSrc": "/videos/thumbnails/legitimacy-episode-4.png",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/legitimacy-episode-4.mp4"
+    },
+    {
+      "id": "property-dealers-vs-kickboxer-football-challenge",
+      "title": "Property Dealers Vs. Kickboxer Football Challenge",
+      "category": "vlogs",
+      "tags": [],
+      "durationSeconds": 625,
+      "views": 10000,
+      "description": "",
+      "chapters": [],
+      "paletteIndex": 0,
+      "thumbnailSrc": "/videos/thumbnails/property-dealers-vs-kickboxer-football-challenge.jpg",
+      "sourceUrl": "https://www.youtube.com/watch?v=sOwiYqrBn9c",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/property-dealers-vs-kickboxer-football-challenge.mp4"
     }
   ],
   "shortProjects": [
     {
       "id": "editing-sample-etc",
-      "title": "Editing Sample Etc",
+      "title": "Motion Graphics & Kinetic Typography Showcase",
       "views": 0,
       "paletteIndex": 0,
       "durationSeconds": 56,
       "thumbnailSrc": "/videos/thumbnails/editing-sample-etc.jpg",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/editing-sample-etc.mp4",
-      "description": ""
+      "description": "Dynamic Graphic Overlays: Integrates custom 2D vector animations, hand-drawn chart visualizers, and animated paper textures to illustrate complex conceptual commentary.\r\n\r\nKinetic Typography & Text Clouds: Utilizes high-impact kinetic text motion, timed keyword clouds, and high-contrast subtitle syncing for maximum visual engagement.\r\n\r\nRapid-Pacing Retentive Cuts: Executes tight visual transitions and overlay swaps every 2–3 seconds to eliminate dead space and elevate raw talking-head footage.\r\n\r\nFraming & Window Composition: Implements styled camera cutouts with animated borders to seamlessly blend live footage with custom visual elements."
     },
     {
       "id": "final",
-      "title": "Final",
+      "title": "Live Podcast Reel - Double Cam",
       "views": 981000,
       "paletteIndex": 1,
       "durationSeconds": 167,
       "thumbnailSrc": "/videos/thumbnails/final.jpg",
       "sourceUrl": "https://www.instagram.com/reel/DbVK1_xNBSA",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/final.mp4",
-      "description": ""
+      "description": "Repurposed Dual-Cam Footage: Took a raw live podcast recording with a two-camera setup and reformatted the layout—keeping both hosts locked on screen at the bottom while using the top as a dedicated visual stage.\r\n\r\nTurned Dialogue Into a Mini-Doc: Built custom graphics, photo cutouts, and historical overlays on the fly so a dense 2.5-minute spoken story feels like a fast-moving documentary.\r\n\r\nPacing Built for High Retention: Swapped top-screen visuals every 3–4 seconds to destroy scroll fatigue and keep viewers hooked through a complex narrative.\r\n\r\nScannable Captions for Mute Scrolling: Synced clean, high-contrast, color-coded subtitles to the live speech cadence so mobile users don't miss a detail."
     },
     {
       "id": "painting-5-reel-1a",
-      "title": "[9:16 Kinetic Short] The Henry Ford Paradox",
+      "title": "Kinetic Short - The Henry Ford Paradox",
       "views": 0,
       "paletteIndex": 2,
       "durationSeconds": 39,
       "thumbnailSrc": "/videos/thumbnails/painting-5-reel-1a.jpg",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/painting-5-reel-1a.mp4",
-      "description": ""
+      "description": "Took a dense executive talk and turned it into a sharp 39-second reel, without using tacky, childish TikTok effects that destroy a founder's credibility.\r\n\r\nKept the Authority Intact: No obnoxious flashing graphics or brain-rot edits. Styled the visuals to feel premium, polished, and fitting for a high-ticket advisor.\r\n\r\nBroke Up the Talking Head: Viewers tune out if it’s just someone staring at a camera. Sourced vintage Henry Ford footage and brought the exact painting being discussed onto the screen right on cue so the idea lands visually.\r\n\r\nTightened the Pacing: Removed dead air, awkward pauses, and room echo so the speech moves fast, holds attention, and sounds like a professional podcast production.\r\n\r\nBuilt for Silent Scrolling: Formatted clean, instantly readable text for mobile feeds where 80% of executives watch with the sound off."
     },
     {
       "id": "power2",
-      "title": "The Cost of Slavery",
+      "title": "Creative Cutout & Layering Techniques for Podcast Reels",
       "views": 49300,
       "paletteIndex": 3,
       "durationSeconds": 90,
       "thumbnailSrc": "/videos/thumbnails/power2.jpg",
       "sourceUrl": "https://www.instagram.com/p/DYHVIH4tvfD/",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/power2.mp4",
-      "description": ""
+      "description": "Paper Cutout Collages: Cuts out historical figures and classic paintings from their original photos and layers them over custom textured backdrops with colored outlines.\r\n\r\nDouble-Exposure Overlays: Blends speaker footage on top of background scenes, flags, and historic images so both are visible at the same time.\r\n\r\nColor & Light Shifts: Switches between stark black-and-white photos, warm orange-tinted clips, and dim, single-light shots of the speaker to match the mood of the audio.\r\n\r\nBig Text Behind the Speaker: Places giant, bold numbers and words directly behind the speaker's head to mark key moments without blocking the frame.\r\n\r\nStacked Split Screens: Divides the vertical video into three stacked horizontal rows to display multiple matching clips simultaneously."
     },
     {
       "id": "reel-02",
-      "title": "Reel 02",
+      "title": "Fast-Paced Talking Head: Dynamic Top-Frame B-Roll",
       "views": 68000,
       "paletteIndex": 0,
       "durationSeconds": 89,
       "thumbnailSrc": "/videos/thumbnails/reel-02.jpg",
       "sourceUrl": "https://www.instagram.com/reel/DbDn0crtIiP/",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/reel-02.mp4",
-      "description": ""
+      "description": "50/50 Split Frame: The bottom half stays locked on the speaker, while the top half acts as a dedicated screen for all supporting visuals.\r\n\r\nKeyword Visual Matching: Top-frame visuals swap rapidly every 1–2 seconds to match specific spoken words (e.g., passport photo on \"travel,\" vet scene on \"veterinary,\" news clipping on \"closure\").\r\n\r\nTight Audio Cuts: All dead air, breath pauses, and hesitations are trimmed out to create an uninterrupted, fast-paced talking rhythm.\r\n\r\nCentered Kinetic Captions: Text appears line-by-line right in the middle of the frame, using a clean sans-serif font to keep eyes centered.\r\n\r\nMixed Visual Media: Blends static charts, high-contrast graphic illustrations, news headlines, and stock footage to prevent the top screen from feeling repetitive."
     },
     {
       "id": "sequence-01-1",
-      "title": "Sequence 01",
+      "title": "Split-Screen Podcast Edit: Visual Aids & On-Screen Illustrations",
       "views": 804000,
       "paletteIndex": 1,
       "durationSeconds": 78,
       "thumbnailSrc": "/videos/thumbnails/sequence-01-1.jpg",
       "sourceUrl": "https://www.instagram.com/reel/Dah6HA6t_kC/",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/sequence-01-1.mp4",
-      "description": ""
+      "description": "Top-Bottom Split Screen: The video is sliced into two horizontal sections—the podcast hosts remain anchored at the bottom while related visuals play on top.\r\n\r\nAnimated Clip Overlays: Simple cartoon scenes and moving graphics play on the top half to visually explain abstract concepts.\r\n\r\nWebsite Screenshots: Full-width images of news headlines and blog posts appear on screen to back up the host's claims.\r\n\r\nMatching Video Cuts: Quick clips of stock footage—like hands typing on a keyboard or surveillance footage—cut in as topics change.\r\n\r\nIcon Graphics & Pop-Ups: Simple graphic symbols (arrows, computer icons, folders) appear one by one to show steps and lists.\r\n\r\nEnd Promo Card: A branded graphic slide fills the top frame at the very end to display website links and social details."
     },
     {
       "id": "the-reel",
-      "title": "The Reel",
+      "title": "Turning Live Podcast Clips into High-Impact Video Essays",
       "views": 527000,
       "paletteIndex": 2,
       "durationSeconds": 89,
       "thumbnailSrc": "/videos/thumbnails/the-reel.jpg",
       "sourceUrl": "https://www.instagram.com/reel/Da8gsOvthNs/",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/the-reel.mp4",
-      "description": ""
+      "description": "Stacked Dual-View Layout: Pins the two speakers to the bottom frame while using the top half to display matching visual evidence.\r\n\r\nNews & Article Cutaways: Drops in full website screenshots and news headlines right as the speakers reference them.\r\n\r\nData & Chart Displays: Integrates line graphs and table graphics to make financial trends and numbers easy to digest.\r\n\r\nKey Text Pop-Ups: Highlights specific names, dollar amounts, and bet details using clean callout text boxes.\r\n\r\nCentered Dialogue Captions: Runs clear, single-line subtitles across the center line to keep viewers following along without blocking the speakers."
     },
     {
       "id": "trends-2",
-      "title": "Trends 2",
+      "title": "Simple Dual Cam Podcast Reel",
       "views": 0,
       "paletteIndex": 3,
       "durationSeconds": 88,
@@ -152,92 +162,81 @@
       "description": ""
     },
     {
-      "id": "client-trial-sub-1",
-      "title": "Client Trial Sub 1",
-      "views": 0,
-      "paletteIndex": 0,
-      "durationSeconds": 76,
-      "thumbnailSrc": "/videos/thumbnails/client-trial-sub-1.jpg",
-      "sourceUrl": "",
-      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/client-trial-sub-1.mp4",
-      "description": ""
-    },
-    {
       "id": "facebook-reel-1lores",
-      "title": "Facebook Reel",
+      "title": "Two-Panel Podcast Edit: Synchronizing Dialogue with Real-Time Media",
       "views": 467000,
       "paletteIndex": 1,
       "durationSeconds": 148,
       "thumbnailSrc": "/videos/thumbnails/facebook-reel-1lores.jpg",
       "sourceUrl": "https://www.instagram.com/reel/DbBZCWJtiYn/",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/facebook-reel-1lores.mp4",
-      "description": ""
+      "description": "Stacked Split-Screen Layout: Kept the speaker pinned in the bottom frame while using the top half entirely for supporting visuals.\r\n\r\nLive Search & Article Clips: Cut directly to Google search queries, news headlines, and web pages the second a date or name is mentioned.\r\n\r\nPhotos & Person Comparisons: Dropped in portrait photos and places two pictures side-by-side on top to visually connect key figures.\r\n\r\nDiagrams & Animated Icons: Used simple maps, flowcharts, and symbol icons to make historical timelines and connections easy to follow.\r\n\r\nReal Video B-Roll: Swapped between static images and short video clips to keep the top panel visually dynamic.\r\n\r\nCenter-Divider Subtitles: Ran clean, high-contrast captions directly across the middle seam between the speaker and the visuals for seamless reading."
     },
     {
       "id": "reel",
-      "title": "Reel",
+      "title": "Live Podcast Reel | Dynamic B-Roll",
       "views": 319000,
       "paletteIndex": 2,
       "durationSeconds": 131,
       "thumbnailSrc": "/videos/thumbnails/reel.jpg",
       "sourceUrl": "https://www.instagram.com/reel/DacaGEXt_vC",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/reel.mp4",
-      "description": ""
+      "description": "Reconstructed live talking-head podcast footage into a fast-paced, context-rich visual narrative using active media overlays.\r\n\r\nSplit-Screen Architecture: Locked live podcast footage to the bottom frame while driving the visual story with top-screen media overlays.\r\n\r\nContextual Asset Syncing: Paired spoken dialogue directly with archival photos, news headlines, and keyframed text highlights.\r\n\r\nPrecision Visual Callouts: Used hand-drawn red circles, directional arrows, and portrait reveals to point out key subjects instantly.\r\n\r\nKinetic Subtitle Flow: Synced high-contrast, centered captions to maintain tight visual rhythm across dialogue-heavy cuts."
     },
     {
       "id": "article-4-reel-1a",
-      "title": "Article 4 Reel 1a",
+      "title": "3-Camera Video Essay Edit: Document Overlays & Highlight Graphics",
       "views": 0,
       "paletteIndex": 3,
       "durationSeconds": 35,
       "thumbnailSrc": "/videos/thumbnails/article-4-reel-1a.jpg",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/article-4-reel-1a.mp4",
-      "description": ""
+      "description": "Multi-Angle Camera Cuts: Switched between three camera angles—a wide desk view, close-up talking head, and side angle—to match the speaker's delivery and keep pacing active.\r\n\r\nFull-Screen Document Graphics: Transformed article screenshots and legal documents into full-screen graphics to make lengthy quotes readable.\r\n\r\nAnimated Highlighting: Added animated red circles and yellow marker highlights to digital text to guide the viewer's eye straight to key quotes.\r\n\r\nText Overlay Cards: Displayed full-screen typography cards over subtle textured backgrounds when breaking down complex quotes or steps.\r\n\r\nClean Subtitles: Ran minimal, clear captions timed to the spoken narration for easy reading without distracting from the main visuals."
     },
     {
       "id": "article-4-reel-2a",
-      "title": "Article 4 Reel 2a",
+      "title": "Multi-Camera Video Essay: Dialogue Sync & Subtitles",
       "views": 0,
       "paletteIndex": 0,
       "durationSeconds": 29,
       "thumbnailSrc": "/videos/thumbnails/article-4-reel-2a.jpg",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/article-4-reel-2a.mp4",
-      "description": ""
+      "description": "Multi-Angle Camera Cuts: Switched between three camera perspectives—tight close-up, straight-on medium, and desk shot—to emphasize key points and maintain viewer engagement.\r\n\r\nPacing & Dialogue Sync: Cut seamlessly between angles on natural speech pauses and vocal inflections to keep the monologue visually dynamic.\r\n\r\nOn-Screen Subtitles: Timed clean, centered captions directly to the spoken audio for visual clarity and accessibility."
     },
     {
       "id": "iran-and-the-west",
-      "title": "Iran and The West",
+      "title": "Legacy Long-Form to Short-Form Reel",
       "views": 0,
       "paletteIndex": 1,
       "durationSeconds": 84,
       "thumbnailSrc": "/videos/thumbnails/iran-and-the-west.jpg",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/iran-and-the-west.mp4",
-      "description": ""
+      "description": "A proof-of-concept trial reel re-edited from dense long-form archive footage, demonstrating how deep subject-matter comprehension—rather than flashy visual effects—transforms historical and geopolitical commentary into high-retention short-form media.\r\n\r\nSubject-Driven Archival Inserts: Surfaces precise historical portraits (Mohammad Ali Jamalzadeh, Ahmad Kasravi), period-accurate archival B-roll, and contemporary diaspora protest footage synced directly to named historical references.\r\n\r\nCadence & Narrative Trimming: Tightens the long-form audio track by eliminating dead air and tangential pauses while preserving the speaker's natural intellectual flow and authoritative tone.\r\n\r\nContextual Visual Layering: Replaces generic stock footage with contextually accurate visual evidence that reinforces complex arguments around modernism, labor exploitation, and regional politics.\r\n\r\nMinimalist Subtitle Integration: Uses clean, centered kinetic captions to ground the narrative rhythm without cluttering the screen or distracting from the core discourse."
     },
     {
       "id": "imran-waseem-dream-team",
-      "title": "Imran + Waseem Dream Team",
+      "title": "Archival Footage Integration & Audio Balancing",
       "views": 0,
       "paletteIndex": 2,
       "durationSeconds": 60,
       "thumbnailSrc": "/videos/thumbnails/imran-waseem-dream-team.jpg",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/imran-waseem-dream-team.mp4",
-      "description": ""
+      "description": "Archival Cutaways: Cut seamlessly between studio speaker shots and historical cricket footage to visually illustrate the story in real time.\r\n\r\nSpeech-Timed Pacing: Matched video cuts and photo transitions strictly to the narrator's natural speech pauses and story beats.\r\n\r\nAudio Balancing: Levelled studio voice recordings with background sound clips to maintain smooth, consistent audio volume throughout the edit.\r\n\r\nOn-Screen Captions: Timed clear text overlays to appear precisely alongside the spoken dialogue for effortless reading."
     },
     {
       "id": "imran-khan-king-of-cricket",
-      "title": "Imran Khan: King of Cricket",
+      "title": "Historical Intercuts & Visual Textures",
       "views": 0,
       "paletteIndex": 3,
       "durationSeconds": 60,
       "thumbnailSrc": "/videos/thumbnails/imran-khan-king-of-cricket.jpg",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/imran-khan-king-of-cricket.mp4",
-      "description": ""
+      "description": "Archival Clip Integration: Intercut main studio footage with vintage sports clips and photos to visually reinforce the speaker's story.\r\n\r\nRetro Visual Styling: Overlayed subtle tape textures and static screen transitions onto older clips to visually distinguish historical archive footage from modern studio video.\r\n\r\nPacing & Timing: Cut between visuals directly on speech pauses and key narrative points to maintain smooth storytelling momentum.\r\n\r\nAudio Layering & Transitions: Levelled voice recording over low background music and added subtle transition sound effects during clip switches.\r\n\r\nSpeech-Synced Subtitles: Added centered text captions timed precisely to spoken audio for clear visual readability."
     },
     {
       "id": "pakistanis-want-foreigners-good-time",
@@ -246,7 +245,7 @@
       "paletteIndex": 0,
       "durationSeconds": 48,
       "thumbnailSrc": "/videos/thumbnails/pakistanis-want-foreigners-good-time.jpg",
-      "sourceUrl": "",
+      "sourceUrl": "https://www.youtube.com/shorts/uu-NZjJzUBY",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/pakistanis-want-foreigners-good-time.mp4",
       "description": ""
     },

@@ -102,13 +102,13 @@ export default function WatchPage({ params }: WatchPageProps) {
                 <div className="flex items-center gap-3">
                   <Image
                     src="/brand/mascot.png"
-                    alt="Silly Billi Agency"
+                    alt="Silly Billi Studio"
                     width={40}
                     height={40}
                     className="size-10 rounded-full object-cover"
                   />
                   <div>
-                    <p className="text-sm font-medium">Silly Billi Agency</p>
+                    <p className="text-sm font-medium">Silly Billi Studio</p>
                     <p className="text-xs text-muted-foreground">128K subscribers</p>
                   </div>
                   <Button size="sm" className="ml-2 rounded-full">
@@ -182,8 +182,7 @@ export default function WatchPage({ params }: WatchPageProps) {
                 className="cursor-pointer rounded-xl bg-secondary/50 p-3 transition hover:bg-secondary/70"
               >
                 <p className="mb-2 text-sm font-medium">
-                  {formatViews(video.views)} · {video.publishedLabel} ·{" "}
-                  {formatDuration(video.durationSeconds)} runtime
+                  {formatViews(video.views)} · {formatDuration(video.durationSeconds)} runtime
                 </p>
                 <p
                   className={cn(

@@ -46,7 +46,6 @@ export interface VideoProject {
   tags: string[];
   durationSeconds: number;
   views: number;
-  publishedLabel: string;
   description: string;
   chapters: Chapter[];
   paletteIndex: number;

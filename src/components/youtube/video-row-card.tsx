@@ -21,10 +21,8 @@ export function VideoRowCard({ video }: VideoRowCardProps) {
       </div>
       <div className="min-w-0 flex-1">
         <p className="line-clamp-2 text-sm font-medium leading-snug">{video.title}</p>
-        <p className="mt-1 text-xs text-muted-foreground">Silly Billi Agency</p>
-        <p className="text-xs text-muted-foreground">
-          {formatViews(video.views)} · {video.publishedLabel}
-        </p>
+        <p className="mt-1 text-xs text-muted-foreground">Silly Billi Studio</p>
+        <p className="text-xs text-muted-foreground">{formatViews(video.views)}</p>
       </div>
     </Link>
   );

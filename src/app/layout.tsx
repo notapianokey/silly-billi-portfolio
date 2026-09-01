@@ -18,9 +18,9 @@ const bricolageGrotesque = Bricolage_Grotesque({
 });
 
 export const metadata: Metadata = {
-  title: "Silly Billi Agency",
+  title: "Silly Billi Studio",
   description:
-    "Silly Billi Agency — video editing, visual branding, editorial direction, and marketing & ads.",
+    "Silly Billi Studio — video editing, visual branding, editorial direction, and marketing & ads.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

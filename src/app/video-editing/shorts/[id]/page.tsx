@@ -103,7 +103,7 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                       height={32}
                       className="size-8 rounded-full object-cover"
                     />
-                    <span className="text-sm font-semibold text-white">Silly Billi Agency</span>
+                    <span className="text-sm font-semibold text-white">Silly Billi Studio</span>
                     <button
                       type="button"
                       className="ml-1 rounded-full border border-white/70 px-3 py-1 text-xs font-medium text-white"
