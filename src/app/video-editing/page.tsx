@@ -7,13 +7,11 @@ import { ShortsShelf } from "@/components/youtube/shorts-shelf";
 import { SidebarRail } from "@/components/youtube/sidebar-rail";
 import { TopHeader } from "@/components/youtube/top-header";
 import { VideoCard } from "@/components/youtube/video-card";
-import { WatchModal } from "@/components/youtube/watch-modal";
-import { VIDEO_PROJECTS, type VideoCategoryId, type VideoProject } from "@/lib/videos";
+import { VIDEO_PROJECTS, type VideoCategoryId } from "@/lib/videos";
 
 export default function VideoEditingPage() {
   const [category, setCategory] = useState<VideoCategoryId | null>(null);
   const [query, setQuery] = useState("");
-  const [activeVideo, setActiveVideo] = useState<VideoProject | null>(null);
 
   const filteredVideos = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase().replace(/^#/, "");
@@ -41,7 +39,7 @@ export default function VideoEditingPage() {
           {filteredVideos.length > 0 ? (
             <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredVideos.map((video) => (
-                <VideoCard key={video.id} video={video} onSelect={setActiveVideo} />
+                <VideoCard key={video.id} video={video} />
               ))}
             </div>
           ) : (
@@ -53,8 +51,6 @@ export default function VideoEditingPage() {
           {category === null && query === "" && <ShortsShelf />}
         </main>
       </div>
-
-      <WatchModal video={activeVideo} onClose={() => setActiveVideo(null)} />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
@@ -8,20 +9,19 @@ import { formatViews, type VideoProject } from "@/lib/videos";
 
 interface VideoCardProps {
   video: VideoProject;
-  onSelect: (video: VideoProject) => void;
 }
 
-export function VideoCard({ video, onSelect }: VideoCardProps) {
+export function VideoCard({ video }: VideoCardProps) {
   return (
     <div className="group flex w-full flex-col gap-3">
-      <button type="button" onClick={() => onSelect(video)} className="text-left">
+      <Link href={`/video-editing/watch/${video.id}`}>
         <VideoThumbnail
           title={video.title}
           durationSeconds={video.durationSeconds}
           paletteIndex={video.paletteIndex}
           thumbnailSrc={video.thumbnailSrc}
         />
-      </button>
+      </Link>
 
       <div className="flex gap-3">
         <Image
@@ -31,13 +31,13 @@ export function VideoCard({ video, onSelect }: VideoCardProps) {
           height={36}
           className="mt-0.5 size-9 shrink-0 rounded-full object-cover"
         />
-        <button type="button" onClick={() => onSelect(video)} className="min-w-0 flex-1 text-left">
+        <Link href={`/video-editing/watch/${video.id}`} className="min-w-0 flex-1">
           <span className="line-clamp-2 text-sm font-medium leading-snug">{video.title}</span>
           <span className="mt-1 block text-xs text-muted-foreground">Silly Billi Agency</span>
           <span className="block text-xs text-muted-foreground">
             {formatViews(video.views)} · {video.publishedLabel}
           </span>
-        </button>
+        </Link>
         <EditVideoDialog
           id={video.id}
           kind="video"

@@ -13,13 +13,16 @@ import {
   Volume2Icon,
 } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
+import { notFound } from "next/navigation";
+import { use, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { EditVideoDialog } from "./edit-video-dialog";
-import { SocialEmbed } from "./social-embed";
+import { EditVideoDialog } from "@/components/youtube/edit-video-dialog";
+import { SidebarRail } from "@/components/youtube/sidebar-rail";
+import { SocialEmbed } from "@/components/youtube/social-embed";
+import { TopHeader } from "@/components/youtube/top-header";
+import { VideoRowCard } from "@/components/youtube/video-row-card";
 import { cn } from "@/lib/utils";
 import {
   formatDuration,
@@ -27,40 +30,39 @@ import {
   getEmbedInfo,
   getPlatformLabel,
   THUMBNAIL_PALETTE,
-  type VideoProject,
+  VIDEO_PROJECTS,
 } from "@/lib/videos";
 
-interface WatchModalProps {
-  video: VideoProject | null;
-  onClose: () => void;
+interface WatchPageProps {
+  params: Promise<{ id: string }>;
 }
 
-export function WatchModal({ video, onClose }: WatchModalProps) {
+export default function WatchPage({ params }: WatchPageProps) {
+  const { id } = use(params);
+  const video = VIDEO_PROJECTS.find((item) => item.id === id);
+
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [activeTab, setActiveTab] = useState<"final-cut" | "raw-footage">("final-cut");
+  const [query, setQuery] = useState("");
 
-  const embedInfo = video?.sourceUrl ? getEmbedInfo(video.sourceUrl) : null;
+  if (!video) notFound();
+
+  const embedInfo = video.sourceUrl ? getEmbedInfo(video.sourceUrl) : null;
   const showingRealEmbed = activeTab === "final-cut" && embedInfo !== null;
+  const upNext = VIDEO_PROJECTS.filter((item) => item.id !== video.id);
 
   return (
-    <Dialog
-      open={video !== null}
-      onOpenChange={(open) => {
-        if (!open) {
-          onClose();
-          setActiveTab("final-cut");
-        }
-      }}
-    >
-      <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto p-0 sm:rounded-xl">
-        {video && (
-          <div className="flex flex-col">
-            <DialogTitle className="sr-only">{video.title}</DialogTitle>
+    <div className="min-h-screen">
+      <TopHeader query={query} onQueryChange={setQuery} />
+      <SidebarRail />
 
+      <div className="md:pl-60">
+        <main className="flex flex-col gap-6 px-4 py-6 md:px-6 lg:flex-row">
+          <div className="min-w-0 flex-1 lg:max-w-4xl">
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)}>
               <div
                 className={cn(
-                  "relative overflow-hidden rounded-t-xl bg-black",
+                  "relative overflow-hidden rounded-xl bg-black",
                   showingRealEmbed && embedInfo?.type === "instagram"
                     ? "flex items-center justify-center p-4"
                     : "aspect-video",
@@ -91,7 +93,7 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
                 {!showingRealEmbed && <PlayerControlBar />}
               </div>
 
-              <div className="flex items-center justify-between border-b px-4 py-2">
+              <div className="mt-3 flex items-center justify-between border-b px-1 py-2">
                 <TabsList>
                   <TabsTrigger value="final-cut">Final Cut</TabsTrigger>
                   <TabsTrigger value="raw-footage">Raw Footage</TabsTrigger>
@@ -99,9 +101,9 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
               </div>
             </Tabs>
 
-            <div className="flex flex-col gap-3 p-4">
+            <div className="flex flex-col gap-3 py-4">
               <div className="flex items-start justify-between gap-2">
-                <h2 className="text-lg font-semibold leading-snug">{video.title}</h2>
+                <h1 className="text-lg font-semibold leading-snug">{video.title}</h1>
                 <EditVideoDialog
                   id={video.id}
                   kind="video"
@@ -173,7 +175,7 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
 
               {video.chapters.length > 0 && (
                 <div>
-                  <h3 className="mb-2 text-sm font-semibold">Chapters</h3>
+                  <h2 className="mb-2 text-sm font-semibold">Chapters</h2>
                   <ul className="flex flex-col gap-1">
                     {video.chapters.map((chapter) => (
                       <li key={chapter.timestamp}>
@@ -206,7 +208,7 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
                     !descriptionExpanded && "line-clamp-2",
                   )}
                 >
-                  {video.description}
+                  {video.description || "No description yet."}
                 </p>
                 <div className="mt-3 flex items-center gap-1 text-sm font-medium">
                   {descriptionExpanded ? (
@@ -222,9 +224,16 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
               </div>
             </div>
           </div>
-        )}
-      </DialogContent>
-    </Dialog>
+
+          <aside className="flex w-full flex-col gap-3 lg:w-[400px] lg:shrink-0">
+            <h2 className="text-sm font-semibold">Up next</h2>
+            {upNext.map((item) => (
+              <VideoRowCard key={item.id} video={item} />
+            ))}
+          </aside>
+        </main>
+      </div>
+    </div>
   );
 }
 
@@ -251,7 +260,7 @@ function PlaceholderPlayer({
       )}
     >
       {thumbnailSrc && (
-        <Image src={thumbnailSrc} alt="" fill sizes="768px" className="object-cover" />
+        <Image src={thumbnailSrc} alt="" fill sizes="900px" className="object-cover" />
       )}
       <div className={cn("relative flex flex-col items-center gap-2 text-white/90", thumbnailSrc && "drop-shadow-lg")}>
         <PauseIcon className="size-12 fill-white/90" />
