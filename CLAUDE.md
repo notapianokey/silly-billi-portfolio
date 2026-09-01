@@ -187,9 +187,15 @@ client content still needed — see Open decisions).
   YouTube-style watch *page*: its own URL, player, title/description, and an "Up next"
   recommended sidebar of the other videos. Rebuilt around `src/app/video-editing/watch/[id]/
   page.tsx` (`VideoCard` now `<Link>`s here instead of opening a dialog); `watch-modal.tsx` was
-  deleted, superseded by this page. Shorts still use their own click-to-open embed dialog
-  (`short-watch-dialog.tsx`) rather than a full page — Shorts are consumed as quick popups on
-  real YouTube too, not full watch pages with a sidebar, so that distinction is intentional.
+  deleted, superseded by this page.
+  - **Shorts get their own dedicated page too** (`src/app/video-editing/shorts/[id]/page.tsx`,
+    matching real YouTube's `/shorts/{id}`) — confirmed by live-inspecting an actual YouTube
+    Shorts page rather than assuming: it's a *different* layout from the long-form watch page,
+    not a smaller version of it. Centered vertical card (embed or thumbnail-as-poster), a
+    right-side circular action rail (Like/Share/View-on-X/Edit), prev/next chevrons instead of
+    an "Up next" sidebar, and channel+caption overlaid on the video itself via a bottom scrim
+    rather than laid out below it. The original `short-watch-dialog.tsx` (a small popup) was
+    wrong and got replaced by this — don't reintroduce a modal for Shorts.
 - **Real content + local edit UI:** the client dropped real footage into
   `VIDEO EDITING PAGE CONTENT/` (13 files, 11GB — git-ignored, see above). Ran `ffprobe`/
   `ffmpeg` once to pull duration + a representative frame (resized, ~20-100KB JPG) per video
