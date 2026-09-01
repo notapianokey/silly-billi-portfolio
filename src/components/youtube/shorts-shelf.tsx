@@ -1,6 +1,7 @@
 import { ExternalLinkIcon } from "lucide-react";
 
 import { EditVideoDialog } from "./edit-video-dialog";
+import { ShortWatchDialog } from "./short-watch-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
 import { formatViews, getPlatformLabel, SHORT_PROJECTS } from "@/lib/videos";
 
@@ -14,13 +15,15 @@ export function ShortsShelf() {
       <div className="flex gap-3 overflow-x-auto pb-2">
         {SHORT_PROJECTS.map((short) => (
           <div key={short.id} className="group w-[160px] shrink-0">
-            <VideoThumbnail
-              title={short.title}
-              durationSeconds={short.durationSeconds}
-              paletteIndex={short.paletteIndex}
-              thumbnailSrc={short.thumbnailSrc}
-              aspect="9:16"
-            />
+            <ShortWatchDialog short={short}>
+              <VideoThumbnail
+                title={short.title}
+                durationSeconds={short.durationSeconds}
+                paletteIndex={short.paletteIndex}
+                thumbnailSrc={short.thumbnailSrc}
+                aspect="9:16"
+              />
+            </ShortWatchDialog>
             <div className="mt-2 flex items-start justify-between gap-1">
               <div className="min-w-0">
                 <p className="line-clamp-2 text-sm font-medium leading-snug">{short.title}</p>

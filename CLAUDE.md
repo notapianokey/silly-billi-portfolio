@@ -202,12 +202,20 @@ client content still needed — see Open decisions).
     committed and pushed like any other change (they're just small JSON/JPGs, not the raw
     client media itself, so this doesn't conflict with the "no real content in git" rule
     above).
-  - **Not yet solved:** actual video *playback* (hover-preview scrubbing, a real `<video>` in
-    the Watch modal instead of a static thumbnail-as-poster). The extracted thumbnails are
-    static images; playing real footage needs an external host (Vercel Hobby/git can't carry
-    11GB, and per the client the source files shouldn't be public anyway) — that needs an
-    account decision from the client before it's built. Don't build video hosting/upload
-    without checking with them first.
+  - **Real playback — solved, but only for projects with a public `sourceUrl`** (see below).
+    `src/components/youtube/social-embed.tsx` renders the platform's own free public embed
+    (YouTube iframe, or Instagram's official embed.js widget) — real playback, real hosting,
+    zero cost, no account/API key needed, since the platform hosts the bytes, not us. Wired
+    into the Watch modal's Final Cut tab (long-form) and a new click-to-open
+    `short-watch-dialog.tsx` (Shorts, which have no other detail view). Raw Footage always
+    stays the static placeholder — there is never a public link for unpublished raw footage.
+  - **Projects without a `sourceUrl` are thumbnail-only, permanently, by design** — not a bug,
+    not "not yet built." Several of the client's local files were never posted publicly
+    anywhere (internal work samples, client drafts), so there is no possible URL to embed or
+    link to. Extracting a thumbnail from a local file only ever needed the file to exist on
+    disk, not to be hosted anywhere — thumbnails and playback are two independent things, and
+    conflating them was a real point of confusion for the client. Keep that distinction
+    explicit in anything user-facing (docs, UI copy) going forward.
 - **`sourceUrl` — link to the real posted video, and the periodic view-count refresh
   workflow.** Every `VideoProject`/`ShortProject` has an optional `sourceUrl` (editable via the
   same local edit UI, next to title/description). Two things it drives:

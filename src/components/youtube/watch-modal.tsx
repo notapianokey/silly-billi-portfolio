@@ -19,10 +19,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditVideoDialog } from "./edit-video-dialog";
+import { SocialEmbed } from "./social-embed";
 import { cn } from "@/lib/utils";
 import {
   formatDuration,
   formatViews,
+  getEmbedInfo,
   getPlatformLabel,
   THUMBNAIL_PALETTE,
   type VideoProject,
@@ -35,22 +37,48 @@ interface WatchModalProps {
 
 export function WatchModal({ video, onClose }: WatchModalProps) {
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  const [activeTab, setActiveTab] = useState<"final-cut" | "raw-footage">("final-cut");
+
+  const embedInfo = video?.sourceUrl ? getEmbedInfo(video.sourceUrl) : null;
+  const showingRealEmbed = activeTab === "final-cut" && embedInfo !== null;
 
   return (
-    <Dialog open={video !== null} onOpenChange={(open) => !open && onClose()}>
+    <Dialog
+      open={video !== null}
+      onOpenChange={(open) => {
+        if (!open) {
+          onClose();
+          setActiveTab("final-cut");
+        }
+      }}
+    >
       <DialogContent className="max-h-[90vh] max-w-3xl overflow-y-auto p-0 sm:rounded-xl">
         {video && (
           <div className="flex flex-col">
             <DialogTitle className="sr-only">{video.title}</DialogTitle>
 
-            <Tabs defaultValue="final-cut">
-              <div className="relative aspect-video overflow-hidden rounded-t-xl bg-black">
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)}>
+              <div
+                className={cn(
+                  "relative overflow-hidden rounded-t-xl bg-black",
+                  showingRealEmbed && embedInfo?.type === "instagram"
+                    ? "flex items-center justify-center p-4"
+                    : "aspect-video",
+                )}
+              >
                 <TabsContent value="final-cut" className="m-0 h-full">
-                  <PlaceholderPlayer
-                    label="Final Cut"
-                    paletteIndex={video.paletteIndex}
-                    thumbnailSrc={video.thumbnailSrc}
-                  />
+                  {embedInfo ? (
+                    <SocialEmbed
+                      info={embedInfo}
+                      className={embedInfo.type === "youtube" ? "h-full w-full" : "w-full max-w-sm"}
+                    />
+                  ) : (
+                    <PlaceholderPlayer
+                      label="Final Cut"
+                      paletteIndex={video.paletteIndex}
+                      thumbnailSrc={video.thumbnailSrc}
+                    />
+                  )}
                 </TabsContent>
                 <TabsContent value="raw-footage" className="m-0 h-full">
                   <PlaceholderPlayer
@@ -60,7 +88,7 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
                     muted
                   />
                 </TabsContent>
-                <PlayerControlBar />
+                {!showingRealEmbed && <PlayerControlBar />}
               </div>
 
               <div className="flex items-center justify-between border-b px-4 py-2">

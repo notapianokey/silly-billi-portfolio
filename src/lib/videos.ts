@@ -109,3 +109,45 @@ export function getPlatformLabel(url: string): string {
     return "Original Post";
   }
 }
+
+export type EmbedInfo =
+  | { type: "youtube"; embedUrl: string }
+  | { type: "instagram"; permalink: string };
+
+/**
+ * Resolves a sourceUrl to something actually embeddable in-page, using each platform's free
+ * public embed (no API key/token, no external hosting — the platform hosts the bytes).
+ * Returns null for platforms without a workable no-auth embed (TikTok's oEmbed needs a server
+ * round-trip we don't have; Facebook/X similarly) — those fall back to the "View on X" link-out.
+ */
+export function getEmbedInfo(url: string): EmbedInfo | null {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  const host = parsed.hostname.replace(/^www\./, "");
+
+  if (host === "youtu.be") {
+    const id = parsed.pathname.slice(1);
+    if (id) return { type: "youtube", embedUrl: `https://www.youtube-nocookie.com/embed/${id}` };
+  }
+
+  if (host === "youtube.com") {
+    const id =
+      parsed.searchParams.get("v") ??
+      (parsed.pathname.startsWith("/shorts/") ? parsed.pathname.split("/")[2] : null) ??
+      (parsed.pathname.startsWith("/embed/") ? parsed.pathname.split("/")[2] : null);
+    if (id) return { type: "youtube", embedUrl: `https://www.youtube-nocookie.com/embed/${id}` };
+  }
+
+  if (host === "instagram.com") {
+    const match = parsed.pathname.match(/^\/(reel|p|tv)\/[^/]+\/?/);
+    if (match) {
+      return { type: "instagram", permalink: `https://www.instagram.com${match[0]}`.replace(/\/$/, "") + "/" };
+    }
+  }
+
+  return null;
+}
