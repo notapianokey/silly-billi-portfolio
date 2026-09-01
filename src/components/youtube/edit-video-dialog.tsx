@@ -61,8 +61,20 @@ export function EditVideoDialog({
 
     try {
       const res = await fetch("/api/dev/videos", { method: "PATCH", body: formData });
-      const body = await res.json();
-      if (!res.ok) throw new Error(body.error ?? "Save failed.");
+      const text = await res.text();
+      let body: { error?: string } = {};
+      try {
+        body = text ? JSON.parse(text) : {};
+      } catch {
+        // Non-JSON response (e.g. an HTML error page) — fall through to the generic message below.
+      }
+
+      if (!res.ok) {
+        throw new Error(
+          body.error ??
+            "Save failed with no details from the server — check that you're running the site locally (npm run dev).",
+        );
+      }
 
       setOpen(false);
       router.refresh();
