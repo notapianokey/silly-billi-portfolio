@@ -2,9 +2,11 @@
 // "VIDEO EDITING PAGE CONTENT" folder) and uploads them to Vercel Blob storage, then writes
 // the resulting public URL into each entry's `videoUrl` in videos.data.json.
 //
-// Only run for entries that have no `sourceUrl` (nothing publicly posted to embed) — those
-// entries stay dark/silent otherwise, since there's no other way to make them playable. Entries
-// with a `sourceUrl` already get a real platform embed and don't need this.
+// Runs for every entry listed in FILES that doesn't already have a `videoUrl` — including ones
+// that also have a `sourceUrl` (a platform link + a local source file aren't mutually
+// exclusive: the client wants the native self-hosted player over the platform's embed widget
+// whenever we actually have the footage locally, even if it's also posted elsewhere. sourceUrl
+// still drives the "View on X" link either way.
 //
 // Usage: node --env-file=.env.local scripts/upload-video-clips.mjs
 // Requires .env.local with BLOB_READ_WRITE_TOKEN (from `vercel env pull .env.local`) and ffmpeg
@@ -41,6 +43,16 @@ const FILES = {
     "Imran Khan： King of Cricket #imrankhan #cricketworldcup1992 #imrankhanworldcup #eonpodcast [WnhjCEgRVkc].webm",
   "pakistanis-want-foreigners-good-time":
     "Pakistanis Want Foreigners To Have A Good Time In Pakistan! #CallumAbroad #Hospitality [uu-NZjJzUBY].webm",
+  final: "Final.mp4",
+  "reel-02": "Reel 02.mp4",
+  "sequence-01-1": "Sequence 01_1.mp4",
+  "the-reel": "The Reel.mp4",
+  "facebook-reel-1lores": "facebook reel_1lores.mp4",
+  reel: "reel.mp4",
+  "she-lost-her-son-to-drugs":
+    "She lost her son to drugs.Her interview is one of the most heartbreaking parts of our documentar.mp4",
+  "this-mothers-interview-heartbreaking":
+    "This mothers interview is one of the most heartbreaking parts of our documentary.If you stil ha.mp4",
 };
 
 /** Longer pieces get compressed harder to stay within the free storage budget. */
@@ -60,8 +72,8 @@ async function main() {
       console.warn(`Skipping ${id}: no matching data entry.`);
       continue;
     }
-    if (entry.sourceUrl) {
-      console.log(`Skipping ${id}: has a sourceUrl, uses a real embed instead.`);
+    if (entry.videoUrl) {
+      console.log(`Skipping ${id}: already has a videoUrl.`);
       continue;
     }
 

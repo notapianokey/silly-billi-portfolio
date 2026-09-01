@@ -80,7 +80,8 @@
       "paletteIndex": 1,
       "durationSeconds": 167,
       "thumbnailSrc": "/videos/thumbnails/final.jpg",
-      "sourceUrl": "https://www.instagram.com/reel/DbVK1_xNBSA"
+      "sourceUrl": "https://www.instagram.com/reel/DbVK1_xNBSA",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/final.mp4"
     },
     {
       "id": "painting-5-reel-1a",
@@ -94,12 +95,12 @@
     },
     {
       "id": "power2",
-      "title": "Power 2",
-      "views": 0,
+      "title": "The Cost of Slavery",
+      "views": 49300,
       "paletteIndex": 3,
       "durationSeconds": 90,
       "thumbnailSrc": "/videos/thumbnails/power2.jpg",
-      "sourceUrl": "",
+      "sourceUrl": "https://www.instagram.com/p/DYHVIH4tvfD/",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/power2.mp4"
     },
     {
@@ -109,7 +110,8 @@
       "paletteIndex": 0,
       "durationSeconds": 89,
       "thumbnailSrc": "/videos/thumbnails/reel-02.jpg",
-      "sourceUrl": "https://www.instagram.com/reel/DbDn0crtIiP/"
+      "sourceUrl": "https://www.instagram.com/reel/DbDn0crtIiP/",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/reel-02.mp4"
     },
     {
       "id": "sequence-01-1",
@@ -118,7 +120,8 @@
       "paletteIndex": 1,
       "durationSeconds": 78,
       "thumbnailSrc": "/videos/thumbnails/sequence-01-1.jpg",
-      "sourceUrl": "https://www.instagram.com/reel/Dah6HA6t_kC/"
+      "sourceUrl": "https://www.instagram.com/reel/Dah6HA6t_kC/",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/sequence-01-1.mp4"
     },
     {
       "id": "the-reel",
@@ -127,7 +130,8 @@
       "paletteIndex": 2,
       "durationSeconds": 89,
       "thumbnailSrc": "/videos/thumbnails/the-reel.jpg",
-      "sourceUrl": "https://www.instagram.com/reel/Da8gsOvthNs/"
+      "sourceUrl": "https://www.instagram.com/reel/Da8gsOvthNs/",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/the-reel.mp4"
     },
     {
       "id": "trends-2",
@@ -156,7 +160,8 @@
       "paletteIndex": 1,
       "durationSeconds": 148,
       "thumbnailSrc": "/videos/thumbnails/facebook-reel-1lores.jpg",
-      "sourceUrl": "https://www.instagram.com/reel/DbBZCWJtiYn/"
+      "sourceUrl": "https://www.instagram.com/reel/DbBZCWJtiYn/",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/facebook-reel-1lores.mp4"
     },
     {
       "id": "reel",
@@ -165,7 +170,8 @@
       "paletteIndex": 2,
       "durationSeconds": 131,
       "thumbnailSrc": "/videos/thumbnails/reel.jpg",
-      "sourceUrl": "https://www.instagram.com/reel/DacaGEXt_vC"
+      "sourceUrl": "https://www.instagram.com/reel/DacaGEXt_vC",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/reel.mp4"
     },
     {
       "id": "article-4-reel-1a",
@@ -234,7 +240,8 @@
       "paletteIndex": 1,
       "durationSeconds": 97,
       "thumbnailSrc": "/videos/thumbnails/she-lost-her-son-to-drugs.jpg",
-      "sourceUrl": "https://www.instagram.com/reel/DcVj34rNDgO/"
+      "sourceUrl": "https://www.instagram.com/reel/DcVj34rNDgO/",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/she-lost-her-son-to-drugs.mp4"
     },
     {
       "id": "this-mothers-interview-heartbreaking",
@@ -243,7 +250,8 @@
       "paletteIndex": 2,
       "durationSeconds": 124,
       "thumbnailSrc": "/videos/thumbnails/this-mothers-interview-heartbreaking.jpg",
-      "sourceUrl": "https://www.instagram.com/reel/Dca6BH6tcSp/"
+      "sourceUrl": "https://www.instagram.com/reel/Dca6BH6tcSp/",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/this-mothers-interview-heartbreaking.mp4"
     }
   ]
 }

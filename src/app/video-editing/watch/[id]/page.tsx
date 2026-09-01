@@ -60,23 +60,23 @@ export default function WatchPage({ params }: WatchPageProps) {
             <div
               className={cn(
                 "relative overflow-hidden rounded-xl bg-black",
-                hasRealPlayback && embedInfo?.type === "instagram"
+                !video.videoUrl && embedInfo?.type === "instagram"
                   ? "flex items-center justify-center p-4"
                   : "aspect-video",
               )}
             >
-              {embedInfo ? (
-                <SocialEmbed
-                  info={embedInfo}
-                  className={embedInfo.type === "youtube" ? "h-full w-full" : "w-full max-w-sm"}
-                />
-              ) : video.videoUrl ? (
+              {video.videoUrl ? (
                 <video
                   src={video.videoUrl}
                   poster={video.thumbnailSrc}
                   controls
                   playsInline
                   className="h-full w-full"
+                />
+              ) : embedInfo ? (
+                <SocialEmbed
+                  info={embedInfo}
+                  className={embedInfo.type === "youtube" ? "h-full w-full" : "w-full max-w-sm"}
                 />
               ) : (
                 <PlaceholderPlayer paletteIndex={video.paletteIndex} thumbnailSrc={video.thumbnailSrc} />

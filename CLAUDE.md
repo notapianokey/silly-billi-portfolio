@@ -216,29 +216,33 @@ client content still needed — see Open decisions).
     committed and pushed like any other change (they're just small JSON/JPGs, not the raw
     client media itself, so this doesn't conflict with the "no real content in git" rule
     above).
-  - **Real playback — solved for every project, two different ways depending on whether a
-    `sourceUrl` exists.**
-    - **With a `sourceUrl`:** `src/components/youtube/social-embed.tsx` renders the platform's
-      own free public embed (YouTube iframe, or Instagram's official embed.js widget) — real
-      playback, real hosting, zero cost, no account/API key needed, since the platform hosts
-      the bytes, not us. This is always preferred when available (embeds carry real
-      like/comment counts — genuine social proof).
-    - **Without one** (client's local-only files that were never posted publicly — internal
-      work samples, drafts): self-hosted via **Vercel Blob** (a store named
+  - **Real playback — solved for every project.** Two possible sources, and **`videoUrl` (self-
+    hosted) always wins over `sourceUrl` (platform embed) when both exist** — the client
+    explicitly wants the native player, not a platform-branded embed widget, whenever we
+    actually have the footage. `getEmbedInfo(sourceUrl)`/embeds are the fallback for when there's
+    a public link but no local source file at all.
+    - **`videoUrl` (preferred):** self-hosted via **Vercel Blob** (a store named
       `sillybillistudio-blob`, Public access, connected to this project — client set it up
       through the Vercel dashboard, not something to recreate). `scripts/upload-video-clips.mjs`
       compresses each source file with `ffmpeg` (H.264, scaled to cap 720px / 640px for the
       longest pieces, ~CRF 28-30, AAC audio, faststart) and uploads it with `@vercel/blob`,
       writing the resulting public URL into that entry's `videoUrl`. The watch pages render a
-      plain `<video src={videoUrl} controls>` when there's a `videoUrl` but no embed. Free tier
-      is 1GB storage — compression settings were chosen to fit the client's ~11GB of source
-      footage within that, and the longer pieces are compressed harder specifically for this
-      reason; re-check the budget before adding a lot more raw footage.
+      plain `<video src={videoUrl} controls>` first, before ever checking for an embed. Free
+      tier is 1GB storage — compression settings were chosen to fit well within that even as
+      more local content gets added (23 clips so far, ~160MB total); re-check the budget before
+      adding a lot more.
+    - **`sourceUrl` (fallback only):** `src/components/youtube/social-embed.tsx` renders the
+      platform's own free public embed (YouTube iframe, or Instagram's official embed.js
+      widget) — only actually shown in the player when there's no local source file to
+      self-host instead. Regardless of which one plays, `sourceUrl` (if set) still always
+      drives the separate "View on [Platform]" link/button.
     - Run the script locally: `node --env-file=.env.local scripts/upload-video-clips.mjs` (needs
       `BLOB_READ_WRITE_TOKEN` in `.env.local`, from `vercel env pull .env.local` — the token is
       scoped to Production/Preview/**Development** on purpose, since local runs use the
-      Development scope). Only processes entries listed in its `FILES` map that don't already
-      have a `sourceUrl`; add new entries to that map as new local-only content shows up.
+      Development scope). Its `FILES` map lists every entry that has a local source file
+      regardless of whether it also has a `sourceUrl`; it skips entries that already have a
+      `videoUrl` (idempotent reruns), not entries that have a `sourceUrl`. Add new entries to
+      `FILES` as new local-only content shows up.
 - **`sourceUrl` — link to the real posted video, and the periodic view-count refresh
   workflow.** Every `VideoProject`/`ShortProject` has an optional `sourceUrl` (editable via the
   same local edit UI, next to title/description). Two things it drives:

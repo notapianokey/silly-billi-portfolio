@@ -58,11 +58,7 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
 
             {/* Vertical card */}
             <div className="relative aspect-[9/16] h-[calc(100vh-8rem)] max-h-[800px] w-auto overflow-hidden rounded-2xl bg-black">
-              {embedInfo ? (
-                <div className="flex h-full w-full items-center justify-center">
-                  <SocialEmbed info={embedInfo} className="max-h-full w-full" />
-                </div>
-              ) : short.videoUrl ? (
+              {short.videoUrl ? (
                 <video
                   src={short.videoUrl}
                   poster={short.thumbnailSrc}
@@ -70,6 +66,10 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                   playsInline
                   className="h-full w-full object-contain"
                 />
+              ) : embedInfo ? (
+                <div className="flex h-full w-full items-center justify-center">
+                  <SocialEmbed info={embedInfo} className="max-h-full w-full" />
+                </div>
               ) : (
                 <div
                   className={cn(

@@ -4,8 +4,8 @@ import { ClockIcon, HomeIcon, UserIcon } from "lucide-react";
 import Link from "next/link";
 
 const ITEMS = [
-  { label: "Home", icon: HomeIcon, href: "/" },
-  { label: "Shorts", icon: ShortsIcon, href: "#shorts" },
+  { label: "Home", icon: HomeIcon, href: "/video-editing" },
+  { label: "Shorts", icon: ShortsIcon, href: "/video-editing#shorts" },
   { label: "Subscriptions", icon: SubscriptionsIcon, href: null },
   { label: "You", icon: UserIcon, href: null },
   { label: "History", icon: ClockIcon, href: null },

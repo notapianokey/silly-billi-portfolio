@@ -23,7 +23,7 @@ export function TopHeader({ query, onQueryChange }: TopHeaderProps) {
         <Button variant="ghost" size="icon" className="size-9 rounded-full">
           <MenuIcon className="size-5" />
         </Button>
-        <Link href="/" className="flex items-center gap-1.5">
+        <Link href="/video-editing" className="flex items-center gap-1.5">
           <Image
             src="/brand/mascot.png"
             alt=""
