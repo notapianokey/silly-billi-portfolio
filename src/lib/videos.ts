@@ -52,6 +52,8 @@ export interface VideoProject {
   paletteIndex: number;
   /** Path under /public, e.g. "/videos/thumbnails/main.jpg". Falls back to a gradient when unset. */
   thumbnailSrc?: string;
+  /** Link to the real posted video (YouTube/Instagram/TikTok/etc). Drives the "View on X" button. */
+  sourceUrl?: string;
 }
 
 export interface ShortProject {
@@ -61,6 +63,7 @@ export interface ShortProject {
   paletteIndex: number;
   durationSeconds: number;
   thumbnailSrc?: string;
+  sourceUrl?: string;
 }
 
 export const VIDEO_PROJECTS: VideoProject[] = videosData.videoProjects as VideoProject[];
@@ -83,4 +86,26 @@ export function formatViews(views: number): string {
   if (views >= 1_000_000) return `${(views / 1_000_000).toFixed(1)}M views`;
   if (views >= 1_000) return `${(views / 1_000).toFixed(views < 10_000 ? 1 : 0)}K views`;
   return `${views} views`;
+}
+
+const PLATFORM_LABELS: Record<string, string> = {
+  "youtube.com": "YouTube",
+  "youtu.be": "YouTube",
+  "instagram.com": "Instagram",
+  "tiktok.com": "TikTok",
+  "facebook.com": "Facebook",
+  "fb.watch": "Facebook",
+  "twitter.com": "X",
+  "x.com": "X",
+  "linkedin.com": "LinkedIn",
+};
+
+/** "View on YouTube" / "View on Instagram" / etc, derived from the URL's host. Falls back to a generic label for unrecognized hosts. */
+export function getPlatformLabel(url: string): string {
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, "");
+    return PLATFORM_LABELS[host] ?? "Original Post";
+  } catch {
+    return "Original Post";
+  }
 }

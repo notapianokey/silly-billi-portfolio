@@ -208,6 +208,21 @@ client content still needed — see Open decisions).
     11GB, and per the client the source files shouldn't be public anyway) — that needs an
     account decision from the client before it's built. Don't build video hosting/upload
     without checking with them first.
+- **`sourceUrl` — link to the real posted video, and the periodic view-count refresh
+  workflow.** Every `VideoProject`/`ShortProject` has an optional `sourceUrl` (editable via the
+  same local edit UI, next to title/description). Two things it drives:
+  - **"View on [Platform]" button** (`getPlatformLabel()` in `videos.ts` detects YouTube/
+    Instagram/TikTok/etc from the URL's host): on the Watch modal for long-form, and directly
+    on the card for Shorts (which have no detail view to put it in). Renders nothing when
+    `sourceUrl` is unset.
+  - **View counts are refreshed manually, on request only — never live-fetched.** Explicit
+    client decision: no client-side calls to YouTube/Instagram/TikTok on page load (works
+    against the site's speed priority, and there's no backend to proxy it through anyway).
+    Instead: whenever the client asks (expected cadence: roughly every 2-3 months), go look up
+    the current view count at each entry's `sourceUrl` (YouTube's oEmbed/page data is
+    scrapeable without an API key; Instagram/TikTok are harder and may need manual entry) and
+    write the refreshed number directly into `views` in `videos.data.json`, then commit+push.
+    Do not build this as an automated/scheduled job — it's a manual, client-triggered action.
 
 ## Contact page (`/contact`) — planned, not yet built
 

@@ -31,6 +31,7 @@ export async function PATCH(request: Request) {
     const kind = formData.get("kind");
     const title = formData.get("title");
     const description = formData.get("description");
+    const sourceUrl = formData.get("sourceUrl");
     const thumbnail = formData.get("thumbnail");
 
     if (typeof id !== "string" || (kind !== "video" && kind !== "short")) {
@@ -57,6 +58,9 @@ export async function PATCH(request: Request) {
     }
     if (kind === "video" && typeof description === "string") {
       entry.description = description;
+    }
+    if (typeof sourceUrl === "string") {
+      entry.sourceUrl = sourceUrl.trim();
     }
 
     if (thumbnail instanceof File && thumbnail.size > 0) {

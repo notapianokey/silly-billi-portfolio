@@ -20,6 +20,7 @@ interface EditVideoDialogProps {
   title: string;
   description?: string;
   thumbnailSrc?: string;
+  sourceUrl?: string;
   /** Renders the trigger button; keeps this component usable inline in cards or the modal. */
   triggerClassName?: string;
 }
@@ -30,12 +31,14 @@ export function EditVideoDialog({
   title: initialTitle,
   description: initialDescription,
   thumbnailSrc,
+  sourceUrl: initialSourceUrl,
   triggerClassName,
 }: EditVideoDialogProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription ?? "");
+  const [sourceUrl, setSourceUrl] = useState(initialSourceUrl ?? "");
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(thumbnailSrc);
   const [saving, setSaving] = useState(false);
@@ -56,6 +59,7 @@ export function EditVideoDialog({
     formData.set("id", id);
     formData.set("kind", kind);
     formData.set("title", title);
+    formData.set("sourceUrl", sourceUrl.trim());
     if (kind === "video") formData.set("description", description);
     if (thumbnailFile) formData.set("thumbnail", thumbnailFile);
 
@@ -149,6 +153,24 @@ export function EditVideoDialog({
               />
             </div>
           )}
+
+          <div>
+            <label htmlFor="edit-source-url" className="mb-1.5 block text-sm font-medium">
+              Link to the real posted video
+            </label>
+            <input
+              id="edit-source-url"
+              type="url"
+              value={sourceUrl}
+              onChange={(event) => setSourceUrl(event.target.value)}
+              placeholder="https://youtube.com/watch?v=... or Instagram/TikTok link"
+              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:border-ring"
+            />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Powers the &quot;View on [Platform]&quot; button, and is what Claude will use to
+              look up real view counts when you ask for a refresh.
+            </p>
+          </div>
 
           {error && <p className="text-sm text-destructive">{error}</p>}
         </div>

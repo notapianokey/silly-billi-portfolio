@@ -11,7 +11,8 @@
       "description": "Pending",
       "chapters": [],
       "paletteIndex": 0,
-      "thumbnailSrc": "/videos/thumbnails/main.png"
+      "thumbnailSrc": "/videos/thumbnails/main.png",
+      "sourceUrl": ""
     },
     {
       "id": "uncle-ye-heroin-hai-full-documentary",
@@ -26,7 +27,8 @@
       "description": "pending",
       "chapters": [],
       "paletteIndex": 1,
-      "thumbnailSrc": "/videos/thumbnails/uncle-ye-heroin-hai-full-documentary.jpg"
+      "thumbnailSrc": "/videos/thumbnails/uncle-ye-heroin-hai-full-documentary.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "240726-reaction-video-new-logo",
@@ -39,7 +41,8 @@
       "description": "",
       "chapters": [],
       "paletteIndex": 2,
-      "thumbnailSrc": "/videos/thumbnails/240726-reaction-video-new-logo.png"
+      "thumbnailSrc": "/videos/thumbnails/240726-reaction-video-new-logo.png",
+      "sourceUrl": ""
     },
     {
       "id": "legitimacy-episode-4",
@@ -52,7 +55,8 @@
       "description": "",
       "chapters": [],
       "paletteIndex": 3,
-      "thumbnailSrc": "/videos/thumbnails/legitimacy-episode-4.png"
+      "thumbnailSrc": "/videos/thumbnails/legitimacy-episode-4.png",
+      "sourceUrl": ""
     }
   ],
   "shortProjects": [
@@ -62,7 +66,8 @@
       "views": 0,
       "paletteIndex": 0,
       "durationSeconds": 56,
-      "thumbnailSrc": "/videos/thumbnails/editing-sample-etc.jpg"
+      "thumbnailSrc": "/videos/thumbnails/editing-sample-etc.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "final",
@@ -70,7 +75,8 @@
       "views": 0,
       "paletteIndex": 1,
       "durationSeconds": 167,
-      "thumbnailSrc": "/videos/thumbnails/final.jpg"
+      "thumbnailSrc": "/videos/thumbnails/final.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "painting-5-reel-1a",
@@ -78,7 +84,8 @@
       "views": 0,
       "paletteIndex": 2,
       "durationSeconds": 39,
-      "thumbnailSrc": "/videos/thumbnails/painting-5-reel-1a.jpg"
+      "thumbnailSrc": "/videos/thumbnails/painting-5-reel-1a.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "power2",
@@ -86,7 +93,8 @@
       "views": 0,
       "paletteIndex": 3,
       "durationSeconds": 90,
-      "thumbnailSrc": "/videos/thumbnails/power2.jpg"
+      "thumbnailSrc": "/videos/thumbnails/power2.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "reel-02",
@@ -94,7 +102,8 @@
       "views": 0,
       "paletteIndex": 0,
       "durationSeconds": 89,
-      "thumbnailSrc": "/videos/thumbnails/reel-02.jpg"
+      "thumbnailSrc": "/videos/thumbnails/reel-02.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "sequence-01-1",
@@ -102,7 +111,8 @@
       "views": 0,
       "paletteIndex": 1,
       "durationSeconds": 78,
-      "thumbnailSrc": "/videos/thumbnails/sequence-01-1.jpg"
+      "thumbnailSrc": "/videos/thumbnails/sequence-01-1.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "the-reel",
@@ -110,7 +120,8 @@
       "views": 0,
       "paletteIndex": 2,
       "durationSeconds": 89,
-      "thumbnailSrc": "/videos/thumbnails/the-reel.jpg"
+      "thumbnailSrc": "/videos/thumbnails/the-reel.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "trends-2",
@@ -118,7 +129,8 @@
       "views": 0,
       "paletteIndex": 3,
       "durationSeconds": 88,
-      "thumbnailSrc": "/videos/thumbnails/trends-2.jpg"
+      "thumbnailSrc": "/videos/thumbnails/trends-2.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "client-trial-sub-1",
@@ -126,7 +138,8 @@
       "views": 0,
       "paletteIndex": 0,
       "durationSeconds": 76,
-      "thumbnailSrc": "/videos/thumbnails/client-trial-sub-1.jpg"
+      "thumbnailSrc": "/videos/thumbnails/client-trial-sub-1.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "facebook-reel-1lores",
@@ -134,7 +147,8 @@
       "views": 0,
       "paletteIndex": 1,
       "durationSeconds": 148,
-      "thumbnailSrc": "/videos/thumbnails/facebook-reel-1lores.jpg"
+      "thumbnailSrc": "/videos/thumbnails/facebook-reel-1lores.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "reel",
@@ -142,7 +156,8 @@
       "views": 0,
       "paletteIndex": 2,
       "durationSeconds": 131,
-      "thumbnailSrc": "/videos/thumbnails/reel.jpg"
+      "thumbnailSrc": "/videos/thumbnails/reel.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "article-4-reel-1a",
@@ -150,7 +165,8 @@
       "views": 0,
       "paletteIndex": 3,
       "durationSeconds": 35,
-      "thumbnailSrc": "/videos/thumbnails/article-4-reel-1a.jpg"
+      "thumbnailSrc": "/videos/thumbnails/article-4-reel-1a.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "article-4-reel-2a",
@@ -158,7 +174,8 @@
       "views": 0,
       "paletteIndex": 0,
       "durationSeconds": 29,
-      "thumbnailSrc": "/videos/thumbnails/article-4-reel-2a.jpg"
+      "thumbnailSrc": "/videos/thumbnails/article-4-reel-2a.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "iran-and-the-west",
@@ -166,7 +183,8 @@
       "views": 0,
       "paletteIndex": 1,
       "durationSeconds": 84,
-      "thumbnailSrc": "/videos/thumbnails/iran-and-the-west.jpg"
+      "thumbnailSrc": "/videos/thumbnails/iran-and-the-west.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "imran-waseem-dream-team",
@@ -174,7 +192,8 @@
       "views": 0,
       "paletteIndex": 2,
       "durationSeconds": 60,
-      "thumbnailSrc": "/videos/thumbnails/imran-waseem-dream-team.jpg"
+      "thumbnailSrc": "/videos/thumbnails/imran-waseem-dream-team.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "imran-khan-king-of-cricket",
@@ -182,7 +201,8 @@
       "views": 0,
       "paletteIndex": 3,
       "durationSeconds": 60,
-      "thumbnailSrc": "/videos/thumbnails/imran-khan-king-of-cricket.jpg"
+      "thumbnailSrc": "/videos/thumbnails/imran-khan-king-of-cricket.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "pakistanis-want-foreigners-good-time",
@@ -190,7 +210,8 @@
       "views": 0,
       "paletteIndex": 0,
       "durationSeconds": 48,
-      "thumbnailSrc": "/videos/thumbnails/pakistanis-want-foreigners-good-time.jpg"
+      "thumbnailSrc": "/videos/thumbnails/pakistanis-want-foreigners-good-time.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "she-lost-her-son-to-drugs",
@@ -198,7 +219,8 @@
       "views": 0,
       "paletteIndex": 1,
       "durationSeconds": 97,
-      "thumbnailSrc": "/videos/thumbnails/she-lost-her-son-to-drugs.jpg"
+      "thumbnailSrc": "/videos/thumbnails/she-lost-her-son-to-drugs.jpg",
+      "sourceUrl": ""
     },
     {
       "id": "this-mothers-interview-heartbreaking",
@@ -206,7 +228,8 @@
       "views": 0,
       "paletteIndex": 2,
       "durationSeconds": 124,
-      "thumbnailSrc": "/videos/thumbnails/this-mothers-interview-heartbreaking.jpg"
+      "thumbnailSrc": "/videos/thumbnails/this-mothers-interview-heartbreaking.jpg",
+      "sourceUrl": ""
     }
   ]
 }

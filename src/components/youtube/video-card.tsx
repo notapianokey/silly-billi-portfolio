@@ -44,6 +44,7 @@ export function VideoCard({ video, onSelect }: VideoCardProps) {
           title={video.title}
           description={video.description}
           thumbnailSrc={video.thumbnailSrc}
+          sourceUrl={video.sourceUrl}
           triggerClassName="h-fit shrink-0 rounded-full p-1.5 opacity-0 hover:bg-accent group-hover:opacity-100"
         />
       </div>

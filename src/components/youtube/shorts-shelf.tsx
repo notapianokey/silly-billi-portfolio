@@ -1,6 +1,8 @@
+import { ExternalLinkIcon } from "lucide-react";
+
 import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
-import { formatViews, SHORT_PROJECTS } from "@/lib/videos";
+import { formatViews, getPlatformLabel, SHORT_PROJECTS } from "@/lib/videos";
 
 export function ShortsShelf() {
   return (
@@ -23,12 +25,25 @@ export function ShortsShelf() {
               <div className="min-w-0">
                 <p className="line-clamp-2 text-sm font-medium leading-snug">{short.title}</p>
                 <p className="mt-1 text-xs text-muted-foreground">{formatViews(short.views)}</p>
+                {short.sourceUrl && (
+                  <a
+                    href={short.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(event) => event.stopPropagation()}
+                    className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                  >
+                    <ExternalLinkIcon className="size-3" />
+                    View on {getPlatformLabel(short.sourceUrl)}
+                  </a>
+                )}
               </div>
               <EditVideoDialog
                 id={short.id}
                 kind="short"
                 title={short.title}
                 thumbnailSrc={short.thumbnailSrc}
+                sourceUrl={short.sourceUrl}
                 triggerClassName="size-6 shrink-0 rounded-full p-1 opacity-0 hover:bg-accent group-hover:opacity-100"
               />
             </div>

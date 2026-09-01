@@ -3,6 +3,7 @@
 import {
   ChevronDownIcon,
   ChevronUpIcon,
+  ExternalLinkIcon,
   MaximizeIcon,
   PauseIcon,
   SettingsIcon,
@@ -22,6 +23,7 @@ import { cn } from "@/lib/utils";
 import {
   formatDuration,
   formatViews,
+  getPlatformLabel,
   THUMBNAIL_PALETTE,
   type VideoProject,
 } from "@/lib/videos";
@@ -78,6 +80,7 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
                   title={video.title}
                   description={video.description}
                   thumbnailSrc={video.thumbnailSrc}
+                  sourceUrl={video.sourceUrl}
                   triggerClassName="shrink-0 rounded-full"
                 />
               </div>
@@ -115,6 +118,17 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
                     <ShareIcon className="size-4" />
                     Share
                   </span>
+                  {video.sourceUrl && (
+                    <a
+                      href={video.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm hover:bg-accent"
+                    >
+                      <ExternalLinkIcon className="size-4" />
+                      View on {getPlatformLabel(video.sourceUrl)}
+                    </a>
+                  )}
                 </div>
               </div>
 
