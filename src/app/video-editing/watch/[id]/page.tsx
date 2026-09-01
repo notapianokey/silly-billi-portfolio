@@ -17,7 +17,6 @@ import { notFound } from "next/navigation";
 import { use, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditVideoDialog } from "@/components/youtube/edit-video-dialog";
 import { SidebarRail } from "@/components/youtube/sidebar-rail";
 import { SocialEmbed } from "@/components/youtube/social-embed";
@@ -42,13 +41,12 @@ export default function WatchPage({ params }: WatchPageProps) {
   const video = VIDEO_PROJECTS.find((item) => item.id === id);
 
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
-  const [activeTab, setActiveTab] = useState<"final-cut" | "raw-footage">("final-cut");
   const [query, setQuery] = useState("");
 
   if (!video) notFound();
 
   const embedInfo = video.sourceUrl ? getEmbedInfo(video.sourceUrl) : null;
-  const showingRealEmbed = activeTab === "final-cut" && embedInfo !== null;
+  const hasRealPlayback = embedInfo !== null || !!video.videoUrl;
   const upNext = VIDEO_PROJECTS.filter((item) => item.id !== video.id);
 
   return (
@@ -59,47 +57,32 @@ export default function WatchPage({ params }: WatchPageProps) {
       <div className="md:pl-60">
         <main className="flex flex-col gap-6 px-4 py-6 md:px-6 lg:flex-row">
           <div className="min-w-0 flex-1 lg:max-w-4xl">
-            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)}>
-              <div
-                className={cn(
-                  "relative overflow-hidden rounded-xl bg-black",
-                  showingRealEmbed && embedInfo?.type === "instagram"
-                    ? "flex items-center justify-center p-4"
-                    : "aspect-video",
-                )}
-              >
-                <TabsContent value="final-cut" className="m-0 h-full">
-                  {embedInfo ? (
-                    <SocialEmbed
-                      info={embedInfo}
-                      className={embedInfo.type === "youtube" ? "h-full w-full" : "w-full max-w-sm"}
-                    />
-                  ) : (
-                    <PlaceholderPlayer
-                      label="Final Cut"
-                      paletteIndex={video.paletteIndex}
-                      thumbnailSrc={video.thumbnailSrc}
-                    />
-                  )}
-                </TabsContent>
-                <TabsContent value="raw-footage" className="m-0 h-full">
-                  <PlaceholderPlayer
-                    label="Raw Footage"
-                    paletteIndex={video.paletteIndex}
-                    thumbnailSrc={video.thumbnailSrc}
-                    muted
-                  />
-                </TabsContent>
-                {!showingRealEmbed && <PlayerControlBar />}
-              </div>
-
-              <div className="mt-3 flex items-center justify-between border-b px-1 py-2">
-                <TabsList>
-                  <TabsTrigger value="final-cut">Final Cut</TabsTrigger>
-                  <TabsTrigger value="raw-footage">Raw Footage</TabsTrigger>
-                </TabsList>
-              </div>
-            </Tabs>
+            <div
+              className={cn(
+                "relative overflow-hidden rounded-xl bg-black",
+                hasRealPlayback && embedInfo?.type === "instagram"
+                  ? "flex items-center justify-center p-4"
+                  : "aspect-video",
+              )}
+            >
+              {embedInfo ? (
+                <SocialEmbed
+                  info={embedInfo}
+                  className={embedInfo.type === "youtube" ? "h-full w-full" : "w-full max-w-sm"}
+                />
+              ) : video.videoUrl ? (
+                <video
+                  src={video.videoUrl}
+                  poster={video.thumbnailSrc}
+                  controls
+                  playsInline
+                  className="h-full w-full"
+                />
+              ) : (
+                <PlaceholderPlayer paletteIndex={video.paletteIndex} thumbnailSrc={video.thumbnailSrc} />
+              )}
+              {!hasRealPlayback && <PlayerControlBar />}
+            </div>
 
             <div className="flex flex-col gap-3 py-4">
               <div className="flex items-start justify-between gap-2">
@@ -238,15 +221,11 @@ export default function WatchPage({ params }: WatchPageProps) {
 }
 
 function PlaceholderPlayer({
-  label,
   paletteIndex,
   thumbnailSrc,
-  muted,
 }: {
-  label: string;
   paletteIndex: number;
   thumbnailSrc?: string;
-  muted?: boolean;
 }) {
   const gradient = THUMBNAIL_PALETTE[paletteIndex % THUMBNAIL_PALETTE.length];
 
@@ -256,7 +235,6 @@ function PlaceholderPlayer({
         "relative flex h-full w-full items-center justify-center",
         !thumbnailSrc && "bg-gradient-to-br",
         !thumbnailSrc && gradient,
-        muted && "grayscale",
       )}
     >
       {thumbnailSrc && (
@@ -264,7 +242,6 @@ function PlaceholderPlayer({
       )}
       <div className={cn("relative flex flex-col items-center gap-2 text-white/90", thumbnailSrc && "drop-shadow-lg")}>
         <PauseIcon className="size-12 fill-white/90" />
-        <span className="text-sm font-medium">{label} preview</span>
       </div>
     </div>
   );

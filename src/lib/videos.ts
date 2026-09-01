@@ -54,6 +54,8 @@ export interface VideoProject {
   thumbnailSrc?: string;
   /** Link to the real posted video (YouTube/Instagram/TikTok/etc). Drives the "View on X" button. */
   sourceUrl?: string;
+  /** Vercel Blob URL for a compressed self-hosted copy — used when there's no sourceUrl to embed. */
+  videoUrl?: string;
 }
 
 export interface ShortProject {
@@ -64,6 +66,7 @@ export interface ShortProject {
   durationSeconds: number;
   thumbnailSrc?: string;
   sourceUrl?: string;
+  videoUrl?: string;
 }
 
 export const VIDEO_PROJECTS: VideoProject[] = videosData.videoProjects as VideoProject[];

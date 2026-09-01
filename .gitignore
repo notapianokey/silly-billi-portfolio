@@ -46,3 +46,6 @@ next-env.d.ts
 /VIDEO EDITING PAGE CONTENT/
 /BRANDINGEDITORIALTHUMBNAILS/
 /carousels/
+
+.vercel
+.env*

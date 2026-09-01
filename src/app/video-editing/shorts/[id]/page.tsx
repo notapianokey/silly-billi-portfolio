@@ -62,6 +62,14 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                 <div className="flex h-full w-full items-center justify-center">
                   <SocialEmbed info={embedInfo} className="max-h-full w-full" />
                 </div>
+              ) : short.videoUrl ? (
+                <video
+                  src={short.videoUrl}
+                  poster={short.thumbnailSrc}
+                  controls
+                  playsInline
+                  className="h-full w-full object-contain"
+                />
               ) : (
                 <div
                   className={cn(
@@ -77,8 +85,8 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                 </div>
               )}
 
-              {/* Caption scrim — only over the placeholder; real embeds bring their own chrome */}
-              {!embedInfo && (
+              {/* Caption scrim — only over the static placeholder; real embeds/video bring their own chrome */}
+              {!embedInfo && !short.videoUrl && (
                 <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 pt-12">
                   <div className="flex items-center gap-2">
                     <Image

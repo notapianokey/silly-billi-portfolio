@@ -127,16 +127,16 @@ client content still needed — see Open decisions).
   - 16:9 long-form video grid (`video-card.tsx` + `video-thumbnail.tsx`), duration badge,
     hover play-icon overlay.
   - Horizontal "Shorts" shelf (`shorts-shelf.tsx`) of vertical 9:16 cards, scrolls independently.
-- **Click action** opens a Watch modal (`watch-modal.tsx`, shadcn Dialog): placeholder player
-  area, Final Cut / Raw Footage tabs (shadcn Tabs — Raw is grayscale-differentiated), chapter
-  list, tag chips, expandable description panel.
-- Data lives in `src/lib/videos.ts` (`VIDEO_PROJECTS`, `SHORT_PROJECTS`, category/tag
-  constants, `formatDuration`/`formatViews` helpers).
-- **No real footage/thumbnails exist yet** — thumbnails are gradient placeholders (title
-  overlay, palette cycled from `THUMBNAIL_PALETTE`) and the modal player is a placeholder
-  panel, not a `<video>`. Everything *around* the missing media (filtering, search, modal,
-  tabs, chapters, description) is fully real and interactive. When real assets land, only
-  `VideoThumbnail` and `WatchModal`'s `PlaceholderPlayer` need to change.
+- **Click action** navigates to a real watch page (see "Dedicated watch page" below) — player,
+  chapter list, tag chips, expandable description panel. **No Raw Footage / Final Cut
+  toggle** — client's explicit call: every project is a final cut, there's no raw-footage
+  concept in this portfolio, so don't reintroduce that tab split.
+- Data lives in `src/lib/videos.ts` + `src/lib/videos.data.json` (`VIDEO_PROJECTS`,
+  `SHORT_PROJECTS`, category/tag constants, `formatDuration`/`formatViews` helpers).
+- Thumbnails and playback are populated per-project as real content and links land (see "Real
+  content + local edit UI" and "Real playback" below) — `VideoThumbnail` falls back to a
+  gradient placeholder, and the watch pages fall back to a static poster, only when a given
+  project genuinely has neither a thumbnail nor any playable source yet.
 - Built after cloning `code-with-antonio/next15-youtube-clone` (real Next.js + shadcn YouTube
   clone) into the scratchpad for reference — see "Reference-repo workflow" above.
 - **Second fidelity pass:** after the first build, compared directly against live
@@ -216,20 +216,29 @@ client content still needed — see Open decisions).
     committed and pushed like any other change (they're just small JSON/JPGs, not the raw
     client media itself, so this doesn't conflict with the "no real content in git" rule
     above).
-  - **Real playback — solved, but only for projects with a public `sourceUrl`** (see below).
-    `src/components/youtube/social-embed.tsx` renders the platform's own free public embed
-    (YouTube iframe, or Instagram's official embed.js widget) — real playback, real hosting,
-    zero cost, no account/API key needed, since the platform hosts the bytes, not us. Wired
-    into the Watch modal's Final Cut tab (long-form) and a new click-to-open
-    `short-watch-dialog.tsx` (Shorts, which have no other detail view). Raw Footage always
-    stays the static placeholder — there is never a public link for unpublished raw footage.
-  - **Projects without a `sourceUrl` are thumbnail-only, permanently, by design** — not a bug,
-    not "not yet built." Several of the client's local files were never posted publicly
-    anywhere (internal work samples, client drafts), so there is no possible URL to embed or
-    link to. Extracting a thumbnail from a local file only ever needed the file to exist on
-    disk, not to be hosted anywhere — thumbnails and playback are two independent things, and
-    conflating them was a real point of confusion for the client. Keep that distinction
-    explicit in anything user-facing (docs, UI copy) going forward.
+  - **Real playback — solved for every project, two different ways depending on whether a
+    `sourceUrl` exists.**
+    - **With a `sourceUrl`:** `src/components/youtube/social-embed.tsx` renders the platform's
+      own free public embed (YouTube iframe, or Instagram's official embed.js widget) — real
+      playback, real hosting, zero cost, no account/API key needed, since the platform hosts
+      the bytes, not us. This is always preferred when available (embeds carry real
+      like/comment counts — genuine social proof).
+    - **Without one** (client's local-only files that were never posted publicly — internal
+      work samples, drafts): self-hosted via **Vercel Blob** (a store named
+      `sillybillistudio-blob`, Public access, connected to this project — client set it up
+      through the Vercel dashboard, not something to recreate). `scripts/upload-video-clips.mjs`
+      compresses each source file with `ffmpeg` (H.264, scaled to cap 720px / 640px for the
+      longest pieces, ~CRF 28-30, AAC audio, faststart) and uploads it with `@vercel/blob`,
+      writing the resulting public URL into that entry's `videoUrl`. The watch pages render a
+      plain `<video src={videoUrl} controls>` when there's a `videoUrl` but no embed. Free tier
+      is 1GB storage — compression settings were chosen to fit the client's ~11GB of source
+      footage within that, and the longer pieces are compressed harder specifically for this
+      reason; re-check the budget before adding a lot more raw footage.
+    - Run the script locally: `node --env-file=.env.local scripts/upload-video-clips.mjs` (needs
+      `BLOB_READ_WRITE_TOKEN` in `.env.local`, from `vercel env pull .env.local` — the token is
+      scoped to Production/Preview/**Development** on purpose, since local runs use the
+      Development scope). Only processes entries listed in its `FILES` map that don't already
+      have a `sourceUrl`; add new entries to that map as new local-only content shows up.
 - **`sourceUrl` — link to the real posted video, and the periodic view-count refresh
   workflow.** Every `VideoProject`/`ShortProject` has an optional `sourceUrl` (editable via the
   same local edit UI, next to title/description). Two things it drives:

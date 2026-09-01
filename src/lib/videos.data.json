@@ -12,7 +12,8 @@
       "chapters": [],
       "paletteIndex": 0,
       "thumbnailSrc": "/videos/thumbnails/main.png",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/main.mp4"
     },
     {
       "id": "uncle-ye-heroin-hai-full-documentary",
@@ -22,7 +23,7 @@
         "#documentary"
       ],
       "durationSeconds": 3495,
-      "views": 110000,
+      "views": 113000,
       "publishedLabel": "Draft",
       "description": "pending",
       "chapters": [],
@@ -42,7 +43,8 @@
       "chapters": [],
       "paletteIndex": 2,
       "thumbnailSrc": "/videos/thumbnails/240726-reaction-video-new-logo.png",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/240726-reaction-video-new-logo.mp4"
     },
     {
       "id": "legitimacy-episode-4",
@@ -56,7 +58,8 @@
       "chapters": [],
       "paletteIndex": 3,
       "thumbnailSrc": "/videos/thumbnails/legitimacy-episode-4.png",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/legitimacy-episode-4.mp4"
     }
   ],
   "shortProjects": [
@@ -67,7 +70,8 @@
       "paletteIndex": 0,
       "durationSeconds": 56,
       "thumbnailSrc": "/videos/thumbnails/editing-sample-etc.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/editing-sample-etc.mp4"
     },
     {
       "id": "final",
@@ -85,7 +89,8 @@
       "paletteIndex": 2,
       "durationSeconds": 39,
       "thumbnailSrc": "/videos/thumbnails/painting-5-reel-1a.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/painting-5-reel-1a.mp4"
     },
     {
       "id": "power2",
@@ -94,7 +99,8 @@
       "paletteIndex": 3,
       "durationSeconds": 90,
       "thumbnailSrc": "/videos/thumbnails/power2.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/power2.mp4"
     },
     {
       "id": "reel-02",
@@ -130,7 +136,8 @@
       "paletteIndex": 3,
       "durationSeconds": 88,
       "thumbnailSrc": "/videos/thumbnails/trends-2.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/trends-2.mp4"
     },
     {
       "id": "client-trial-sub-1",
@@ -139,7 +146,8 @@
       "paletteIndex": 0,
       "durationSeconds": 76,
       "thumbnailSrc": "/videos/thumbnails/client-trial-sub-1.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/client-trial-sub-1.mp4"
     },
     {
       "id": "facebook-reel-1lores",
@@ -166,7 +174,8 @@
       "paletteIndex": 3,
       "durationSeconds": 35,
       "thumbnailSrc": "/videos/thumbnails/article-4-reel-1a.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/article-4-reel-1a.mp4"
     },
     {
       "id": "article-4-reel-2a",
@@ -175,7 +184,8 @@
       "paletteIndex": 0,
       "durationSeconds": 29,
       "thumbnailSrc": "/videos/thumbnails/article-4-reel-2a.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/article-4-reel-2a.mp4"
     },
     {
       "id": "iran-and-the-west",
@@ -184,7 +194,8 @@
       "paletteIndex": 1,
       "durationSeconds": 84,
       "thumbnailSrc": "/videos/thumbnails/iran-and-the-west.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/iran-and-the-west.mp4"
     },
     {
       "id": "imran-waseem-dream-team",
@@ -193,7 +204,8 @@
       "paletteIndex": 2,
       "durationSeconds": 60,
       "thumbnailSrc": "/videos/thumbnails/imran-waseem-dream-team.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/imran-waseem-dream-team.mp4"
     },
     {
       "id": "imran-khan-king-of-cricket",
@@ -202,7 +214,8 @@
       "paletteIndex": 3,
       "durationSeconds": 60,
       "thumbnailSrc": "/videos/thumbnails/imran-khan-king-of-cricket.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/imran-khan-king-of-cricket.mp4"
     },
     {
       "id": "pakistanis-want-foreigners-good-time",
@@ -211,7 +224,8 @@
       "paletteIndex": 0,
       "durationSeconds": 48,
       "thumbnailSrc": "/videos/thumbnails/pakistanis-want-foreigners-good-time.jpg",
-      "sourceUrl": ""
+      "sourceUrl": "",
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/pakistanis-want-foreigners-good-time.mp4"
     },
     {
       "id": "she-lost-her-son-to-drugs",
