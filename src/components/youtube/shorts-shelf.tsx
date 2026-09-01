@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
-import { formatViews, getPlatformLabel, SHORT_PROJECTS } from "@/lib/videos";
+import { getPlatformLabel, getViewsLabel, SHORT_PROJECTS } from "@/lib/videos";
 
 export function ShortsShelf() {
   return (
@@ -27,7 +27,9 @@ export function ShortsShelf() {
             <div className="mt-2 flex items-start justify-between gap-1">
               <div className="min-w-0">
                 <p className="line-clamp-2 text-sm font-medium leading-snug">{short.title}</p>
-                <p className="mt-1 text-xs text-muted-foreground">{formatViews(short.views)}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {getViewsLabel(short.views, short.sourceUrl)}
+                </p>
                 {short.sourceUrl && (
                   <a
                     href={short.sourceUrl}

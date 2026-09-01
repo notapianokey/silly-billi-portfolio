@@ -219,57 +219,57 @@
     {
       "id": "imran-waseem-dream-team",
       "title": "Archival Footage Integration & Audio Balancing",
-      "views": 0,
+      "views": 6900000,
       "paletteIndex": 2,
       "durationSeconds": 60,
       "thumbnailSrc": "/videos/thumbnails/imran-waseem-dream-team.jpg",
-      "sourceUrl": "",
+      "sourceUrl": "https://www.youtube.com/shorts/15R6CCoQN64",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/imran-waseem-dream-team.mp4",
       "description": "Archival Cutaways: Cut seamlessly between studio speaker shots and historical cricket footage to visually illustrate the story in real time.\r\n\r\nSpeech-Timed Pacing: Matched video cuts and photo transitions strictly to the narrator's natural speech pauses and story beats.\r\n\r\nAudio Balancing: Levelled studio voice recordings with background sound clips to maintain smooth, consistent audio volume throughout the edit.\r\n\r\nOn-Screen Captions: Timed clear text overlays to appear precisely alongside the spoken dialogue for effortless reading."
     },
     {
       "id": "imran-khan-king-of-cricket",
       "title": "Historical Intercuts & Visual Textures",
-      "views": 0,
+      "views": 4400000,
       "paletteIndex": 3,
       "durationSeconds": 60,
       "thumbnailSrc": "/videos/thumbnails/imran-khan-king-of-cricket.jpg",
-      "sourceUrl": "",
+      "sourceUrl": "https://www.youtube.com/shorts/WnhjCEgRVkc",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/imran-khan-king-of-cricket.mp4",
       "description": "Archival Clip Integration: Intercut main studio footage with vintage sports clips and photos to visually reinforce the speaker's story.\r\n\r\nRetro Visual Styling: Overlayed subtle tape textures and static screen transitions onto older clips to visually distinguish historical archive footage from modern studio video.\r\n\r\nPacing & Timing: Cut between visuals directly on speech pauses and key narrative points to maintain smooth storytelling momentum.\r\n\r\nAudio Layering & Transitions: Levelled voice recording over low background music and added subtle transition sound effects during clip switches.\r\n\r\nSpeech-Synced Subtitles: Added centered text captions timed precisely to spoken audio for clear visual readability."
     },
     {
       "id": "pakistanis-want-foreigners-good-time",
-      "title": "Pakistanis Want Foreigners To Have A Good Time In Pakistan!",
-      "views": 0,
+      "title": "Studio Podcast Reel: Visual Story Cutaways & Dynamic Subtitles",
+      "views": 888000,
       "paletteIndex": 0,
       "durationSeconds": 48,
       "thumbnailSrc": "/videos/thumbnails/pakistanis-want-foreigners-good-time.jpg",
       "sourceUrl": "https://www.youtube.com/shorts/uu-NZjJzUBY",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/pakistanis-want-foreigners-good-time.mp4",
-      "description": ""
+      "description": "B-Roll Clip Integration: Cut away from studio conversation to street video clips, city shots, and local interaction footage matching the guest's stories.\r\n\r\nSpeech-Timed Cutting: Switched between speaker close-ups and visual cutaways precisely on audio pauses to maintain natural conversational pacing.\r\n\r\nAudio Balancing: Maintained clear, uniform voice levels while blending background music underneath the dialogue.\r\n\r\nDynamic Transitions: Applied subtle zoom and blur movement effects during key story beats to enhance visual energy.\r\n\r\nOn-Screen Text Syncing: Overlayed centered text captions timed directly to spoken words for clear reading."
     },
     {
       "id": "she-lost-her-son-to-drugs",
-      "title": "She Lost Her Son to Drugs",
+      "title": "Narrative Clip Edit: Visual Storytelling & Dialogue Levelling",
       "views": 183000,
       "paletteIndex": 1,
       "durationSeconds": 97,
       "thumbnailSrc": "/videos/thumbnails/she-lost-her-son-to-drugs.jpg",
       "sourceUrl": "https://www.instagram.com/reel/DcVj34rNDgO/",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/she-lost-her-son-to-drugs.mp4",
-      "description": ""
+      "description": "Illustrated Cutaways: Intercut main interview footage with custom storybook drawings to visually represent key moments in the narrative.\r\n\r\nBorder & Texture Formatting: Framing artwork with torn-paper borders and subtle paper textures to clearly separate illustrated story scenes from live studio footage.\r\n\r\nPacing & Transitions: Cut smoothly between speaker close-ups and graphic scenes on key narrative shifts to keep the story moving forward seamlessly.\r\n\r\nAudio Balancing: Levelled spoken dialogue over soft background music to ensure the speaker's voice remained clear and easy to hear.\r\n\r\nSubtitle Syncing: Timed center-aligned Urdu text captions directly to spoken English sentences for readable visual pacing."
     },
     {
       "id": "this-mothers-interview-heartbreaking",
-      "title": "This Mother's Interview Is One of the Most Heartbreaking Parts of Our Documentary",
+      "title": "Illustrated Sequence & Sound Editing",
       "views": 651000,
       "paletteIndex": 2,
       "durationSeconds": 124,
       "thumbnailSrc": "/videos/thumbnails/this-mothers-interview-heartbreaking.jpg",
       "sourceUrl": "https://www.instagram.com/reel/Dca6BH6tcSp/",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/this-mothers-interview-heartbreaking.mp4",
-      "description": ""
+      "description": "Illustrated Cutaways: Intercut main interview footage with custom storybook drawings to visually represent key moments in the narrative.\r\n\r\nBorder & Texture Formatting: Framing artwork with torn-paper borders and subtle paper textures to clearly separate illustrated story scenes from live studio footage.\r\n\r\nPacing & Transitions: Cut smoothly between speaker close-ups and graphic scenes on key narrative shifts to keep the story moving forward seamlessly.\r\n\r\nAudio Balancing: Levelled spoken dialogue over soft background music to ensure the speaker's voice remained clear and easy to hear.\r\n\r\nSubtitle Syncing: Timed center-aligned Urdu text captions directly to spoken English sentences for readable visual pacing."
     }
   ]
 }

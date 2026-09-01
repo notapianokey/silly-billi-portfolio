@@ -1,10 +1,12 @@
 @AGENTS.md
 
-# Silly Billi Agency — Portfolio Website
+# Silly Billi Studio — Portfolio Website
 
 ## What this project is
 
-A public GitHub portfolio site for a creative agency ("Silly Billi Agency") covering four
+A public GitHub portfolio site for a creative agency ("Silly Billi Studio" — renamed from
+"Silly Billi Agency" partway through the build; the brand text was updated site-wide, this repo
+title included) covering four
 disciplines: Video Editing, Visual Branding, Editorial Direction, and Marketing & Ads. The
 repo is public and doubles as an engineering showcase — code must read as clean, typed,
 modular, and intentional, not a prototype.
@@ -95,7 +97,7 @@ The original repo directory contained an unrelated generic HTML/CSS/JS portfolio
 
 ## Homepage (`src/app/page.tsx`, `src/components/cursor-trail.tsx`) — done
 
-- Centered, bold display-type headline reading "Silly Billi Agency" (Bricolage Grotesque via
+- Centered, bold display-type headline reading "Silly Billi Studio" (Bricolage Grotesque via
   `next/font/google`, exposed as the `--font-display` CSS variable / `font-display` Tailwind
   font family).
 - Cursor Image Trail: tracks pointer position via a single `pointermove` listener on `window`
@@ -258,6 +260,61 @@ client content still needed — see Open decisions).
     scrapeable without an API key; Instagram/TikTok are harder and may need manual entry) and
     write the refreshed number directly into `views` in `videos.data.json`, then commit+push.
     Do not build this as an automated/scheduled job — it's a manual, client-triggered action.
+- **Zero-view display labels — `getViewsLabel()` in `videos.ts`.** A real "0 views" reads as a
+  flop; for most zero-view entries the real story is "we have no way to trace this back to a
+  live public post" (no `sourceUrl`), so the UI shows **"No longer publicly posted"** instead,
+  everywhere views are rendered (video/short cards, the shorts shelf, both watch pages). Once a
+  `sourceUrl` is added and a real view count fetched, the entry falls back to the normal
+  `formatViews()` count automatically — the label is purely a function of `(views, sourceUrl)`,
+  not a stored flag, so there's nothing to "undo" when a link gets added later. One hardcoded
+  exception: the `main` long-form entry ("Intros for Live Podcasts") is a compilation of many
+  different podcast intros, not a single posted piece, so a views count (real or "not posted")
+  doesn't make sense for it — it always shows **"Varied Views"** instead, keyed off
+  `video.id === "main"` at each of the 3 render sites (not worth a schema field for one entry).
+- **Long-form "runtime" text removed** from the watch page's meta line (was
+  `{views} · {duration} runtime`) — client's call: the duration is already visible live in the
+  `<video>` control bar, so repeating it as text was redundant. Views label alone remains.
+- **Shorts caption fully reworked to match the real youtube.com/shorts feed**, after live-DOM-
+  inspecting it (not guessing): real Shorts show **only the title** in the overlay — clamped to
+  **one line**, regular weight (not bold/medium), 14px, over a much fainter single-stop gradient
+  (`black/40 → transparent`, not a heavy multi-stop scrim) — **no description text inline at
+  all**. `src/app/video-editing/shorts/[id]/page.tsx` now matches this: title is a clamped
+  single line with a chevron-down toggle (only rendered when `short.description` is set) that
+  expands to reveal the full description on click, mirroring real YouTube's tap-to-expand
+  behavior rather than always showing 2 lines of description under the title (the old,
+  incorrect behavior).
+
+## Site-wide navigation — sidebar rail (`sidebar-rail.tsx`)
+
+The YouTube-clone's left sidebar (`src/components/youtube/sidebar-rail.tsx`, used across all
+`/video-editing*` pages) doubles as the site's primary navigation, not just YouTube-shell
+chrome — client's explicit call, matching the real YouTube sidebar's role as its actual nav
+rather than decoration. Current structure, top to bottom:
+
+- Home → `/video-editing` (the video feed itself — matches real YouTube's own "Home" meaning
+  the content feed, not a marketing homepage; do not point this at `/`, that was already
+  corrected once this session for the header logo for the same reason).
+- Shorts → `/video-editing#shorts`, Long Form → `/video-editing#long-form` (both anchor into
+  sections on the same page; `id="long-form"` wraps the long-form grid in
+  `src/app/video-editing/page.tsx`, mirroring the pre-existing `id="shorts"` on `ShortsShelf`).
+- Channels We Managed → `/channels-we-managed` — **placeholder page, content not yet
+  specified.** Client said she'll provide what goes on this page later; per the standing
+  "don't process new folders/pages on your own initiative" rule, do not invent content for
+  it — wait for explicit direction.
+- About Us → `/about`.
+- Our Services → an expand/collapse dropdown (local `useState`, chevron rotates open), not a
+  link itself, containing: Video Editing (→ `/video-editing`, the only one of these four that's
+  actually built), Visual Branding (→ `/visual-branding`), Editorial Direction (→
+  `/editorial-direction`), Marketing & Ads (→ `/marketing-ads`) — the other three service pages
+  are speced in full further down this file but not yet built.
+- Hire Us → `/hire-us`, Join Us → `/join-us`.
+
+**All 7 not-yet-built destinations above render a shared placeholder**,
+`src/components/coming-soon.tsx` (mascot image, page title in the display font, "coming soon"
+copy, a link back to `/`) — used by `src/app/{channels-we-managed,about,hire-us,join-us,
+visual-branding,editorial-direction,marketing-ads}/page.tsx`. This exists purely so the new nav
+doesn't 404; swap each one out for its real design/content as that phase actually gets built —
+don't leave a page on `ComingSoon` once there's real content to put there instead.
 
 ## Contact page (`/contact`) — planned, not yet built
 

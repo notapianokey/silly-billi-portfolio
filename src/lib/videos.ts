@@ -91,6 +91,16 @@ export function formatViews(views: number): string {
   return `${views} views`;
 }
 
+/**
+ * A zero view count with no sourceUrl means there's no way to trace the piece back to a live
+ * public post, so showing "0 views" would misleadingly imply it flopped rather than was never
+ * (or is no longer) posted publicly.
+ */
+export function getViewsLabel(views: number, sourceUrl?: string): string {
+  if (views === 0 && !sourceUrl) return "No longer publicly posted";
+  return formatViews(views);
+}
+
 const PLATFORM_LABELS: Record<string, string> = {
   "youtube.com": "YouTube",
   "youtu.be": "YouTube",

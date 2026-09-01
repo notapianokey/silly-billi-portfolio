@@ -36,17 +36,19 @@ export default function VideoEditingPage() {
         <CategoryPills value={category} onSelect={setCategory} />
 
         <main className="px-4 py-6 md:px-6">
-          {filteredVideos.length > 0 ? (
-            <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {filteredVideos.map((video) => (
-                <VideoCard key={video.id} video={video} />
-              ))}
-            </div>
-          ) : (
-            <p className="py-16 text-center text-sm text-muted-foreground">
-              No videos match that search.
-            </p>
-          )}
+          <div id="long-form" className="scroll-mt-20">
+            {filteredVideos.length > 0 ? (
+              <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {filteredVideos.map((video) => (
+                  <VideoCard key={video.id} video={video} />
+                ))}
+              </div>
+            ) : (
+              <p className="py-16 text-center text-sm text-muted-foreground">
+                No videos match that search.
+              </p>
+            )}
+          </div>
 
           {category === null && query === "" && <ShortsShelf />}
         </main>

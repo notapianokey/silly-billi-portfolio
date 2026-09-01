@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
-import { formatViews, type VideoProject } from "@/lib/videos";
+import { getViewsLabel, type VideoProject } from "@/lib/videos";
 
 interface VideoCardProps {
   video: VideoProject;
@@ -34,7 +34,9 @@ export function VideoCard({ video }: VideoCardProps) {
         <Link href={`/video-editing/watch/${video.id}`} className="min-w-0 flex-1">
           <span className="line-clamp-2 text-sm font-medium leading-snug">{video.title}</span>
           <span className="mt-1 block text-xs text-muted-foreground">Silly Billi Studio</span>
-          <span className="block text-xs text-muted-foreground">{formatViews(video.views)}</span>
+          <span className="block text-xs text-muted-foreground">
+            {video.id === "main" ? "Varied Views" : getViewsLabel(video.views, video.sourceUrl)}
+          </span>
         </Link>
         <EditVideoDialog
           id={video.id}

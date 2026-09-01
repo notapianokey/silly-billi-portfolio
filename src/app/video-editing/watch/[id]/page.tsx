@@ -24,10 +24,9 @@ import { TopHeader } from "@/components/youtube/top-header";
 import { VideoRowCard } from "@/components/youtube/video-row-card";
 import { cn } from "@/lib/utils";
 import {
-  formatDuration,
-  formatViews,
   getEmbedInfo,
   getPlatformLabel,
+  getViewsLabel,
   THUMBNAIL_PALETTE,
   VIDEO_PROJECTS,
 } from "@/lib/videos";
@@ -182,7 +181,7 @@ export default function WatchPage({ params }: WatchPageProps) {
                 className="cursor-pointer rounded-xl bg-secondary/50 p-3 transition hover:bg-secondary/70"
               >
                 <p className="mb-2 text-sm font-medium">
-                  {formatViews(video.views)} · {formatDuration(video.durationSeconds)} runtime
+                  {video.id === "main" ? "Varied Views" : getViewsLabel(video.views, video.sourceUrl)}
                 </p>
                 <p
                   className={cn(

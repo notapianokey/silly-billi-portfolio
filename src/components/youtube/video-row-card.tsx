@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 import { VideoThumbnail } from "./video-thumbnail";
-import { formatViews, type VideoProject } from "@/lib/videos";
+import { getViewsLabel, type VideoProject } from "@/lib/videos";
 
 interface VideoRowCardProps {
   video: VideoProject;
@@ -22,7 +22,9 @@ export function VideoRowCard({ video }: VideoRowCardProps) {
       <div className="min-w-0 flex-1">
         <p className="line-clamp-2 text-sm font-medium leading-snug">{video.title}</p>
         <p className="mt-1 text-xs text-muted-foreground">Silly Billi Studio</p>
-        <p className="text-xs text-muted-foreground">{formatViews(video.views)}</p>
+        <p className="text-xs text-muted-foreground">
+          {video.id === "main" ? "Varied Views" : getViewsLabel(video.views, video.sourceUrl)}
+        </p>
       </div>
     </Link>
   );
