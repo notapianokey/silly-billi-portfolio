@@ -61,6 +61,7 @@ export interface VideoProject {
 export interface ShortProject {
   id: string;
   title: string;
+  description?: string;
   views: number;
   paletteIndex: number;
   durationSeconds: number;

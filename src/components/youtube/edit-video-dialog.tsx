@@ -60,7 +60,7 @@ export function EditVideoDialog({
     formData.set("kind", kind);
     formData.set("title", title);
     formData.set("sourceUrl", sourceUrl.trim());
-    if (kind === "video") formData.set("description", description);
+    formData.set("description", description);
     if (thumbnailFile) formData.set("thumbnail", thumbnailFile);
 
     try {
@@ -139,20 +139,18 @@ export function EditVideoDialog({
             />
           </div>
 
-          {kind === "video" && (
-            <div>
-              <label htmlFor="edit-description" className="mb-1.5 block text-sm font-medium">
-                Description
-              </label>
-              <textarea
-                id="edit-description"
-                value={description}
-                onChange={(event) => setDescription(event.target.value)}
-                rows={5}
-                className="w-full resize-none rounded-lg border px-3 py-2 text-sm focus:outline-none focus:border-ring"
-              />
-            </div>
-          )}
+          <div>
+            <label htmlFor="edit-description" className="mb-1.5 block text-sm font-medium">
+              Description
+            </label>
+            <textarea
+              id="edit-description"
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+              rows={5}
+              className="w-full resize-none rounded-lg border px-3 py-2 text-sm focus:outline-none focus:border-ring"
+            />
+          </div>
 
           <div>
             <label htmlFor="edit-source-url" className="mb-1.5 block text-sm font-medium">

@@ -85,10 +85,17 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                 </div>
               )}
 
-              {/* Caption scrim — only over the static placeholder; real embeds/video bring their own chrome */}
-              {!embedInfo && !short.videoUrl && (
-                <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 pt-12">
-                  <div className="flex items-center gap-2">
+              {/* Caption scrim — shown over the placeholder and our own native player; skipped
+                  only for the raw Instagram embed fallback, which brings its own caption UI. */}
+              {(short.videoUrl || !embedInfo) && (
+                <div
+                  className={cn(
+                    "pointer-events-none absolute inset-x-0 bottom-0 flex flex-col gap-2 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-4 pt-12",
+                    // Leave room for the native <video> control bar so the caption doesn't overlap it.
+                    short.videoUrl && "pb-14",
+                  )}
+                >
+                  <div className="pointer-events-auto flex items-center gap-2">
                     <Image
                       src="/brand/mascot.png"
                       alt=""
@@ -104,7 +111,10 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                       Subscribe
                     </button>
                   </div>
-                  <p className="text-sm text-white">{short.title}</p>
+                  <p className="text-sm font-medium text-white">{short.title}</p>
+                  {short.description && (
+                    <p className="line-clamp-2 text-xs text-white/80">{short.description}</p>
+                  )}
                 </div>
               )}
             </div>
@@ -132,6 +142,7 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                 id={short.id}
                 kind="short"
                 title={short.title}
+                description={short.description}
                 thumbnailSrc={short.thumbnailSrc}
                 sourceUrl={short.sourceUrl}
                 triggerClassName="size-11 rounded-full bg-secondary"

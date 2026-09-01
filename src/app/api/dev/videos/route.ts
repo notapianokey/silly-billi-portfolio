@@ -56,7 +56,7 @@ export async function PATCH(request: Request) {
     if (typeof title === "string" && title.trim() !== "") {
       entry.title = title.trim();
     }
-    if (kind === "video" && typeof description === "string") {
+    if (typeof description === "string") {
       entry.description = description;
     }
     if (typeof sourceUrl === "string") {

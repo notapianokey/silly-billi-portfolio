@@ -45,6 +45,7 @@ export function ShortsShelf() {
                 id={short.id}
                 kind="short"
                 title={short.title}
+                description={short.description}
                 thumbnailSrc={short.thumbnailSrc}
                 sourceUrl={short.sourceUrl}
                 triggerClassName="size-6 shrink-0 rounded-full p-1 opacity-0 hover:bg-accent group-hover:opacity-100"
