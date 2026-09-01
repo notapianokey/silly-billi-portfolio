@@ -309,12 +309,91 @@ rather than decoration. Current structure, top to bottom:
   are speced in full further down this file but not yet built.
 - Hire Us → `/hire-us`, Join Us → `/join-us`.
 
-**All 7 not-yet-built destinations above render a shared placeholder**,
+**The remaining 6 not-yet-built destinations render a shared placeholder**,
 `src/components/coming-soon.tsx` (mascot image, page title in the display font, "coming soon"
-copy, a link back to `/`) — used by `src/app/{channels-we-managed,about,hire-us,join-us,
+copy, a link back to `/`) — used by `src/app/{channels-we-managed,hire-us,join-us,
 visual-branding,editorial-direction,marketing-ads}/page.tsx`. This exists purely so the new nav
 doesn't 404; swap each one out for its real design/content as that phase actually gets built —
-don't leave a page on `ComingSoon` once there's real content to put there instead.
+don't leave a page on `ComingSoon` once there's real content to put there instead. (`/about` was
+the first of these to get its real design — see below — the rest are still pending.)
+
+## About Us page (`/about`) — YouTube channel-profile clone
+
+Built as an actual YouTube channel page (banner, avatar, description, tabs, featured video,
+video grid) rather than a generic "about" page — fits the site's core creative concept
+directly, and the client asked for it explicitly. Live-inspected a real channel page (MrBeast's)
+for structure before building, same practice as the other clones: banner is full-bleed with
+**no border-radius** at real YouTube's size (not rounded, despite what the `next15-youtube-clone`
+reference repo does), 160px circular avatar sits *below* the banner (not overlapping it), and
+the header padding follows that measured layout.
+
+- **Content:** featured video is the current highest-`views` entry from `VIDEO_PROJECTS`
+  (currently the heroin-addiction documentary at 113K) computed at render time, not hardcoded —
+  it'll naturally change as real view counts get refreshed. Every other long-form video renders
+  below in a "More from Silly Billi Studio" grid via the existing `VideoCard` component (no
+  Shorts on this page — kept deliberately separate from `/video-editing` rather than duplicating
+  its full content).
+- **No fabricated subscriber count.** Real YouTube shows "X subscribers"; this page
+  intentionally omits it (shows only "@sillybillistudio · N videos") rather than inventing a
+  vanity number — every other metric on this site is either real or an honest placeholder label
+  (`getViewsLabel`), and a fake subscriber count would break that.
+- **Local edit UI, same pattern as the video-editing content:** `src/lib/channel.data.json` (+
+  `channel.ts` for types/export) holds `description`, `bannerSrc`, and `socialLinks: {label,
+  url}[]`. `src/components/channel/edit-channel-dialog.tsx` + `src/app/api/dev/channel/route.ts`
+  (PATCH, same local-only/try-catch-everything shape as `/api/dev/videos`) let the client edit
+  all three herself, banner included, without touching code — same "no live CMS, edits happen
+  locally then get committed" model documented above. Social links render as a full row of
+  labeled pill buttons (not YouTube's real truncated "and N more links" popover) — deliberate
+  deviation, since the whole point here is showcasing every link to a prospective client, not
+  hiding most of them behind a click.
+- Currently empty (`bannerSrc: ""`, `socialLinks: []`, default placeholder description) — client
+  hasn't provided a real banner image or her actual social links yet. Do not invent them; wait
+  for her to add them through the edit UI or ask for them directly, same as the "don't process
+  new folders" / "don't invent Channels We Managed content" rules elsewhere in this file.
+- Featured-video slot is intentionally **empty** (dashed placeholder, "Show Reel will be
+  uploaded soon") rather than auto-picking a video — client's explicit call, since a real edited
+  show reel doesn't exist yet. All long-form videos (including whichever would've been
+  "featured") live together in one `Videos` grid below it; don't reintroduce
+  highest-views-wins auto-featuring without asking first.
+- Header stat line reads a fixed **"200+ videos delivered"**, not a computed
+  `VIDEO_PROJECTS.length` — client's explicit marketing copy, intentionally decoupled from the
+  actual (much smaller) portfolio count.
+
+## Shorts shelf — no horizontal scroll (`shorts-shelf.tsx`)
+
+`ShortsShelf` (used on `/video-editing` and `/about`) originally had `overflow-x-auto` — client
+called this "hideous" repeatedly and asked for a proper check against live youtube.com. Verified
+via direct DOM inspection (through Claude in Chrome, on the client's own logged-in session,
+since the sandboxed Browser pane kept landing on the wrong page): real YouTube's Shorts shelf
+has **`display: flex; overflow-x: clip`** — literally no scroll mechanism. It shows a fixed
+"shelf" of Shorts sized to whatever fits the row (not a draggable strip), and multiple such
+shelves are interspersed between rows of regular videos throughout the same vertical feed, not
+bundled into one shelf at the very bottom.
+
+- `ShortsShelf` now renders a **wrapping CSS grid** (`grid-cols-3 sm:grid-cols-4 lg:grid-cols-5`,
+  no `overflow-x`) instead of a horizontal-scroll flex row, and takes an optional `shorts` prop
+  (defaults to all of `SHORT_PROJECTS`) plus an `anchor` prop so only one instance per page
+  carries the `#shorts` id.
+- `/video-editing` (`src/app/video-editing/page.tsx`) interleaves the feed to match the real
+  pattern: `buildInterleavedFeed()` chunks `VIDEO_PROJECTS` into groups of 3 and
+  `SHORT_PROJECTS` into groups of 5, alternating video-grid rows and Shorts shelves. Only
+  applies to the unfiltered view (no category/search active) — filtering falls back to the
+  plain flat video grid, same as before. Once one content type runs out (we only have 5
+  long-form videos vs. ~17 Shorts) the remaining shelves of the other type just continue
+  back-to-back — an honest reflection of the smaller content library, not a bug.
+
+## Thumbnail image quality (`next.config.ts`, `video-thumbnail.tsx`)
+
+Client reported a documentary thumbnail looking blurry. The source file itself was sharp
+(1600×900, verified directly) — the actual cause: **Next.js 16 changed the default
+`images.qualities` allowlist to `[75]` only**, so a component-level `quality={90}` was being
+silently coerced back down to 75 (confirmed via the installed version's own docs in
+`node_modules/next/dist/docs/`, per the versioning note at the top of this file — this is
+exactly the kind of breaking change that note warns about). Fixed by adding
+`images: { qualities: [75, 90, 100] }` to `next.config.ts` and setting `quality={90}` on the
+`<Image>` in `video-thumbnail.tsx` (the shared component behind every video/short card site-wide,
+so this fixes it everywhere, not just the one thumbnail that got reported). A `next.config.ts`
+change needs a full dev server restart (not just HMR) to take effect.
 
 ## Contact page (`/contact`) — planned, not yet built
 

@@ -3,18 +3,30 @@ import Link from "next/link";
 
 import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
-import { getPlatformLabel, getViewsLabel, SHORT_PROJECTS } from "@/lib/videos";
+import { getPlatformLabel, getViewsLabel, SHORT_PROJECTS, type ShortProject } from "@/lib/videos";
 
-export function ShortsShelf() {
+interface ShortsShelfProps {
+  shorts?: ShortProject[];
+  /** Only the first shelf on a page should carry the #shorts anchor id. */
+  anchor?: boolean;
+}
+
+/**
+ * Matches real YouTube's Shorts shelf: a fixed, non-scrolling row that shows as many Shorts as
+ * fit the grid width (wrapping to a second row on narrow viewports) — not a horizontally
+ * scrolling strip. Confirmed by live-inspecting youtube.com's homepage DOM: the shelf container
+ * is `display: flex; overflow-x: clip`, i.e. no scroll mechanism at all.
+ */
+export function ShortsShelf({ shorts = SHORT_PROJECTS, anchor = true }: ShortsShelfProps) {
   return (
-    <section id="shorts" className="mt-8 scroll-mt-20">
+    <section id={anchor ? "shorts" : undefined} className="scroll-mt-20">
       <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
         <ShortsGlyph className="size-6 text-red-600" />
         Shorts
       </h2>
-      <div className="flex gap-3 overflow-x-auto pb-2">
-        {SHORT_PROJECTS.map((short) => (
-          <div key={short.id} className="group w-[160px] shrink-0">
+      <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
+        {shorts.map((short) => (
+          <div key={short.id} className="group">
             <Link href={`/video-editing/shorts/${short.id}`}>
               <VideoThumbnail
                 title={short.title}

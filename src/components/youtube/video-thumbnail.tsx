@@ -39,6 +39,7 @@ export function VideoThumbnail({
             alt={title}
             fill
             sizes={isShort ? "160px" : "(min-width: 1280px) 25vw, (min-width: 640px) 33vw, 100vw"}
+            quality={90}
             className="object-cover"
           />
         ) : (
