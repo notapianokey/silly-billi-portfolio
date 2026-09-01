@@ -1,3 +1,4 @@
+import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
 import { formatViews, SHORT_PROJECTS } from "@/lib/videos";
 
@@ -10,14 +11,24 @@ export function ShortsShelf() {
       </h2>
       <div className="flex gap-3 overflow-x-auto pb-2">
         {SHORT_PROJECTS.map((short) => (
-          <div key={short.id} className="w-[160px] shrink-0">
+          <div key={short.id} className="group w-[160px] shrink-0">
             <VideoThumbnail
               title={short.title}
-              durationSeconds={45}
+              durationSeconds={short.durationSeconds}
               paletteIndex={short.paletteIndex}
+              thumbnailSrc={short.thumbnailSrc}
               aspect="9:16"
             />
-            <p className="mt-2 text-xs text-muted-foreground">{formatViews(short.views)}</p>
+            <div className="mt-2 flex items-start justify-between gap-1">
+              <p className="text-xs text-muted-foreground">{formatViews(short.views)}</p>
+              <EditVideoDialog
+                id={short.id}
+                kind="short"
+                title={short.title}
+                thumbnailSrc={short.thumbnailSrc}
+                triggerClassName="size-6 shrink-0 rounded-full p-1 opacity-0 hover:bg-accent group-hover:opacity-100"
+              />
+            </div>
           </div>
         ))}
       </div>

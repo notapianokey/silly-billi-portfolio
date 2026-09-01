@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Raw client content — real footage/brand assets, never goes in the public repo.
+# Web-ready derivatives (thumbnails, compressed clips) get generated INTO public/
+# from these, but the source folders themselves stay local-only. See CLAUDE.md.
+/VIDEO EDITING PAGE CONTENT/
+/BRANDINGEDITORIALTHUMBNAILS/
+/carousels/

@@ -35,6 +35,16 @@ confirmed by the client, not a placeholder to be softened. Do not water this dow
   changes are possible. `AGENTS.md` (imported above, auto-maintained by `next dev`) points at
   `node_modules/next/dist/docs/` for the version-matched docs. Check there before assuming an
   API/convention from memory, especially for anything App-Router-routing-related.
+- **Real client content stays out of git entirely** — client's explicit call. Raw folders the
+  client drops into the project root (video masters, brand kits, PDFs, carousels) are
+  git-ignored (see `.gitignore`) and must stay that way. When a page needs something from one
+  of these folders, generate/copy a *derived, web-ready* asset into `public/` (e.g. a small
+  extracted thumbnail via `ffmpeg`) — never move or delete the source folder itself. The client
+  needs these folders to stay exactly where they put them, visible, after you're done using
+  them.
+- **Don't process a newly-dropped content folder on your own initiative.** When the client
+  drops a new folder into the project root, leave it alone until they explicitly say what it's
+  for and what to do with it — noticing it and asking is fine, building against it isn't.
 
 ## Working style directive (for Claude)
 
@@ -149,6 +159,32 @@ client content still needed — see Open decisions).
     settings/fullscreen) for chrome fidelity even without real playback.
   - Measured real values used for fidelity: 56px header height (`h-14`), 240px sidebar
     (`w-60`), 36px card avatars — pulled via live DOM inspection of youtube.com, not guessed.
+- **Real content + local edit UI:** the client dropped real footage into
+  `VIDEO EDITING PAGE CONTENT/` (13 files, 11GB — git-ignored, see above). Ran `ffprobe`/
+  `ffmpeg` once to pull duration + a representative frame (resized, ~20-100KB JPG) per video
+  into `public/videos/thumbnails/`, and rebuilt `VIDEO_PROJECTS`/`SHORT_PROJECTS` around those
+  13 real projects (2 landscape → long-form grid, 11 portrait → Shorts shelf) instead of the
+  earlier 6 fabricated placeholder entries.
+  - Video content data now lives in `src/lib/videos.data.json` (plain JSON, not hardcoded in
+    `videos.ts`) specifically so it's editable — `videos.ts` just imports and re-exports it
+    typed.
+  - **Edit UI** (`edit-video-dialog.tsx`, a pencil-icon button on every card and in the Watch
+    modal): lets the client set title/description and replace the thumbnail without touching
+    code. Saves via `PATCH /api/dev/videos` (`src/app/api/dev/videos/route.ts`), which writes
+    directly to `videos.data.json` and `public/videos/thumbnails/` on disk.
+  - **This only works when running `npm run dev` locally** — there's no database by design
+    (see Tech stack), and Vercel's deployed filesystem is read-only, so the route fails
+    gracefully there with a clear message. This is a local content-authoring tool, not a live
+    CMS: the client edits locally, then the resulting `videos.data.json`/thumbnail changes get
+    committed and pushed like any other change (they're just small JSON/JPGs, not the raw
+    client media itself, so this doesn't conflict with the "no real content in git" rule
+    above).
+  - **Not yet solved:** actual video *playback* (hover-preview scrubbing, a real `<video>` in
+    the Watch modal instead of a static thumbnail-as-poster). The extracted thumbnails are
+    static images; playing real footage needs an external host (Vercel Hobby/git can't carry
+    11GB, and per the client the source files shouldn't be public anyway) — that needs an
+    account decision from the client before it's built. Don't build video hosting/upload
+    without checking with them first.
 
 ## Contact page (`/contact`) — planned, not yet built
 

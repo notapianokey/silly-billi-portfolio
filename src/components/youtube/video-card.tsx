@@ -1,8 +1,8 @@
 "use client";
 
-import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 
+import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
 import { formatViews, type VideoProject } from "@/lib/videos";
 
@@ -15,7 +15,12 @@ export function VideoCard({ video, onSelect }: VideoCardProps) {
   return (
     <div className="group flex w-full flex-col gap-3">
       <button type="button" onClick={() => onSelect(video)} className="text-left">
-        <VideoThumbnail title={video.title} durationSeconds={video.durationSeconds} paletteIndex={video.paletteIndex} />
+        <VideoThumbnail
+          title={video.title}
+          durationSeconds={video.durationSeconds}
+          paletteIndex={video.paletteIndex}
+          thumbnailSrc={video.thumbnailSrc}
+        />
       </button>
 
       <div className="flex gap-3">
@@ -33,13 +38,14 @@ export function VideoCard({ video, onSelect }: VideoCardProps) {
             {formatViews(video.views)} · {video.publishedLabel}
           </span>
         </button>
-        <button
-          type="button"
-          onClick={(event) => event.stopPropagation()}
-          className="h-fit shrink-0 rounded-full p-1.5 opacity-0 hover:bg-accent group-hover:opacity-100"
-        >
-          <EllipsisVertical className="size-4" />
-        </button>
+        <EditVideoDialog
+          id={video.id}
+          kind="video"
+          title={video.title}
+          description={video.description}
+          thumbnailSrc={video.thumbnailSrc}
+          triggerClassName="h-fit shrink-0 rounded-full p-1.5 opacity-0 hover:bg-accent group-hover:opacity-100"
+        />
       </div>
     </div>
   );

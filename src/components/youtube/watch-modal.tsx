@@ -17,6 +17,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { EditVideoDialog } from "./edit-video-dialog";
 import { cn } from "@/lib/utils";
 import {
   formatDuration,
@@ -43,10 +44,19 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
             <Tabs defaultValue="final-cut">
               <div className="relative aspect-video overflow-hidden rounded-t-xl bg-black">
                 <TabsContent value="final-cut" className="m-0 h-full">
-                  <PlaceholderPlayer label="Final Cut" paletteIndex={video.paletteIndex} />
+                  <PlaceholderPlayer
+                    label="Final Cut"
+                    paletteIndex={video.paletteIndex}
+                    thumbnailSrc={video.thumbnailSrc}
+                  />
                 </TabsContent>
                 <TabsContent value="raw-footage" className="m-0 h-full">
-                  <PlaceholderPlayer label="Raw Footage" paletteIndex={video.paletteIndex} muted />
+                  <PlaceholderPlayer
+                    label="Raw Footage"
+                    paletteIndex={video.paletteIndex}
+                    thumbnailSrc={video.thumbnailSrc}
+                    muted
+                  />
                 </TabsContent>
                 <PlayerControlBar />
               </div>
@@ -60,7 +70,17 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
             </Tabs>
 
             <div className="flex flex-col gap-3 p-4">
-              <h2 className="text-lg font-semibold leading-snug">{video.title}</h2>
+              <div className="flex items-start justify-between gap-2">
+                <h2 className="text-lg font-semibold leading-snug">{video.title}</h2>
+                <EditVideoDialog
+                  id={video.id}
+                  kind="video"
+                  title={video.title}
+                  description={video.description}
+                  thumbnailSrc={video.thumbnailSrc}
+                  triggerClassName="shrink-0 rounded-full"
+                />
+              </div>
 
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
@@ -169,10 +189,12 @@ export function WatchModal({ video, onClose }: WatchModalProps) {
 function PlaceholderPlayer({
   label,
   paletteIndex,
+  thumbnailSrc,
   muted,
 }: {
   label: string;
   paletteIndex: number;
+  thumbnailSrc?: string;
   muted?: boolean;
 }) {
   const gradient = THUMBNAIL_PALETTE[paletteIndex % THUMBNAIL_PALETTE.length];
@@ -180,12 +202,16 @@ function PlaceholderPlayer({
   return (
     <div
       className={cn(
-        "flex h-full w-full items-center justify-center bg-gradient-to-br",
-        gradient,
+        "relative flex h-full w-full items-center justify-center",
+        !thumbnailSrc && "bg-gradient-to-br",
+        !thumbnailSrc && gradient,
         muted && "grayscale",
       )}
     >
-      <div className="flex flex-col items-center gap-2 text-white/90">
+      {thumbnailSrc && (
+        <Image src={thumbnailSrc} alt="" fill sizes="768px" className="object-cover" />
+      )}
+      <div className={cn("relative flex flex-col items-center gap-2 text-white/90", thumbnailSrc && "drop-shadow-lg")}>
         <PauseIcon className="size-12 fill-white/90" />
         <span className="text-sm font-medium">{label} preview</span>
       </div>
