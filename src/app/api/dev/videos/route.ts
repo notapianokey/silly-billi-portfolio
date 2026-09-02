@@ -8,7 +8,7 @@ const THUMBNAILS_DIR = path.join(process.cwd(), "public", "videos", "thumbnails"
 const LOCAL_ONLY_MESSAGE =
   "Editing only works when running the site locally (npm run dev) — the live deployed site can't save changes.";
 
-const VALID_CATEGORIES = new Set(["talking-head", "vlogs", "documentary"]);
+const VALID_CATEGORIES = new Set(["talking-head", "vlogs", "documentary", "video-essays"]);
 const VALID_LANGUAGES = new Set(["english", "other-languages"]);
 
 interface VideosData {

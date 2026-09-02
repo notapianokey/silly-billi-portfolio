@@ -1,6 +1,6 @@
 import videosData from "./videos.data.json";
 
-export type VideoCategoryId = "talking-head" | "vlogs" | "documentary";
+export type VideoCategoryId = "talking-head" | "vlogs" | "documentary" | "video-essays";
 export type LanguageId = "english" | "other-languages";
 /** The category pills row is one flat single-select list mixing content-type and language. */
 export type PillId = VideoCategoryId | LanguageId;
@@ -14,6 +14,7 @@ export const VIDEO_CATEGORIES: CategoryDef[] = [
   { id: "talking-head", label: "Talking Head" },
   { id: "vlogs", label: "Vlogs" },
   { id: "documentary", label: "Documentary" },
+  { id: "video-essays", label: "Video Essays" },
 ];
 
 export const LANGUAGE_CATEGORIES: CategoryDef[] = [
