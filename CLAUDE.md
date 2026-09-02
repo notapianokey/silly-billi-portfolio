@@ -308,14 +308,42 @@ rather than decoration. Current structure, top to bottom:
   are speced in full further down this file but not yet built.
 - Hire Us → `/hire-us`, Join Us → `/join-us`.
 
-**The remaining 5 not-yet-built destinations render a shared placeholder**,
+**The remaining 3 not-yet-built destinations render a shared placeholder**,
 `src/components/coming-soon.tsx` (mascot image, page title in the display font, "coming soon"
-copy, a link back to `/`) — used by `src/app/{hire-us,join-us,visual-branding,
-editorial-direction,marketing-ads}/page.tsx`. This exists purely so the new nav doesn't 404;
-swap each one out for its real design/content as that phase actually gets built — don't leave a
-page on `ComingSoon` once there's real content to put there instead. (`/about` and
-`/channels-we-monetized` are the two of these to get real designs so far — see below — the rest
-are still pending.)
+copy, a link back to `/`) — used by `src/app/{visual-branding,editorial-direction,
+marketing-ads}/page.tsx`. This exists purely so the new nav doesn't 404; swap each one out for
+its real design/content as that phase actually gets built — don't leave a page on `ComingSoon`
+once there's real content to put there instead. (`/about`, `/channels-we-monetized`, `/hire-us`,
+and `/join-us` have real designs now — see below — the three discipline pages are still
+pending.)
+
+## Hire Us / Join Us pages (`/hire-us`, `/join-us`)
+
+Real designed pages, not `ComingSoon` stubs — client asked for both to be designed considering
+"common info usually mentioned in such pages," in the site's own brand voice (not a platform
+clone — these aren't modeled after any specific site, unlike the YouTube-shell pages). Both
+keep the persistent `TopHeader`/`SidebarRail` chrome for nav consistency with the rest of the
+site, matching the established "sidebar is the site's real nav, not just decoration" rule.
+
+- **Hire Us:** hero + real stats (4000+ videos delivered, 6 channels monetized, 4 disciplines —
+  reused from elsewhere, not re-invented), a services grid linking to the 4 discipline pages, a
+  4-step "how it works" process (generic, editable), and a CTA.
+- **Join Us:** hero, a "what it's like here" values grid, a "what we look for" list, and an
+  **honest empty state for Open Roles** ("No open roles right now — check back soon", same
+  pattern as the About page's "Show Reel will be uploaded soon") — there are no real job
+  postings to show, so don't invent any.
+- **Neither page has a real contact mechanism yet** (`/contact` — see below — isn't built, and
+  there's no confirmed public email to publish). Both CTAs are honest about this ("A dedicated
+  contact form is on its way") and link to `/about`, where the client's real social links will
+  eventually live via `CHANNEL_PROFILE.socialLinks`. Don't invent a placeholder email address —
+  wait for the real contact page or real social links.
+- **About page's tab row now reads Home | Hire Us | Join Us**, not Home | Videos | Shorts —
+  client's explicit call, repurposing the tab row as quick links to these two pages rather than
+  mirroring real YouTube's Videos/Shorts sub-navigation (which was redundant with the sidebar's
+  own Shorts/Long Form links anyway). The Videos grid and Shorts shelf *content* further down
+  the About page are unchanged — only the tab row's links changed.
+- **About page header stat is now "4000+ videos delivered"** (was "200+") — client's updated
+  marketing copy, still intentionally decoupled from the actual portfolio count.
 
 ## Channels We've Monetized page (`/channels-we-monetized`) — YouTube search-results clone
 
@@ -396,9 +424,9 @@ same practice as the other clones.
   show reel doesn't exist yet. All long-form videos (including whichever would've been
   "featured") live together in one `Videos` grid below it; don't reintroduce
   highest-views-wins auto-featuring without asking first.
-- Header stat line reads a fixed **"200+ videos delivered"**, not a computed
-  `VIDEO_PROJECTS.length` — client's explicit marketing copy, intentionally decoupled from the
-  actual (much smaller) portfolio count.
+- Header stat line reads a fixed **"4000+ videos delivered"** (updated from "200+" — see the
+  Hire Us / Join Us section below), not a computed `VIDEO_PROJECTS.length` — client's explicit
+  marketing copy, intentionally decoupled from the actual (much smaller) portfolio count.
 
 ## Shorts shelf — no horizontal scroll (`shorts-shelf.tsx`)
 

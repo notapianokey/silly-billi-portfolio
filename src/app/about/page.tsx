@@ -63,7 +63,7 @@ export default function AboutPage() {
                 />
               </div>
               <p className="mt-1 text-sm text-muted-foreground">
-                @sillybillistudio · 200+ videos delivered
+                @sillybillistudio · 4000+ videos delivered
               </p>
 
               <button
@@ -108,11 +108,11 @@ export default function AboutPage() {
           {/* Tabs */}
           <div className="flex gap-6 border-b text-sm font-medium">
             <span className="border-b-2 border-foreground pb-3">Home</span>
-            <Link href="/video-editing?view=videos" className="pb-3 text-muted-foreground hover:text-foreground">
-              Videos
+            <Link href="/hire-us" className="pb-3 text-muted-foreground hover:text-foreground">
+              Hire Us
             </Link>
-            <Link href="/video-editing?view=shorts" className="pb-3 text-muted-foreground hover:text-foreground">
-              Shorts
+            <Link href="/join-us" className="pb-3 text-muted-foreground hover:text-foreground">
+              Join Us
             </Link>
           </div>
 
