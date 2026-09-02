@@ -43,9 +43,14 @@ function buildInterleavedFeed(): FeedRow[] {
   return rows;
 }
 
-/** A pill matches a video/short on either its content-type category or its language. */
-function matchesPill(item: { category?: string; language: string }, pill: PillId): boolean {
-  return item.category === pill || item.language === pill;
+/** A pill matches on its content-type category, its language, or a matching freeform tag —
+ *  e.g. a short manually tagged "documentary" satisfies the Documentary pill even if its
+ *  Category dropdown was never changed from Talking Head. */
+function matchesPill(
+  item: { category?: string; language: string; tags: string[] },
+  pill: PillId,
+): boolean {
+  return item.category === pill || item.language === pill || item.tags.includes(pill);
 }
 
 /** Every search word (split on whitespace, # stripped) must appear somewhere in the title or
