@@ -10,6 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
+import { ContactForm } from "@/components/contact-form";
 import { SidebarRail } from "@/components/youtube/sidebar-rail";
 import { TopHeader } from "@/components/youtube/top-header";
 
@@ -131,19 +132,16 @@ export default function HireUsPage() {
           </div>
 
           {/* CTA */}
-          <div className="flex flex-col items-start gap-3 rounded-xl border py-10 pl-6 pr-6 sm:pl-10">
-            <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold sm:text-3xl">
-              Ready to work together?
-            </h2>
-            <p className="max-w-md text-sm text-muted-foreground">
-              A dedicated contact form is on its way. For now, reach out through our channels.
-            </p>
-            <Link
-              href="/about"
-              className="mt-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
-            >
-              Get in touch
-            </Link>
+          <div className="flex flex-col items-start gap-4 rounded-xl border py-10 pl-6 pr-6 sm:pl-10">
+            <div>
+              <h2 className="font-[family-name:var(--font-display)] text-2xl font-bold sm:text-3xl">
+                Ready to work together?
+              </h2>
+              <p className="mt-1 max-w-md text-sm text-muted-foreground">
+                Tell us about your channel or campaign and we&apos;ll get back to you.
+              </p>
+            </div>
+            <ContactForm source="Hire Us" />
           </div>
         </main>
       </div>

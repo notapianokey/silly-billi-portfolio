@@ -493,20 +493,30 @@ weak, since `tags` was empty on almost everything. Reworked:
 - **Removed the non-functional mic button** from `TopHeader` — real YouTube chrome, but there
   was no speech-to-search wired up behind it, so it was dead decoration.
 
-## Contact page (`/contact`) — planned, not yet built
+## Contact form (`/hire-us`, `/join-us`) — built, awaiting the client's webhook
 
-- **Book a call:** a plain link/button to Calendly (or a free alternative like Cal.com) that
-  opens in a new tab. Deliberately **not** an embedded/inline widget — an embed loads a
-  third-party iframe/script on every page view, and the client's top priority for this site is
-  raw speed. A link costs nothing until clicked. Revisit only if explicitly asked for the
-  inline embedded experience instead.
-- **Contact form → Google Sheet, no database:** the form posts to a Next.js Route Handler
-  (`src/app/api/contact/route.ts`, a serverless function that only runs on submit — zero
-  impact on page load/SSG) which forwards the payload to a **Google Apps Script Web App**
-  bound to a Google Sheet in the client's own Google account. This is the standard free,
-  no-backend way to get form data into Sheets: no paid service, no database, no API key
-  baked into the codebase (the client deploys the Apps Script themselves and provides the
-  resulting webhook URL, stored as a Vercel env var, e.g. `CONTACT_SHEET_WEBHOOK_URL`).
+There's no separate `/contact` route — client's call: Hire Us *is* the contact page, and Join
+Us shares the same mechanism. `src/components/contact-form.tsx` (name/email/message) posts to
+`src/app/api/contact/route.ts`, a Next.js Route Handler (serverless, zero impact on page
+load/SSG) that forwards the payload to a **Google Apps Script Web App** URL read from
+`process.env.CONTACT_WEBHOOK_URL`.
+
+- **The destination email is never in this codebase, not even as an env var here.** Client's
+  explicit requirement: the address must not be "visible to anyone anywhere." The Apps Script
+  itself — written and deployed entirely in the client's own Google account, never committed to
+  this repo — is the only place `MailApp.sendEmail(...)` names the real address. This route
+  only ever touches an opaque webhook URL that reveals nothing about where mail ends up.
+- **Setup is on the client, not something Claude can do for her** — deploying an Apps Script
+  requires her Google account. Once she deploys it and gives Claude the resulting Web App URL,
+  set it as `CONTACT_WEBHOOK_URL` in Vercel (Production + Preview) and in `.env.local` for local
+  testing. Until then, the route returns a clear "isn't fully set up yet" error and the form
+  fails gracefully (verified: no crash, no empty response) rather than pretending to succeed.
+- Fields are `{name, email, message, source}` — `source` is `"Hire Us"` or `"Join Us"`
+  (`<ContactForm source="...">`) so the client can tell which page a message came from.
+- **Book a call:** not built yet. If added later, keep it a plain link/button to Calendly (or a
+  free alternative) that opens in a new tab — deliberately **not** an embedded/inline widget,
+  since an embed loads a third-party iframe/script on every page view and the client's top
+  priority for this site is raw speed. A link costs nothing until clicked.
 - Client explicitly prioritizes site speed above all else for this page and the site
   generally — don't introduce anything (eager third-party embeds, client-side SDKs loaded on
   every route, etc.) that adds to initial page weight without a clear ask.
