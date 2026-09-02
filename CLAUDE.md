@@ -347,11 +347,26 @@ site entirely, by design; there's no internal watch page for this content.
 
 Built as an actual YouTube channel page (banner, avatar, description, tabs, featured video,
 video grid) rather than a generic "about" page — fits the site's core creative concept
-directly, and the client asked for it explicitly. Live-inspected a real channel page (MrBeast's)
-for structure before building, same practice as the other clones: banner is full-bleed with
-**no border-radius** at real YouTube's size (not rounded, despite what the `next15-youtube-clone`
-reference repo does), 160px circular avatar sits *below* the banner (not overlapping it), and
-the header padding follows that measured layout.
+directly, and the client asked for it explicitly. Live-inspected a real channel page (MrBeast's,
+later cross-checked against Brooklyn Nine-Nine's and MKBHD's) for structure before building,
+same practice as the other clones.
+
+- **Second fidelity pass (client flagged it against a live screenshot):** the first build had
+  the banner full-bleed with no border-radius, based on an earlier live-DOM measurement that
+  turned out to only hold at narrow/mid viewport widths. Re-measured at a wide desktop viewport
+  (1860px) and the banner is actually **inset from the page edges with 16px rounded corners**,
+  holding a fixed **~6.2:1 aspect ratio** (`aspect-[31/5]`), capped at a max height — not
+  full-bleed at all at realistic desktop widths. The inset is proportional (~8-10% padding on
+  each side, scaling with viewport) and applies to the *entire* header column (banner, avatar,
+  name, description, tabs), not just the banner — implemented as `px-[6%] lg:px-[8%]` on the
+  page's `<main>`. Avatar bumped from 96–128px to a real-scale 160px (`sm:size-36 md:size-40`).
+  **Lesson: a single live-DOM measurement at one viewport width isn't enough for a fluid layout
+  — re-verify at multiple widths, especially after a client screenshot contradicts it.**
+- Confirmed via live inspection that the red ring some channel avatars show is a **"LIVE"
+  broadcast indicator only** (`ytSpecAvatarShapeLiveRing`), not a permanent avatar border style
+  — checked a non-live channel (MKBHD) and its avatar has zero border/outline. Don't add a fake
+  border to our own avatar chasing that; we're never "live."
+- 160px circular avatar sits *below* the banner (not overlapping it).
 
 - **Content:** featured video is the current highest-`views` entry from `VIDEO_PROJECTS`
   (currently the heroin-addiction documentary at 113K) computed at render time, not hardcoded —

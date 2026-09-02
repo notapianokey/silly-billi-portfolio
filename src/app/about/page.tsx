@@ -23,10 +23,12 @@ export default function AboutPage() {
       <SidebarRail />
 
       <div className="md:pl-60">
-        <main className="px-4 py-6 md:px-6">
-          {/* Banner */}
+        <main className="px-4 py-6 md:px-[6%] lg:px-[8%]">
+          {/* Banner — real YouTube channel banners aren't full-bleed: they sit inset from the
+              content column with ~16px rounded corners and hold a ~6.2:1 aspect ratio, capped
+              at a max height. Measured directly off a live channel page, not guessed. */}
           <div
-            className="h-28 w-full bg-cover bg-center sm:h-40 md:h-48"
+            className="aspect-[31/5] max-h-48 w-full overflow-hidden rounded-2xl bg-cover bg-center"
             style={{
               backgroundImage: CHANNEL_PROFILE.bannerSrc
                 ? `url(${CHANNEL_PROFILE.bannerSrc})`
@@ -45,7 +47,7 @@ export default function AboutPage() {
               alt="Silly Billi Studio"
               width={160}
               height={160}
-              className="size-24 shrink-0 rounded-full object-cover sm:size-32"
+              className="size-28 shrink-0 rounded-full object-cover sm:size-36 md:size-40"
             />
 
             <div className="min-w-0 flex-1">
