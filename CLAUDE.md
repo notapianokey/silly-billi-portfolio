@@ -399,6 +399,31 @@ exactly the kind of breaking change that note warns about). Fixed by adding
 so this fixes it everywhere, not just the one thumbnail that got reported). A `next.config.ts`
 change needs a full dev server restart (not just HMR) to take effect.
 
+## Search — tags-driven, covers Shorts too (`video-editing/page.tsx`, `edit-video-dialog.tsx`)
+
+Original search only matched a video's title/tags substring, and never touched Shorts at all —
+weak, since `tags` was empty on almost everything. Reworked:
+
+- **`matchesQuery()`** splits the search box into words (whitespace-separated, leading `#`
+  stripped) and requires every word to appear somewhere in the title or tags array — so
+  multi-word searches like "split screen podcast" work even if the words aren't adjacent or in
+  that order in the title.
+- **Shorts are now searched too** (`ShortProject.tags: string[]` added), not just filtered by
+  category/language. `filteredShorts` in `video-editing/page.tsx` applies the same
+  category-or-language check *and* the same query match as `filteredVideos`.
+- **Tags are editable per-project** via `EditVideoDialog` (pencil icon) — a comma-separated
+  input plus a row of clickable suggestion chips from `SUGGESTED_TAGS` in `videos.ts` (a
+  starting vocabulary of edit-type/style tags — freeform, not an enforced enum, so any tag can
+  still be typed by hand). Persisted through the same `/api/dev/videos` PATCH route as
+  everything else. Tags currently sit mostly empty — the client is populating them herself
+  using this vocabulary; don't invent tags for her.
+- **`EditVideoDialog`'s body needed `max-h-[70vh] overflow-y-auto`** once the Category/
+  Language/Tags fields were added — before that fix the dialog could grow taller than the
+  viewport with no way to scroll, making Save/Cancel unreachable. Same pattern as
+  `EditChannelDialog` already used.
+- **Removed the non-functional mic button** from `TopHeader` — real YouTube chrome, but there
+  was no speech-to-search wired up behind it, so it was dead decoration.
+
 ## Contact page (`/contact`) — planned, not yet built
 
 - **Book a call:** a plain link/button to Calendly (or a free alternative like Cal.com) that

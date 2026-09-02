@@ -229,6 +229,7 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                 sourceUrl={short.sourceUrl}
                 category={short.category}
                 language={short.language}
+                tags={short.tags}
                 triggerClassName="size-11 rounded-full bg-secondary"
               />
             </div>

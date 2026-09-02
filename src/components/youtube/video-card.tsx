@@ -47,6 +47,7 @@ export function VideoCard({ video }: VideoCardProps) {
           sourceUrl={video.sourceUrl}
           category={video.category}
           language={video.language}
+          tags={video.tags}
           triggerClassName="h-fit shrink-0 rounded-full p-1.5 opacity-0 hover:bg-accent group-hover:opacity-100"
         />
       </div>

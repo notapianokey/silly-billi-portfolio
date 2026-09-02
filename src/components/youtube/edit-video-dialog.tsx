@@ -13,7 +13,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { VIDEO_CATEGORIES, LANGUAGE_CATEGORIES, type LanguageId, type VideoCategoryId } from "@/lib/videos";
+import {
+  VIDEO_CATEGORIES,
+  LANGUAGE_CATEGORIES,
+  SUGGESTED_TAGS,
+  type LanguageId,
+  type VideoCategoryId,
+} from "@/lib/videos";
 
 interface EditVideoDialogProps {
   id: string;
@@ -25,6 +31,7 @@ interface EditVideoDialogProps {
   /** Unset only ever applies to long-form videos that don't fit any content-type pill. */
   category?: VideoCategoryId;
   language: LanguageId;
+  tags: string[];
   /** Renders the trigger button; keeps this component usable inline in cards or the modal. */
   triggerClassName?: string;
 }
@@ -38,6 +45,7 @@ export function EditVideoDialog({
   sourceUrl: initialSourceUrl,
   category: initialCategory,
   language: initialLanguage,
+  tags: initialTags,
   triggerClassName,
 }: EditVideoDialogProps) {
   const router = useRouter();
@@ -47,6 +55,7 @@ export function EditVideoDialog({
   const [sourceUrl, setSourceUrl] = useState(initialSourceUrl ?? "");
   const [category, setCategory] = useState<VideoCategoryId | "">(initialCategory ?? "");
   const [language, setLanguage] = useState<LanguageId>(initialLanguage);
+  const [tagsInput, setTagsInput] = useState(initialTags.join(", "));
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(thumbnailSrc);
   const [saving, setSaving] = useState(false);
@@ -71,6 +80,15 @@ export function EditVideoDialog({
     formData.set("description", description);
     formData.set("category", category);
     formData.set("language", language);
+    formData.set(
+      "tags",
+      JSON.stringify(
+        tagsInput
+          .split(",")
+          .map((tag) => tag.trim())
+          .filter(Boolean),
+      ),
+    );
     if (thumbnailFile) formData.set("thumbnail", thumbnailFile);
 
     try {
@@ -119,7 +137,7 @@ export function EditVideoDialog({
           <DialogTitle>Edit project</DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col gap-4">
+        <div className="flex max-h-[70vh] flex-col gap-4 overflow-y-auto pr-1">
           <div>
             <label className="mb-1.5 block text-sm font-medium">Thumbnail</label>
             <div className="flex items-center gap-3">
@@ -197,6 +215,41 @@ export function EditVideoDialog({
                   </option>
                 ))}
               </select>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="edit-tags" className="mb-1.5 block text-sm font-medium">
+              Tags
+            </label>
+            <input
+              id="edit-tags"
+              value={tagsInput}
+              onChange={(event) => setTagsInput(event.target.value)}
+              placeholder="e.g. podcast, talking-head, split-screen"
+              className="w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:border-ring"
+            />
+            <p className="mt-1 text-xs text-muted-foreground">Comma-separated. Powers search.</p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {SUGGESTED_TAGS.map((tag) => (
+                <button
+                  key={tag}
+                  type="button"
+                  onClick={() =>
+                    setTagsInput((current) => {
+                      const existing = current
+                        .split(",")
+                        .map((t) => t.trim())
+                        .filter(Boolean);
+                      if (existing.includes(tag)) return current;
+                      return [...existing, tag].join(", ");
+                    })
+                  }
+                  className="rounded-full border px-2 py-0.5 text-xs text-muted-foreground hover:bg-accent hover:text-foreground"
+                >
+                  +{tag}
+                </button>
+              ))}
             </div>
           </div>
 

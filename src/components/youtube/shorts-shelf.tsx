@@ -70,6 +70,7 @@ export function ShortsShelf({ shorts = SHORT_PROJECTS, anchor = true }: ShortsSh
                 sourceUrl={short.sourceUrl}
                 category={short.category}
                 language={short.language}
+                tags={short.tags}
                 triggerClassName="size-6 shrink-0 rounded-full p-1 opacity-0 hover:bg-accent group-hover:opacity-100"
               />
             </div>

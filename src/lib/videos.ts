@@ -27,9 +27,52 @@ export const PILL_CATEGORIES: CategoryDef[] = [...VIDEO_CATEGORIES, ...LANGUAGE_
 export const SEARCH_TAG_SUGGESTIONS = [
   "#podcast",
   "#documentary",
-  "#shorts",
   "#talkinghead",
-  "#brandfilm",
+  "#splitscreen",
+  "#kinetictypography",
+  "#motiongraphics",
+  "#reaction",
+  "#archivalfootage",
+];
+
+/**
+ * A starting vocabulary of edit-type/style tags, for reference when tagging projects via the
+ * edit dialog. Freeform — not an enforced enum — so any tag can still be typed in.
+ */
+export const SUGGESTED_TAGS = [
+  "podcast",
+  "documentary",
+  "vlog",
+  "interview",
+  "reaction",
+  "talking-head",
+  "explainer",
+  "case-study",
+  "tutorial",
+  "corporate",
+  "advertisement",
+  "brand-film",
+  "testimonial",
+  "recap",
+  "commentary",
+  "comedy",
+  "travel",
+  "sports",
+  "mockumentary",
+  "split-screen",
+  "kinetic-typography",
+  "motion-graphics",
+  "archival-footage",
+  "b-roll-heavy",
+  "multi-cam",
+  "subtitled",
+  "bilingual-captions",
+  "fast-paced-cuts",
+  "cinematic-color-grade",
+  "data-visualization",
+  "animated-graphics",
+  "green-screen",
+  "voiceover",
 ];
 
 /** Fallback background for any project without a real thumbnailSrc yet. */
@@ -72,6 +115,7 @@ export interface ShortProject {
   description?: string;
   category: VideoCategoryId;
   language: LanguageId;
+  tags: string[];
   views: number;
   paletteIndex: number;
   durationSeconds: number;

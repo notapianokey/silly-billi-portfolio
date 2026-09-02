@@ -37,6 +37,7 @@ export async function PATCH(request: Request) {
     const sourceUrl = formData.get("sourceUrl");
     const category = formData.get("category");
     const language = formData.get("language");
+    const tagsRaw = formData.get("tags");
     const thumbnail = formData.get("thumbnail");
 
     if (typeof id !== "string" || (kind !== "video" && kind !== "short")) {
@@ -73,6 +74,16 @@ export async function PATCH(request: Request) {
     }
     if (typeof language === "string" && VALID_LANGUAGES.has(language)) {
       entry.language = language;
+    }
+    if (typeof tagsRaw === "string") {
+      try {
+        const parsed = JSON.parse(tagsRaw);
+        if (Array.isArray(parsed) && parsed.every((tag) => typeof tag === "string")) {
+          entry.tags = parsed;
+        }
+      } catch {
+        return NextResponse.json({ error: "Invalid tags." }, { status: 400 });
+      }
     }
 
     if (thumbnail instanceof File && thumbnail.size > 0) {

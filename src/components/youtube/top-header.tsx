@@ -1,6 +1,6 @@
 "use client";
 
-import { MenuIcon, MicIcon, SearchIcon, UserCircleIcon, XIcon } from "lucide-react";
+import { MenuIcon, SearchIcon, UserCircleIcon, XIcon } from "lucide-react";
 import { EllipsisVertical } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -67,9 +67,6 @@ export function TopHeader({ query, onQueryChange }: TopHeaderProps) {
               <SearchIcon className="size-4" />
             </button>
           </div>
-          <Button variant="ghost" size="icon" type="button" className="size-9 shrink-0 rounded-full bg-secondary">
-            <MicIcon className="size-4" />
-          </Button>
         </form>
 
         {focused && (

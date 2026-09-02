@@ -48,29 +48,44 @@ function matchesPill(item: { category?: string; language: string }, pill: PillId
   return item.category === pill || item.language === pill;
 }
 
+/** Every search word (split on whitespace, # stripped) must appear somewhere in the title or
+ *  tags — so e.g. "split screen podcast" matches a title of one and tags of the others. */
+function matchesQuery(item: { title: string; tags: string[] }, words: string[]): boolean {
+  const haystack = [item.title, ...item.tags].join(" ").toLowerCase();
+  return words.every((word) => haystack.includes(word));
+}
+
 export default function VideoEditingPage() {
   const [category, setCategory] = useState<PillId | null>(null);
   const [query, setQuery] = useState("");
   const isUnfiltered = category === null && query === "";
 
-  const filteredVideos = useMemo(() => {
-    const normalizedQuery = query.trim().toLowerCase().replace(/^#/, "");
+  const queryWords = useMemo(
+    () =>
+      query
+        .trim()
+        .toLowerCase()
+        .split(/\s+/)
+        .map((word) => word.replace(/^#/, ""))
+        .filter(Boolean),
+    [query],
+  );
 
+  const filteredVideos = useMemo(() => {
     return VIDEO_PROJECTS.filter((video) => {
       const matchesCategory = category === null || matchesPill(video, category);
-      const matchesQuery =
-        normalizedQuery === "" ||
-        video.title.toLowerCase().includes(normalizedQuery) ||
-        video.tags.some((tag) => tag.toLowerCase().includes(normalizedQuery));
-
-      return matchesCategory && matchesQuery;
+      const matchesSearch = queryWords.length === 0 || matchesQuery(video, queryWords);
+      return matchesCategory && matchesSearch;
     });
-  }, [category, query]);
+  }, [category, queryWords]);
 
   const filteredShorts = useMemo(() => {
-    if (category === null) return SHORT_PROJECTS;
-    return SHORT_PROJECTS.filter((short) => matchesPill(short, category));
-  }, [category]);
+    return SHORT_PROJECTS.filter((short) => {
+      const matchesCategory = category === null || matchesPill(short, category);
+      const matchesSearch = queryWords.length === 0 || matchesQuery(short, queryWords);
+      return matchesCategory && matchesSearch;
+    });
+  }, [category, queryWords]);
 
   const feed = useMemo(() => (isUnfiltered ? buildInterleavedFeed() : null), [isUnfiltered]);
   const firstShortsRowIndex = feed?.findIndex((row) => row.type === "shorts") ?? -1;
@@ -122,11 +137,10 @@ export default function VideoEditingPage() {
           {/* Shown separately (not interleaved) whenever a category/language filter or a
               search is active — the interleaved feed already covers the fully-unfiltered
               case. Falls back to an empty anchor so the sidebar's #shorts link always
-              resolves to something, even mid-search (search doesn't filter Shorts) or when
-              a filter matches zero Shorts. */}
+              resolves to something, even when a filter/search matches zero Shorts. */}
           {!isUnfiltered && (
             <div className="pb-10">
-              {query === "" && filteredShorts.length > 0 ? (
+              {filteredShorts.length > 0 ? (
                 <ShortsShelf shorts={filteredShorts} />
               ) : (
                 <section id="shorts" className="scroll-mt-20" />
