@@ -2,11 +2,11 @@
 
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { VIDEO_CATEGORIES, type VideoCategoryId } from "@/lib/videos";
+import { PILL_CATEGORIES, type PillId } from "@/lib/videos";
 
 interface CategoryPillsProps {
-  value: VideoCategoryId | null;
-  onSelect: (value: VideoCategoryId | null) => void;
+  value: PillId | null;
+  onSelect: (value: PillId | null) => void;
 }
 
 export function CategoryPills({ value, onSelect }: CategoryPillsProps) {
@@ -19,7 +19,7 @@ export function CategoryPills({ value, onSelect }: CategoryPillsProps) {
       >
         All
       </Badge>
-      {VIDEO_CATEGORIES.map((category) => (
+      {PILL_CATEGORIES.map((category) => (
         <Badge
           key={category.id}
           onClick={() => onSelect(category.id)}

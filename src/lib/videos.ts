@@ -1,22 +1,28 @@
 import videosData from "./videos.data.json";
 
-export type VideoCategoryId =
-  | "talking-head"
-  | "vlogs"
-  | "commercial"
-  | "short-form";
+export type VideoCategoryId = "talking-head" | "vlogs" | "documentary";
+export type LanguageId = "english" | "other-languages";
+/** The category pills row is one flat single-select list mixing content-type and language. */
+export type PillId = VideoCategoryId | LanguageId;
 
-export interface VideoCategoryDef {
-  id: VideoCategoryId;
+export interface CategoryDef {
+  id: PillId;
   label: string;
 }
 
-export const VIDEO_CATEGORIES: VideoCategoryDef[] = [
+export const VIDEO_CATEGORIES: CategoryDef[] = [
   { id: "talking-head", label: "Talking Head" },
   { id: "vlogs", label: "Vlogs" },
-  { id: "commercial", label: "Commercial" },
-  { id: "short-form", label: "Short Form" },
+  { id: "documentary", label: "Documentary" },
 ];
+
+export const LANGUAGE_CATEGORIES: CategoryDef[] = [
+  { id: "english", label: "English" },
+  { id: "other-languages", label: "Other Languages" },
+];
+
+/** All pills shown in the top filter row, in display order. */
+export const PILL_CATEGORIES: CategoryDef[] = [...VIDEO_CATEGORIES, ...LANGUAGE_CATEGORIES];
 
 export const SEARCH_TAG_SUGGESTIONS = [
   "#podcast",
@@ -42,7 +48,10 @@ export interface Chapter {
 export interface VideoProject {
   id: string;
   title: string;
-  category: VideoCategoryId;
+  /** Unset for pieces that don't fit any content-type pill (e.g. the intros compilation) —
+   *  they still show under "All", just not under any specific category. */
+  category?: VideoCategoryId;
+  language: LanguageId;
   tags: string[];
   durationSeconds: number;
   views: number;
@@ -61,6 +70,8 @@ export interface ShortProject {
   id: string;
   title: string;
   description?: string;
+  category: VideoCategoryId;
+  language: LanguageId;
   views: number;
   paletteIndex: number;
   durationSeconds: number;

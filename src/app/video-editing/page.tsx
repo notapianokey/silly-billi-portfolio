@@ -10,8 +10,8 @@ import { VideoCard } from "@/components/youtube/video-card";
 import {
   SHORT_PROJECTS,
   VIDEO_PROJECTS,
+  type PillId,
   type ShortProject,
-  type VideoCategoryId,
   type VideoProject,
 } from "@/lib/videos";
 
@@ -43,8 +43,13 @@ function buildInterleavedFeed(): FeedRow[] {
   return rows;
 }
 
+/** A pill matches a video/short on either its content-type category or its language. */
+function matchesPill(item: { category?: string; language: string }, pill: PillId): boolean {
+  return item.category === pill || item.language === pill;
+}
+
 export default function VideoEditingPage() {
-  const [category, setCategory] = useState<VideoCategoryId | null>(null);
+  const [category, setCategory] = useState<PillId | null>(null);
   const [query, setQuery] = useState("");
   const isUnfiltered = category === null && query === "";
 
@@ -52,7 +57,7 @@ export default function VideoEditingPage() {
     const normalizedQuery = query.trim().toLowerCase().replace(/^#/, "");
 
     return VIDEO_PROJECTS.filter((video) => {
-      const matchesCategory = category === null || video.category === category;
+      const matchesCategory = category === null || matchesPill(video, category);
       const matchesQuery =
         normalizedQuery === "" ||
         video.title.toLowerCase().includes(normalizedQuery) ||
@@ -61,6 +66,11 @@ export default function VideoEditingPage() {
       return matchesCategory && matchesQuery;
     });
   }, [category, query]);
+
+  const filteredShorts = useMemo(() => {
+    if (category === null) return SHORT_PROJECTS;
+    return SHORT_PROJECTS.filter((short) => matchesPill(short, category));
+  }, [category]);
 
   const feed = useMemo(() => (isUnfiltered ? buildInterleavedFeed() : null), [isUnfiltered]);
   const firstShortsRowIndex = feed?.findIndex((row) => row.type === "shorts") ?? -1;
@@ -108,6 +118,21 @@ export default function VideoEditingPage() {
               </p>
             )}
           </div>
+
+          {/* Shown separately (not interleaved) whenever a category/language filter or a
+              search is active — the interleaved feed already covers the fully-unfiltered
+              case. Falls back to an empty anchor so the sidebar's #shorts link always
+              resolves to something, even mid-search (search doesn't filter Shorts) or when
+              a filter matches zero Shorts. */}
+          {!isUnfiltered && (
+            <div className="pb-10">
+              {query === "" && filteredShorts.length > 0 ? (
+                <ShortsShelf shorts={filteredShorts} />
+              ) : (
+                <section id="shorts" className="scroll-mt-20" />
+              )}
+            </div>
+          )}
         </main>
       </div>
     </div>

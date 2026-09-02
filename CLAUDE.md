@@ -381,6 +381,10 @@ bundled into one shelf at the very bottom.
   plain flat video grid, same as before. Once one content type runs out (we only have 5
   long-form videos vs. ~17 Shorts) the remaining shelves of the other type just continue
   back-to-back — an honest reflection of the smaller content library, not a bug.
+- **Shorts shelf heading icon is the mascot, not YouTube's red play-square** — same branding
+  call as the "Silly Tube" header logo swap. `ShortsShelf`'s heading renders `/brand/mascot.png`
+  in a small rounded-square badge with a white play-triangle overlaid for the "play button"
+  affordance, instead of the generic red YouTube Shorts glyph.
 
 ## Thumbnail image quality (`next.config.ts`, `video-thumbnail.tsx`)
 
@@ -471,5 +475,40 @@ engine from scratch.
 
 - Real client content beyond "The Thomsen Company" example (needed for Visual Branding and
   others) — placeholder/lorem content is fine until real assets are provided.
-- Exact category taxonomy for the Video Editing page pills.
 - Mobile layout approach per page (deferred).
+
+## Category pills — content-type + language, one flat list (`videos.ts`, `category-pills.tsx`)
+
+Client-specified taxonomy, replacing the earlier placeholder categories (Commercial and Short
+Form are gone — Short Form was a dead filter that never navigated anywhere, redundant with the
+sidebar's real Shorts link):
+
+- **Content-type** (`VideoCategoryId`): `talking-head` | `vlogs` | `documentary`. Client's exact
+  classification: **Vlogs = only** the football-challenge video. **Documentary = only** the
+  heroin-addiction piece. **Talking Head = everything else, including every Short** — all 18
+  Shorts are tagged `talking-head`. The `main` entry ("Intros for Live Podcasts") intentionally
+  has **no** `category` (optional field) since it's a compilation that doesn't fit any of the
+  three — it only shows under "All".
+- **Language** (`LanguageId`): `english` | `other-languages`. Best-effort classification from
+  available evidence (burned-in captions visible in thumbnails/clips, description text, source
+  channel context) — **not verified against every clip**, since that would mean re-watching all
+  22 pieces. The `EditVideoDialog` now has Category/Language `<select>` fields (persisted via
+  the same `/api/dev/videos` route) specifically so the client can correct any she disagrees
+  with — check with her before assuming these are all correct.
+- **One flat pill list, single-select**, mixing both dimensions (`PILL_CATEGORIES` in
+  `videos.ts` = content-type pills + language pills, in that order) — a Talking Head English
+  short can only be found under one pill at a time, same as real YouTube's own category pills
+  (also a flat, non-faceted tag list). `matchesPill()` in `video-editing/page.tsx` checks a
+  pill id against either `.category` or `.language`.
+- **Pills filter Shorts too, not just long-form videos** — this is the reason Shorts needed
+  `category`/`language` fields added at all. Selecting a pill shows matching long-form videos
+  in the grid *and* matching Shorts in a `ShortsShelf` below (not interleaved — interleaving is
+  only for the fully-unfiltered "All" view). The search box still only filters long-form videos
+  (unchanged behavior) — Shorts either show unfiltered (search empty) or not at all (search
+  active), same as before this change.
+- **The `#shorts`/`#long-form` sidebar anchors must always resolve to *something*** regardless
+  of filter/search state, or the sidebar Shorts/Long Form links silently do nothing (this was
+  reported as "broken"). `video-editing/page.tsx` guarantees this: `id="long-form"` always
+  wraps the main content area, and an empty `<section id="shorts">` renders as a fallback
+  whenever there's no actual Shorts content to show (a filter with zero matches, or an active
+  search) — don't remove that fallback even though it looks like dead markup.

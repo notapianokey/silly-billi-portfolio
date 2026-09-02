@@ -13,6 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { VIDEO_CATEGORIES, LANGUAGE_CATEGORIES, type LanguageId, type VideoCategoryId } from "@/lib/videos";
 
 interface EditVideoDialogProps {
   id: string;
@@ -21,6 +22,9 @@ interface EditVideoDialogProps {
   description?: string;
   thumbnailSrc?: string;
   sourceUrl?: string;
+  /** Unset only ever applies to long-form videos that don't fit any content-type pill. */
+  category?: VideoCategoryId;
+  language: LanguageId;
   /** Renders the trigger button; keeps this component usable inline in cards or the modal. */
   triggerClassName?: string;
 }
@@ -32,6 +36,8 @@ export function EditVideoDialog({
   description: initialDescription,
   thumbnailSrc,
   sourceUrl: initialSourceUrl,
+  category: initialCategory,
+  language: initialLanguage,
   triggerClassName,
 }: EditVideoDialogProps) {
   const router = useRouter();
@@ -39,6 +45,8 @@ export function EditVideoDialog({
   const [title, setTitle] = useState(initialTitle);
   const [description, setDescription] = useState(initialDescription ?? "");
   const [sourceUrl, setSourceUrl] = useState(initialSourceUrl ?? "");
+  const [category, setCategory] = useState<VideoCategoryId | "">(initialCategory ?? "");
+  const [language, setLanguage] = useState<LanguageId>(initialLanguage);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | undefined>(thumbnailSrc);
   const [saving, setSaving] = useState(false);
@@ -61,6 +69,8 @@ export function EditVideoDialog({
     formData.set("title", title);
     formData.set("sourceUrl", sourceUrl.trim());
     formData.set("description", description);
+    formData.set("category", category);
+    formData.set("language", language);
     if (thumbnailFile) formData.set("thumbnail", thumbnailFile);
 
     try {
@@ -150,6 +160,44 @@ export function EditVideoDialog({
               rows={5}
               className="w-full resize-none rounded-lg border px-3 py-2 text-sm focus:outline-none focus:border-ring"
             />
+          </div>
+
+          <div className="flex gap-3">
+            <div className="flex-1">
+              <label htmlFor="edit-category" className="mb-1.5 block text-sm font-medium">
+                Category
+              </label>
+              <select
+                id="edit-category"
+                value={category}
+                onChange={(event) => setCategory(event.target.value as VideoCategoryId | "")}
+                className="w-full rounded-lg border bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-ring"
+              >
+                <option value="">None</option>
+                {VIDEO_CATEGORIES.map((cat) => (
+                  <option key={cat.id} value={cat.id}>
+                    {cat.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="flex-1">
+              <label htmlFor="edit-language" className="mb-1.5 block text-sm font-medium">
+                Language
+              </label>
+              <select
+                id="edit-language"
+                value={language}
+                onChange={(event) => setLanguage(event.target.value as LanguageId)}
+                className="w-full rounded-lg border bg-transparent px-3 py-2 text-sm focus:outline-none focus:border-ring"
+              >
+                {LANGUAGE_CATEGORIES.map((lang) => (
+                  <option key={lang.id} value={lang.id}>
+                    {lang.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div>

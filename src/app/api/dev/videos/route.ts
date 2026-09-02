@@ -8,6 +8,9 @@ const THUMBNAILS_DIR = path.join(process.cwd(), "public", "videos", "thumbnails"
 const LOCAL_ONLY_MESSAGE =
   "Editing only works when running the site locally (npm run dev) — the live deployed site can't save changes.";
 
+const VALID_CATEGORIES = new Set(["talking-head", "vlogs", "documentary"]);
+const VALID_LANGUAGES = new Set(["english", "other-languages"]);
+
 interface VideosData {
   videoProjects: Array<Record<string, unknown> & { id: string; thumbnailSrc?: string }>;
   shortProjects: Array<Record<string, unknown> & { id: string; thumbnailSrc?: string }>;
@@ -32,6 +35,8 @@ export async function PATCH(request: Request) {
     const title = formData.get("title");
     const description = formData.get("description");
     const sourceUrl = formData.get("sourceUrl");
+    const category = formData.get("category");
+    const language = formData.get("language");
     const thumbnail = formData.get("thumbnail");
 
     if (typeof id !== "string" || (kind !== "video" && kind !== "short")) {
@@ -61,6 +66,13 @@ export async function PATCH(request: Request) {
     }
     if (typeof sourceUrl === "string") {
       entry.sourceUrl = sourceUrl.trim();
+    }
+    if (typeof category === "string") {
+      if (category === "") delete entry.category;
+      else if (VALID_CATEGORIES.has(category)) entry.category = category;
+    }
+    if (typeof language === "string" && VALID_LANGUAGES.has(language)) {
+      entry.language = language;
     }
 
     if (thumbnail instanceof File && thumbnail.size > 0) {

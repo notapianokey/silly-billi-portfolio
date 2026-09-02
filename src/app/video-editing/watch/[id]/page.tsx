@@ -93,6 +93,8 @@ export default function WatchPage({ params }: WatchPageProps) {
                   description={video.description}
                   thumbnailSrc={video.thumbnailSrc}
                   sourceUrl={video.sourceUrl}
+                  category={video.category}
+                  language={video.language}
                   triggerClassName="shrink-0 rounded-full"
                 />
               </div>

@@ -1,4 +1,5 @@
-import { ExternalLinkIcon } from "lucide-react";
+import { ExternalLinkIcon, PlayIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 import { EditVideoDialog } from "./edit-video-dialog";
@@ -21,7 +22,12 @@ export function ShortsShelf({ shorts = SHORT_PROJECTS, anchor = true }: ShortsSh
   return (
     <section id={anchor ? "shorts" : undefined} className="scroll-mt-20">
       <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
-        <ShortsGlyph className="size-6 text-red-600" />
+        <span className="relative flex size-6 shrink-0 overflow-hidden rounded-[7px]">
+          <Image src="/brand/mascot.png" alt="" fill className="object-cover" />
+          <span className="absolute inset-0 flex items-center justify-center bg-black/15">
+            <PlayIcon className="size-3 fill-white text-white drop-shadow" />
+          </span>
+        </span>
         Shorts
       </h2>
       <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 lg:grid-cols-5">
@@ -62,6 +68,8 @@ export function ShortsShelf({ shorts = SHORT_PROJECTS, anchor = true }: ShortsSh
                 description={short.description}
                 thumbnailSrc={short.thumbnailSrc}
                 sourceUrl={short.sourceUrl}
+                category={short.category}
+                language={short.language}
                 triggerClassName="size-6 shrink-0 rounded-full p-1 opacity-0 hover:bg-accent group-hover:opacity-100"
               />
             </div>
@@ -69,14 +77,5 @@ export function ShortsShelf({ shorts = SHORT_PROJECTS, anchor = true }: ShortsSh
         ))}
       </div>
     </section>
-  );
-}
-
-function ShortsGlyph({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className}>
-      <rect x="2" y="2" width="20" height="20" rx="7" fill="currentColor" />
-      <path d="M10 7.5 16 12l-6 4.5v-9Z" fill="white" />
-    </svg>
   );
 }
