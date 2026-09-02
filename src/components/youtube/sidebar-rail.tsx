@@ -30,7 +30,7 @@ const TOP_ITEMS: NavItem[] = [
   { label: "Home", icon: HomeIcon, href: "/video-editing" },
   { label: "Shorts", icon: ShortsIcon, href: "/video-editing#shorts" },
   { label: "Long Form", icon: MonitorPlayIcon, href: "/video-editing#long-form" },
-  { label: "Channels We Managed", icon: ListVideoIcon, href: "/channels-we-managed" },
+  { label: "Channels We've Monetized", icon: ListVideoIcon, href: "/channels-we-monetized" },
   { label: "About Us", icon: InfoIcon, href: "/about" },
 ];
 

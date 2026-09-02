@@ -297,10 +297,9 @@ rather than decoration. Current structure, top to bottom:
 - Shorts → `/video-editing#shorts`, Long Form → `/video-editing#long-form` (both anchor into
   sections on the same page; `id="long-form"` wraps the long-form grid in
   `src/app/video-editing/page.tsx`, mirroring the pre-existing `id="shorts"` on `ShortsShelf`).
-- Channels We Managed → `/channels-we-managed` — **placeholder page, content not yet
-  specified.** Client said she'll provide what goes on this page later; per the standing
-  "don't process new folders/pages on your own initiative" rule, do not invent content for
-  it — wait for explicit direction.
+- Channels We've Monetized → `/channels-we-monetized` (renamed from "Channels We Managed" /
+  `/channels-we-managed` — client's copy call, and the route moved to match). Real design now
+  — see below — not a `ComingSoon` stub.
 - About Us → `/about`.
 - Our Services → an expand/collapse dropdown (local `useState`, chevron rotates open), not a
   link itself, containing: Video Editing (→ `/video-editing`, the only one of these four that's
@@ -309,13 +308,40 @@ rather than decoration. Current structure, top to bottom:
   are speced in full further down this file but not yet built.
 - Hire Us → `/hire-us`, Join Us → `/join-us`.
 
-**The remaining 6 not-yet-built destinations render a shared placeholder**,
+**The remaining 5 not-yet-built destinations render a shared placeholder**,
 `src/components/coming-soon.tsx` (mascot image, page title in the display font, "coming soon"
-copy, a link back to `/`) — used by `src/app/{channels-we-managed,hire-us,join-us,
-visual-branding,editorial-direction,marketing-ads}/page.tsx`. This exists purely so the new nav
-doesn't 404; swap each one out for its real design/content as that phase actually gets built —
-don't leave a page on `ComingSoon` once there's real content to put there instead. (`/about` was
-the first of these to get its real design — see below — the rest are still pending.)
+copy, a link back to `/`) — used by `src/app/{hire-us,join-us,visual-branding,
+editorial-direction,marketing-ads}/page.tsx`. This exists purely so the new nav doesn't 404;
+swap each one out for its real design/content as that phase actually gets built — don't leave a
+page on `ComingSoon` once there's real content to put there instead. (`/about` and
+`/channels-we-monetized` are the two of these to get real designs so far — see below — the rest
+are still pending.)
+
+## Channels We've Monetized page (`/channels-we-monetized`) — YouTube search-results clone
+
+Client-managed channels she's monetized for other creators, showcased as a mix of real channel
+links, their top videos, and their top Shorts — styled like an actual YouTube search results
+page (channel result card, video result rows, Shorts shelf), live-inspected against
+youtube.com/results for structure (136px channel avatar, 16:9 video thumbnail rows with a
+description snippet, Shorts shelf reusing the same fixed non-scrolling grid as the rest of the
+site). **Every result is a real external link** (`target="_blank" rel="noopener noreferrer"`)
+straight to the actual YouTube channel/video/short — clicking anything on this page leaves the
+site entirely, by design; there's no internal watch page for this content.
+
+- **Data:** `src/lib/monetized-channels.data.json` (+ `.ts` for types/export) — an array of
+  `{id, name, handle, url, avatarSrc, subscriberLabel, description, topVideos[], topShorts[]}`.
+  Currently **empty** (`[]`) — client said she'll provide the real channel links; do not invent
+  channels, names, or stats. When she does, the intended workflow mirrors the view-count-refresh
+  pattern elsewhere in this file: fetch real title/thumbnail/view-count data from each channel's
+  actual YouTube page (manually, on request) rather than live API calls, and add entries to the
+  JSON directly — no local edit UI was built for this page, since it's a one-time/occasional
+  content population task rather than something the client edits piecemeal like video titles.
+- **Empty state:** a dashed placeholder ("Channel links coming soon") renders when the array is
+  empty, instead of 404-ing or falling back to the generic `ComingSoon` component.
+- Components live in `src/components/monetized/` (`channel-result-card.tsx`,
+  `video-result-row.tsx`, `shorts-result-shelf.tsx`) — kept separate from `src/components/youtube/`
+  since this content isn't part of the Silly Billi Studio "channel" (our own video-editing
+  portfolio), it's a directory of *other* channels.
 
 ## About Us page (`/about`) — YouTube channel-profile clone
 
@@ -349,7 +375,7 @@ the header padding follows that measured layout.
 - Currently empty (`bannerSrc: ""`, `socialLinks: []`, default placeholder description) — client
   hasn't provided a real banner image or her actual social links yet. Do not invent them; wait
   for her to add them through the edit UI or ask for them directly, same as the "don't process
-  new folders" / "don't invent Channels We Managed content" rules elsewhere in this file.
+  new folders" / "don't invent monetized-channel content" rules elsewhere in this file.
 - Featured-video slot is intentionally **empty** (dashed placeholder, "Show Reel will be
   uploaded soon") rather than auto-picking a video — client's explicit call, since a real edited
   show reel doesn't exist yet. All long-form videos (including whichever would've been
