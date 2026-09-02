@@ -12,7 +12,7 @@
       "thumbnailSrc": "/videos/thumbnails/main.png",
       "sourceUrl": "",
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/main.mp4",
-      "language": "english"
+      "language": "other-languages"
     },
     {
       "id": "uncle-ye-heroin-hai-full-documentary",
@@ -127,7 +127,7 @@
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/power2.mp4",
       "description": "Paper Cutout Collages: Cuts out historical figures and classic paintings from their original photos and layers them over custom textured backdrops with colored outlines.\r\n\r\nDouble-Exposure Overlays: Blends speaker footage on top of background scenes, flags, and historic images so both are visible at the same time.\r\n\r\nColor & Light Shifts: Switches between stark black-and-white photos, warm orange-tinted clips, and dim, single-light shots of the speaker to match the mood of the audio.\r\n\r\nBig Text Behind the Speaker: Places giant, bold numbers and words directly behind the speaker's head to mark key moments without blocking the frame.\r\n\r\nStacked Split Screens: Divides the vertical video into three stacked horizontal rows to display multiple matching clips simultaneously.",
       "category": "talking-head",
-      "language": "english"
+      "language": "other-languages"
     },
     {
       "id": "reel-02",
@@ -140,7 +140,7 @@
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/reel-02.mp4",
       "description": "50/50 Split Frame: The bottom half stays locked on the speaker, while the top half acts as a dedicated screen for all supporting visuals.\r\n\r\nKeyword Visual Matching: Top-frame visuals swap rapidly every 1–2 seconds to match specific spoken words (e.g., passport photo on \"travel,\" vet scene on \"veterinary,\" news clipping on \"closure\").\r\n\r\nTight Audio Cuts: All dead air, breath pauses, and hesitations are trimmed out to create an uninterrupted, fast-paced talking rhythm.\r\n\r\nCentered Kinetic Captions: Text appears line-by-line right in the middle of the frame, using a clean sans-serif font to keep eyes centered.\r\n\r\nMixed Visual Media: Blends static charts, high-contrast graphic illustrations, news headlines, and stock footage to prevent the top screen from feeling repetitive.",
       "category": "talking-head",
-      "language": "english"
+      "language": "other-languages"
     },
     {
       "id": "sequence-01-1",
@@ -166,7 +166,7 @@
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/the-reel.mp4",
       "description": "Stacked Dual-View Layout: Pins the two speakers to the bottom frame while using the top half to display matching visual evidence.\r\n\r\nNews & Article Cutaways: Drops in full website screenshots and news headlines right as the speakers reference them.\r\n\r\nData & Chart Displays: Integrates line graphs and table graphics to make financial trends and numbers easy to digest.\r\n\r\nKey Text Pop-Ups: Highlights specific names, dollar amounts, and bet details using clean callout text boxes.\r\n\r\nCentered Dialogue Captions: Runs clear, single-line subtitles across the center line to keep viewers following along without blocking the speakers.",
       "category": "talking-head",
-      "language": "english"
+      "language": "other-languages"
     },
     {
       "id": "trends-2",
@@ -192,7 +192,7 @@
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/facebook-reel-1lores.mp4",
       "description": "Stacked Split-Screen Layout: Kept the speaker pinned in the bottom frame while using the top half entirely for supporting visuals.\r\n\r\nLive Search & Article Clips: Cut directly to Google search queries, news headlines, and web pages the second a date or name is mentioned.\r\n\r\nPhotos & Person Comparisons: Dropped in portrait photos and places two pictures side-by-side on top to visually connect key figures.\r\n\r\nDiagrams & Animated Icons: Used simple maps, flowcharts, and symbol icons to make historical timelines and connections easy to follow.\r\n\r\nReal Video B-Roll: Swapped between static images and short video clips to keep the top panel visually dynamic.\r\n\r\nCenter-Divider Subtitles: Ran clean, high-contrast captions directly across the middle seam between the speaker and the visuals for seamless reading.",
       "category": "talking-head",
-      "language": "english"
+      "language": "other-languages"
     },
     {
       "id": "reel",
@@ -205,7 +205,7 @@
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/reel.mp4",
       "description": "Reconstructed live talking-head podcast footage into a fast-paced, context-rich visual narrative using active media overlays.\r\n\r\nSplit-Screen Architecture: Locked live podcast footage to the bottom frame while driving the visual story with top-screen media overlays.\r\n\r\nContextual Asset Syncing: Paired spoken dialogue directly with archival photos, news headlines, and keyframed text highlights.\r\n\r\nPrecision Visual Callouts: Used hand-drawn red circles, directional arrows, and portrait reveals to point out key subjects instantly.\r\n\r\nKinetic Subtitle Flow: Synced high-contrast, centered captions to maintain tight visual rhythm across dialogue-heavy cuts.",
       "category": "talking-head",
-      "language": "english"
+      "language": "other-languages"
     },
     {
       "id": "article-4-reel-1a",
@@ -257,7 +257,7 @@
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/imran-waseem-dream-team.mp4",
       "description": "Archival Cutaways: Cut seamlessly between studio speaker shots and historical cricket footage to visually illustrate the story in real time.\r\n\r\nSpeech-Timed Pacing: Matched video cuts and photo transitions strictly to the narrator's natural speech pauses and story beats.\r\n\r\nAudio Balancing: Levelled studio voice recordings with background sound clips to maintain smooth, consistent audio volume throughout the edit.\r\n\r\nOn-Screen Captions: Timed clear text overlays to appear precisely alongside the spoken dialogue for effortless reading.",
       "category": "talking-head",
-      "language": "english"
+      "language": "other-languages"
     },
     {
       "id": "imran-khan-king-of-cricket",
@@ -270,7 +270,7 @@
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/imran-khan-king-of-cricket.mp4",
       "description": "Archival Clip Integration: Intercut main studio footage with vintage sports clips and photos to visually reinforce the speaker's story.\r\n\r\nRetro Visual Styling: Overlayed subtle tape textures and static screen transitions onto older clips to visually distinguish historical archive footage from modern studio video.\r\n\r\nPacing & Timing: Cut between visuals directly on speech pauses and key narrative points to maintain smooth storytelling momentum.\r\n\r\nAudio Layering & Transitions: Levelled voice recording over low background music and added subtle transition sound effects during clip switches.\r\n\r\nSpeech-Synced Subtitles: Added centered text captions timed precisely to spoken audio for clear visual readability.",
       "category": "talking-head",
-      "language": "english"
+      "language": "other-languages"
     },
     {
       "id": "pakistanis-want-foreigners-good-time",
