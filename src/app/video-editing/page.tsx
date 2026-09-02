@@ -144,7 +144,7 @@ export default function VideoEditingPage() {
               case. Falls back to an empty anchor so the sidebar's #shorts link always
               resolves to something, even when a filter/search matches zero Shorts. */}
           {!isUnfiltered && (
-            <div className="pb-10">
+            <div className="mt-8 pb-10">
               {filteredShorts.length > 0 ? (
                 <ShortsShelf shorts={filteredShorts} />
               ) : (

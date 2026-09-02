@@ -121,7 +121,7 @@ export default function AboutPage() {
           </div>
 
           {/* Videos */}
-          <div className="py-6">
+          <div className="pt-6">
             <h2 className="mb-3 text-lg font-semibold">Videos</h2>
             <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {VIDEO_PROJECTS.map((video) => (
@@ -130,7 +130,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          <div className="pb-10">
+          <div className="mt-8 pb-10">
             <ShortsShelf />
           </div>
         </main>

@@ -23,7 +23,7 @@ export function ShortsShelf({ shorts = SHORT_PROJECTS, anchor = true }: ShortsSh
     <section id={anchor ? "shorts" : undefined} className="scroll-mt-20">
       <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold">
         <span className="relative flex size-6 shrink-0 overflow-hidden rounded-[7px]">
-          <Image src="/brand/mascot.png" alt="" fill className="object-cover" />
+          <Image src="/brand/mascot.png" alt="" fill sizes="24px" className="object-cover" />
           <span className="absolute inset-0 flex items-center justify-center bg-black/15">
             <PlayIcon className="size-3 fill-white text-white drop-shadow" />
           </span>
