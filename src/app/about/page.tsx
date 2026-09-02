@@ -106,10 +106,10 @@ export default function AboutPage() {
           {/* Tabs */}
           <div className="flex gap-6 border-b text-sm font-medium">
             <span className="border-b-2 border-foreground pb-3">Home</span>
-            <Link href="/video-editing#long-form" className="pb-3 text-muted-foreground hover:text-foreground">
+            <Link href="/video-editing?view=videos" className="pb-3 text-muted-foreground hover:text-foreground">
               Videos
             </Link>
-            <Link href="/video-editing#shorts" className="pb-3 text-muted-foreground hover:text-foreground">
+            <Link href="/video-editing?view=shorts" className="pb-3 text-muted-foreground hover:text-foreground">
               Shorts
             </Link>
           </div>
