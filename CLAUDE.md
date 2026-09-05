@@ -76,8 +76,8 @@ Structure in use:
   video/short cards, thumbnail, watch modal).
 - `src/lib/` — non-component helper/data modules (e.g. `cats.ts`, `videos.ts`).
 - `public/cats/` — source images for the homepage cursor trail array.
-- `public/brand/` — real Silly Billi brand assets (`logo.png`, `mascot.png`) not yet wired
-  into any page.
+- `public/brand/` — real Silly Billi brand assets (`logo.png`, `mascot.png` — see "Mascot
+  asset" below for the latter's history/constraints).
 
 **Theme note:** `globals.css`'s dark-mode tokens apply via `@media (prefers-color-scheme:
 dark)`, not a manual `.dark` class toggle — there's no theme switcher UI in this project.
@@ -243,6 +243,42 @@ rule) and specified the artifact→page mapping directly.
   useful, they can be removed then.
 - A visually-hidden (`sr-only`) `<h1>Silly Billi Studio</h1>` keeps the page's semantic heading
   even though the real branding now reads off the illustration itself.
+
+## Mascot asset (`public/brand/mascot.png`)
+
+Single shared file used everywhere the mascot appears (header logo, video/short card avatars,
+About page profile avatar, Hire Us/Join Us hero icons, `ComingSoon`, the Shorts shelf play
+badge site-wide and on Channels We've Monetized) — replacing it is always just swapping this
+one file, never a per-component change, since every usage already points at the same path.
+
+- **Currently a flat, two-tone orange cat-face icon** (client-provided, replacing an earlier
+  more detailed illustrated design). Background removed via border flood-fill (not a simple
+  color-key) since the design's eyes/whiskers are white — the same white as the background —
+  so only the flood-fill's fill starting from the image *border* correctly leaves those enclosed
+  interior white shapes alone while clearing the actual background.
+- **Must survive a circular crop, not just a square one.** Every usage except the header logo
+  (`rounded-md`, square corners) renders the mascot inside a `rounded-full` avatar via
+  `object-cover` on a square box — a circular clip cuts into the corners of whatever a plain
+  square crop would show. The source image is composited on a square transparent canvas sized
+  so the **entire silhouette sits within the canvas's inscribed circle** (computed as
+  `2 × max distance from canvas center to any opaque pixel`, plus ~8% margin), not just trimmed
+  to a tight bounding box — a tight rectangular trim looks fine in the square-cornered header but
+  gets its jaw/cheek clipped at the bottom corners under `rounded-full` elsewhere. **Lesson:**
+  when an asset needs to render inside a circular mask *anywhere* it's used, verify clearance
+  against the *inscribed circle*, not the bounding square — check by sampling actual decoded
+  pixel alpha at the circle's edge across several angles (canvas `getImageData` in the browser,
+  or a raw buffer read via `sharp`), not by eyeballing a screenshot.
+- **A Turbopack-specific stale-cache trap when swapping this file locally:** replacing
+  `mascot.png` and even fully restarting `next dev` can keep serving an old cached render for
+  specific format/size variants (e.g. the WebP variant a browser negotiates via `Accept:
+  image/webp`) — confirmed via `curl` returning fresh bytes for a plain PNG request while the
+  browser's actual `<img>` kept rendering old content for the WebP variant, with
+  `X-Nextjs-Cache: HIT` on that specific request. Clearing `.next/cache/images` (the classic
+  webpack-era location) and even killing/restarting the dev server process did **not** fix it —
+  Turbopack persists its own cache elsewhere on disk that survives both. Deleting the entire
+  `.next` directory before restarting is what actually worked. If a local asset swap "isn't
+  showing up" despite the file being correct on disk, this is the thing to try before assuming
+  the file itself is wrong.
 
 ## Video Editing page (`/video-editing`) — done
 
