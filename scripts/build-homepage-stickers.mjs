@@ -31,6 +31,37 @@ const TARGETS = [
   { name: "getintouch", color: [0, 255, 255] },
 ];
 
+// A loose row-envelope polygon traced from the real mask, used ONLY to restrict click/hover
+// hit-testing (via CSS clip-path) — not for the visual shape, which the alpha channel already
+// handles pixel-exactly. Padded rectangular hit-boxes for two artifacts sitting close together
+// (VHS tapes / campaign brief folder) were overlapping, so the mouse would flicker between them
+// near the shared padding zone even though the *visible* shapes don't touch. `marginPx` is
+// deliberately generous (loose, not tight) — this only needs to clear the neighboring sticker's
+// hit area, not hug the true silhouette, so there's no risk of clipping a real edge pixel.
+function buildEnvelopeClipPath(matched, width, padMinX, padMinY, boxW, boxH, step, marginPx) {
+  const rows = [];
+  for (let y = 0; y < boxH; y += step) {
+    let minX = -1, maxX = -1;
+    for (let x = 0; x < boxW; x++) {
+      if (matched[(y + padMinY) * width + (x + padMinX)]) {
+        if (minX === -1) minX = x;
+        maxX = x;
+      }
+    }
+    if (minX !== -1) rows.push({ y, minX, maxX });
+  }
+  if (rows.length === 0) return null;
+
+  const left = rows.map((r) => [Math.max(0, r.minX - marginPx), Math.max(0, r.y - marginPx)]);
+  const right = rows
+    .slice()
+    .reverse()
+    .map((r) => [Math.min(boxW - 1, r.maxX + marginPx), Math.min(boxH - 1, r.y + marginPx)]);
+
+  const points = [...left, ...right];
+  return `polygon(${points.map(([x, y]) => `${((x / boxW) * 100).toFixed(1)}% ${((y / boxH) * 100).toFixed(1)}%`).join(", ")})`;
+}
+
 function findComponents(matched, width, height) {
   const visited = new Uint8Array(width * height);
   const components = [];
@@ -153,6 +184,16 @@ async function main() {
       .webp({ lossless: true })
       .toFile(`${OUT_DIR}/${target.name}.webp`);
 
+    // Only single-component targets get a hit-testing clip-path — a multi-component target
+    // (the notebook cluster + its separate pink-sticky patch) can have two disjoint spans on the
+    // same row, which this simple row-envelope can't represent as one polygon without bridging
+    // them. Not needed there anyway: that cluster doesn't sit close enough to any neighbor for
+    // the padded-rectangle overlap problem this is fixing to apply.
+    const clipPath =
+      components.length === 1
+        ? buildEnvelopeClipPath(matched, width, padMinX, padMinY, boxW, boxH, 8, 16)
+        : null;
+
     results.push({
       name: target.name,
       componentCount: components.length,
@@ -163,6 +204,7 @@ async function main() {
         width: `${((boxW / width) * 100).toFixed(2)}%`,
         height: `${((boxH / height) * 100).toFixed(2)}%`,
       },
+      clipPath,
     });
   }
 

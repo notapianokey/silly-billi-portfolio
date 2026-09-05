@@ -1,17 +1,49 @@
 /*
- * Homepage nav "stickers" — each artifact is its own cropped image, clipped to a hand-traced
- * polygon matching the object's real silhouette (not a rectangle), overlaid pixel-for-pixel on
- * the same object drawn in the base scene image beneath it. At rest the two are indistinguishable.
- * On hover/focus the clipped sticker lifts (scale + translate) and gets a glow, like peeling a
- * physical sticker off the desk — this is what makes the *exact object* read as clickable,
- * not an invisible rectangular region around it.
+ * Homepage nav "stickers" — each artifact is its own cropped image with real alpha transparency
+ * traced to the object's exact silhouette (see scripts/build-homepage-stickers.mjs), overlaid
+ * pixel-for-pixel on the same object drawn in the base scene image beneath it. At rest the two
+ * are indistinguishable. On hover/focus the sticker lifts (scale + translate) and gets a glow,
+ * like peeling a physical sticker off the desk.
+ *
+ * The clickable/hoverable area is a SEPARATE element (.hitArea) from the visual sticker
+ * (.sticker), not the same one: .hitArea is clipped to a loose mask-derived polygon so two
+ * artifacts sitting close together (VHS tapes / campaign brief folder) don't have overlapping
+ * rectangular hit-boxes that make the cursor flicker between them. .sticker has no such clip, so
+ * clipping the hit area doesn't also clip the sticker's own grow/lift animation. .stickerLink
+ * itself is pointer-events:none — only .hitArea (pointer-events:auto) actually receives the
+ * pointer; :hover/:focus-visible still apply to .stickerLink because hover state propagates up
+ * the ancestor chain of whatever element was actually hit, regardless of the ancestor's own
+ * pointer-events value, and click bubbles up the same way to trigger the anchor's navigation.
  */
+
+/*
+ * Fits the 3:2 scene into the viewport with no scroll and no cropping, on whichever axis is the
+ * tighter constraint. Deliberately NOT the usual `aspect-[3/2] w-full max-h-full` Tailwind
+ * combo: with an explicit definite width (w-full) and a max-height that ends up clamping it,
+ * browsers do NOT retroactively shrink that definite width to preserve the aspect ratio — only
+ * an auto width gets that treatment. The result was a stage that silently stretched to whatever
+ * the viewport's own aspect ratio happened to be (e.g. 16:9), ignoring aspect-[3/2] entirely.
+ * Computing both dimensions directly with min()/calc() sidesteps that flex/aspect-ratio
+ * cross-constraint ambiguity altogether.
+ */
+.stage {
+  position: relative;
+  width: min(100dvw, calc(100dvh * 1.5));
+  height: min(100dvh, calc(100dvw / 1.5));
+}
 
 .stickerLink {
   position: absolute;
   display: block;
-  cursor: pointer;
+  pointer-events: none;
   outline: none;
+}
+
+.hitArea {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .sticker {
@@ -19,6 +51,7 @@
   display: block;
   width: 100%;
   height: 100%;
+  pointer-events: none;
   transform-origin: 50% 50%;
   transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
   will-change: transform;
