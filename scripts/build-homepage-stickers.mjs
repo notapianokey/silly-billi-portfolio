@@ -120,8 +120,15 @@ async function main() {
       }
     }
 
+    // sharp's .blur() silently promotes a single-channel raw buffer to 3-channel greyscale
+    // (channels: 3, R=G=B) — without forcing it back with toColourspace, the byte layout no
+    // longer matches the assumed 1-byte-per-pixel stride below, which produced a real, exact
+    // period-3 corruption pattern (255,0,0,255,0,0,...) once composited into the alpha channel.
+    // That's the "hazy striped" artifact reported on hover — verified via raw buffer inspection,
+    // not a preview/screenshot quirk.
     const alphaBuf = await sharp(alphaCrop, { raw: { width: boxW, height: boxH, channels: 1 } })
       .blur(FEATHER)
+      .toColourspace("b-w")
       .raw()
       .toBuffer();
 
