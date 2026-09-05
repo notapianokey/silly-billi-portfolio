@@ -1,0 +1,57 @@
+/*
+ * Homepage nav "stickers" — each artifact is its own cropped image, clipped to a hand-traced
+ * polygon matching the object's real silhouette (not a rectangle), overlaid pixel-for-pixel on
+ * the same object drawn in the base scene image beneath it. At rest the two are indistinguishable.
+ * On hover/focus the clipped sticker lifts (scale + translate) and gets a glow, like peeling a
+ * physical sticker off the desk — this is what makes the *exact object* read as clickable,
+ * not an invisible rectangular region around it.
+ */
+
+.stickerLink {
+  position: absolute;
+  display: block;
+  cursor: pointer;
+  outline: none;
+}
+
+.sticker {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  transition: transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: transform;
+}
+
+.stickerLink:hover .sticker,
+.stickerLink:focus-visible .sticker {
+  transform: translateY(-3%) scale(1.08);
+}
+
+.stickerImage {
+  filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0));
+  transition: filter 220ms ease-out;
+}
+
+.stickerLink:hover .stickerImage,
+.stickerLink:focus-visible .stickerImage {
+  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.95))
+    drop-shadow(0 0 16px rgba(255, 255, 255, 0.6)) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.4));
+}
+
+.stickerLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease-out;
+}
+
+.stickerLink:hover .stickerLabel,
+.stickerLink:focus-visible .stickerLabel {
+  opacity: 1;
+}

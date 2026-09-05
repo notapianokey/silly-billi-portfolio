@@ -101,22 +101,15 @@ The original repo directory contained an unrelated generic HTML/CSS/JS portfolio
 illustration (a painterly desk scene — CRT monitor, VHS tapes, a campaign brief folder, an
 open notebook with sticky notes and pens, and wall notes/photos) where **specific physical
 artifacts in the art are the site's real navigation** — this doubles as Phase 3's "nav pills"
-requirement, just implemented as invisible hotspots over hand-picked objects in the scene
-instead of literal button chrome. Client provided the art as 3 renders of the same image at
-different resolutions (`homepage/` in the project root, git-ignored per the "real client
-content stays out of git" rule) and specified the artifact→page mapping directly.
+requirement, just implemented as clickable objects inside the scene instead of literal button
+chrome. Client provided the art as 3 renders of the same image at different resolutions
+(`homepage/` in the project root, git-ignored per the "real client content stays out of git"
+rule) and specified the artifact→page mapping directly.
 
 - **Image:** `public/homepage/scene.webp`, compressed via `ffmpeg` (`libwebp -quality 85`,
   ~3.3MB PNG → ~280KB) from the client's `homepage/final_homepage_1920.png` (1920×1280, exact
   3:2 ratio — the other two renders, `_4K_web` and `_8K`, weren't needed since this is a
   desktop-first site and 1920px source is already above typical desktop viewport width).
-- **Structure:** a `relative aspect-[3/2] w-full max-w-[1600px]` container holds the `<Image
-  fill>` plus one absolutely-positioned `<Link>` per hotspot, each sized/placed with inline-style
-  percentages measured directly against the 1920×1280 source (via `ffmpeg` crop-and-inspect
-  iteration, not guessed) — percentages keep every hotspot pinned to its artifact regardless of
-  viewport width, since the container's own aspect-ratio never changes. On hover/focus a hotspot
-  shows a soft white ring + a small rounded pill label naming the destination (accessible via
-  `aria-label` on the `<Link>` too, and keyboard-focusable via `group-focus-visible`).
 - **The artifact → page mapping is the client's own instruction, not an invented one** — do not
   change which object links where without asking:
   - VHS tapes ("Raw Footage" / "Final Cut") → `/video-editing`
@@ -127,8 +120,48 @@ content stays out of git" rule) and specified the artifact→page mapping direct
   - Photo of the two founders on the wall → `/about`
   - "Get In Touch" note on the wall → `/hire-us` (there's no separate `/contact` route — see the
     Contact form section below, Hire Us already *is* the contact page)
-  - The cat and the CRT monitor screen are deliberately **not** clickable — client asked for "a
-    few" artifacts wired up, not every object in the scene.
+  - The cat, the CRT monitor screen, and the mouse/mousepad are deliberately **not** clickable —
+    client asked for specific artifacts wired up, not every object in the scene.
+- **"Sticker" interaction, not a rectangular hotspot — client's explicit correction.** The first
+  pass used invisible rectangular `<Link>` hitboxes over each object; the client rejected this
+  ("i dont want a clickable hotspot... i want the exact artifacts to be clickable like a
+  sticker") and asked for a visual affordance that makes the *actual object shape* read as
+  clickable — an outline/glow on hover, and the object itself looking a little bigger, "like a
+  component." Rebuilt as real cutout stickers:
+  - Each artifact also exists as its own small cropped image in `public/homepage/stickers/`
+    (`vhs.webp`, `brief.webp`, `notebook.webp`, `logo.webp`, `photo.webp`, `getintouch.webp`) —
+    a padded crop of just that region from the same 1920×1280 source, generated via `ffmpeg
+    crop` + `libwebp`.
+  - That crop is laid **exactly on top of the same object already drawn in the base
+    `scene.webp`**, positioned with percentage `left/top/width/height` matching the crop's
+    original pixel location — so at rest the two are pixel-identical and invisible as a seam.
+  - A CSS `clip-path: polygon(...)` (hand-traced against the object's real silhouette, as
+    percentages of the crop's own box — see the `clipPath` values in `STICKERS` in `page.tsx`)
+    clips each crop down to the object's actual outline rather than its bounding rectangle.
+    `clip-path` also restricts hit-testing/pointer-events to that same traced shape, so the
+    click target genuinely *is* the object's silhouette, not its rectangle — verified via
+    `elementFromPoint()` both inside the traced shape (hits the sticker) and just outside it in
+    the same bounding box (falls through to the plain background image behind it).
+  - On hover/focus (`src/app/page.module.css`, plain CSS Modules rather than Tailwind —
+    combining multiple `drop-shadow()` layers in one `filter` isn't expressible as a single
+    Tailwind arbitrary-value utility) the clipped sticker **lifts**: `transform: translateY(-3%)
+    scale(1.08)` (bigger) plus a multi-layer `filter: drop-shadow(...)` glow (the outline) —
+    `drop-shadow` (unlike `box-shadow`) is computed from the element's rendered/clipped alpha
+    shape, so the glow correctly hugs the traced silhouette instead of a rectangle. A small
+    destination-name pill still fades in on hover for clarity, positioned as a sibling (not
+    scaled with the sticker, so its text doesn't stretch).
+  - The notebook/sticky-notes/pens cluster uses one **concave** traced polygon (13 points) that
+    dips inward around the mouse/mousepad sitting in the middle of that area, so the mouse stays
+    excluded from the combined hotspot despite sitting inside its bounding box.
+  - **Verifying this in the Browser pane tool needed a workaround:** synthetic `hover`/`click`
+    simulation was unreliable for these clipped elements in-session (coordinates that
+    `elementFromPoint()` confirmed were inside the traced shape still sometimes failed to
+    register `:hover` or fire navigation). Confirmed correctness a different way instead: forced
+    the hover styles directly via JS (`element.style.transform`/`.filter`) and screenshotted —
+    proving the CSS/positioning is right — and confirmed navigation with a JS-triggered
+    `.click()`. **Lesson: if the automation tool's synthetic pointer events seem to silently
+    no-op on a `clip-path`-restricted element, verify via direct DOM/CSS inspection and a JS
+    `.click()` before assuming the implementation is broken.**
 - **`src/components/cursor-trail.tsx` and `src/lib/cats.ts`/`public/cats/` were left in place,
   just no longer imported anywhere** — they were a real, working, previously-speced Phase 1
   feature (18 sourced cat photos), not dead placeholder code, so they weren't deleted outright
@@ -225,7 +258,11 @@ client content still needed — see Open decisions).
   `ffmpeg` once to pull duration + a representative frame (resized, ~20-100KB JPG) per video
   into `public/videos/thumbnails/`, and rebuilt `VIDEO_PROJECTS`/`SHORT_PROJECTS` around those
   13 real projects (2 landscape → long-form grid, 11 portrait → Shorts shelf) instead of the
-  earlier 6 fabricated placeholder entries.
+  earlier 6 fabricated placeholder entries. More real Shorts have been added the same way since
+  (e.g. `green-screen-infographics` and `archival-photo-id-graphics`, added when the client
+  dropped 2 new files into the folder) — same workflow each time: `ffprobe`/`ffmpeg` for a
+  thumbnail frame, a new `ShortProject` entry in `videos.data.json`, an entry in
+  `scripts/upload-video-clips.mjs`'s `FILES` map, then run that script to compress+upload.
   - Video content data now lives in `src/lib/videos.data.json` (plain JSON, not hardcoded in
     `videos.ts`) specifically so it's editable — `videos.ts` just imports and re-exports it
     typed.
@@ -253,7 +290,7 @@ client content still needed — see Open decisions).
       writing the resulting public URL into that entry's `videoUrl`. The watch pages render a
       plain `<video src={videoUrl} controls>` first, before ever checking for an embed. Free
       tier is 1GB storage — compression settings were chosen to fit well within that even as
-      more local content gets added (23 clips so far, ~160MB total); re-check the budget before
+      more local content gets added (25 clips so far, ~170MB total); re-check the budget before
       adding a lot more.
     - **`sourceUrl` (fallback only):** `src/components/youtube/social-embed.tsx` renders the
       platform's own free public embed (YouTube iframe, or Instagram's official embed.js

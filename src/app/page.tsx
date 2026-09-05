@@ -1,44 +1,66 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface Hotspot {
+import styles from "./page.module.css";
+
+interface Sticker {
   label: string;
   href: string;
-  style: { left: string; top: string; width: string; height: string };
+  src: string;
+  /** Position/size of the padded crop against the 1920x1280 base scene, in percent. */
+  box: { left: string; top: string; width: string; height: string };
+  /** Hand-traced silhouette of the real object within its own crop, in percent — this is what
+   *  makes the exact artifact (not its bounding box) read as the clickable "sticker". */
+  clipPath: string;
 }
 
-// Percentages measured against the 1920x1280 source render in public/homepage/scene.webp —
-// each box traces one physical artifact in the scene. Keep these in sync if the art changes.
-const HOTSPOTS: Hotspot[] = [
+const STICKERS: Sticker[] = [
   {
     label: "Video Editing",
     href: "/video-editing",
-    style: { left: "0.52%", top: "71.09%", width: "20.31%", height: "24.22%" },
+    src: "/homepage/stickers/vhs.webp",
+    box: { left: "0%", top: "66.41%", width: "26.04%", height: "33.59%" },
+    clipPath:
+      "polygon(7.6% 14.9%, 33.6% 6.5%, 54.4% 7%, 60% 22.1%, 44% 67.9%, 7.6% 60%, 1.6% 34.9%, 1.6% 20.9%)",
   },
   {
     label: "Marketing & Ads",
     href: "/marketing-ads",
-    style: { left: "20.83%", top: "78.91%", width: "25%", height: "21.09%" },
+    src: "/homepage/stickers/brief.webp",
+    box: { left: "17.71%", top: "74.22%", width: "31.25%", height: "25.78%" },
+    clipPath: "polygon(16.7% 13.6%, 29.2% 12.1%, 71.7% 19.7%, 92.5% 87.9%, 92.5% 100%, 9.2% 100%, 4.7% 42.4%)",
   },
   {
     label: "Editorial Direction",
     href: "/editorial-direction",
-    style: { left: "60.42%", top: "53.91%", width: "34.9%", height: "40.63%" },
+    src: "/homepage/stickers/notebook.webp",
+    box: { left: "57.29%", top: "49.22%", width: "41.15%", height: "45.31%" },
+    clipPath:
+      "polygon(7.6% 12.9%, 49.4% 12.9%, 50% 9.5%, 75.3% 6%, 76.6% 35.3%, 75.3% 56.9%, 90.5% 68.1%, 88.6% 87.9%, 62% 86.2%, 57.6% 69%, 50.6% 67.2%, 13.3% 47.4%, 7% 41.4%)",
   },
   {
     label: "Visual Branding",
     href: "/visual-branding",
-    style: { left: "84.11%", top: "5.08%", width: "11.98%", height: "21.09%" },
+    src: "/homepage/stickers/logo.webp",
+    box: { left: "82.03%", top: "1.95%", width: "16.15%", height: "27.34%" },
+    clipPath:
+      "polygon(12.9% 22.9%, 45.2% 15.7%, 82.3% 21.4%, 87.1% 51.4%, 80.6% 85.7%, 48.4% 91.4%, 14.5% 82.9%, 9.7% 48.6%)",
   },
   {
     label: "About Us",
     href: "/about",
-    style: { left: "67.19%", top: "23.44%", width: "17.19%", height: "22.66%" },
+    src: "/homepage/stickers/photo.webp",
+    box: { left: "65.1%", top: "20.31%", width: "21.35%", height: "28.91%" },
+    clipPath:
+      "polygon(11% 16.2%, 48.8% 9.5%, 90.2% 14.9%, 95.1% 48.6%, 89% 83.8%, 51.2% 87.8%, 12.2% 81.1%, 8.5% 45.9%)",
   },
   {
     label: "Hire Us",
     href: "/hire-us",
-    style: { left: "67.19%", top: "3.91%", width: "12.5%", height: "19.53%" },
+    src: "/homepage/stickers/getintouch.webp",
+    box: { left: "65.1%", top: "0.78%", width: "16.67%", height: "25.78%" },
+    clipPath:
+      "polygon(15.6% 16.7%, 51.6% 10.6%, 85.9% 18.2%, 90.6% 51.5%, 82.8% 87.9%, 50% 92.4%, 14.1% 83.3%, 10.9% 45.5%)",
   },
 ];
 
@@ -56,17 +78,28 @@ export default function Home() {
           sizes="(min-width: 1600px) 1600px, 100vw"
           className="object-cover"
         />
-        {HOTSPOTS.map((spot) => (
+        {STICKERS.map((sticker) => (
           <Link
-            key={spot.href}
-            href={spot.href}
-            aria-label={spot.label}
-            className="group absolute rounded-xl outline-none"
-            style={spot.style}
+            key={sticker.href}
+            href={sticker.href}
+            aria-label={sticker.label}
+            className={styles.stickerLink}
+            style={sticker.box}
           >
-            <span className="absolute inset-0 flex items-center justify-center rounded-xl bg-black/0 ring-0 ring-white/0 transition-all duration-200 group-hover:bg-black/15 group-hover:ring-4 group-hover:ring-white/85 group-focus-visible:bg-black/15 group-focus-visible:ring-4 group-focus-visible:ring-white/85">
-              <span className="rounded-full bg-foreground px-3 py-1 text-xs font-semibold text-background opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
-                {spot.label}
+            <span className={styles.sticker}>
+              <Image
+                src={sticker.src}
+                alt=""
+                fill
+                quality={90}
+                sizes="30vw"
+                className={`object-cover ${styles.stickerImage}`}
+                style={{ clipPath: sticker.clipPath }}
+              />
+            </span>
+            <span className={styles.stickerLabel}>
+              <span className="rounded-full bg-foreground px-3 py-1 text-xs font-semibold text-background shadow-lg">
+                {sticker.label}
               </span>
             </span>
           </Link>

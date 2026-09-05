@@ -54,6 +54,8 @@ const FILES = {
     "This mothers interview is one of the most heartbreaking parts of our documentary.If you stil ha.mp4",
   "property-dealers-vs-kickboxer-football-challenge":
     "Property Dealers Vs. Kickboxer Football Challenge.mp4",
+  "green-screen-infographics": "Green Screen Infographics.mp4",
+  "archival-photo-id-graphics": "ssss.mp4",
 };
 
 /** Longer pieces get compressed harder to stay within the free storage budget. */
