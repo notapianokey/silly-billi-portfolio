@@ -95,25 +95,47 @@ The original repo directory contained an unrelated generic HTML/CSS/JS portfolio
 ("Colin Gridley") — that was discarded entirely except two real Silly Billi brand assets
 (mascot illustration, wordmark logo), which were kept and moved into `public/brand/`.
 
-## Homepage (`src/app/page.tsx`, `src/components/cursor-trail.tsx`) — done
+## Homepage (`src/app/page.tsx`) — done, redesigned as a clickable illustrated scene
 
-- Centered, bold display-type headline reading "Silly Billi Studio" (Bricolage Grotesque via
-  `next/font/google`, exposed as the `--font-display` CSS variable / `font-display` Tailwind
-  font family).
-- Cursor Image Trail: tracks pointer position via a single `pointermove` listener on `window`
-  (Pointer Events API — unifies mouse/touch/pen, no separate touch handling needed). Every
-  30–50px (randomized per spawn) of movement, spawns a cat image from `CAT_IMAGES`
-  (`src/lib/cats.ts`) at the pointer position with random rotation (-12°/12°), which then
-  scales down and fades out over 0.8s via the `cat-trail-fade` keyframe in `globals.css`, then
-  unmounts. Capped at 40 concurrent images.
-- Touch: works the same way — `pointermove` fires during touch-drag. The homepage `<main>` has
-  `touch-none` (touch-action: none) so the browser doesn't hijack the drag as a scroll gesture
-  instead of firing pointer events. If a future page needs to scroll on touch, don't apply
-  `touch-none` globally — scope it to whatever region actually needs the trail.
-- `CAT_IMAGES` (`src/lib/cats.ts`) holds 18 real cat photos (`public/cats/cat-01.jpg` …
-  `cat-18.jpg`), picked at random per spawn. More can be added by dropping a file in and
-  adding one import + array entry — no other code changes needed.
-- No nav pills yet (deferred to Phase 3, once the Video Editing page exists to link to).
+**Replaced the original headline + Cursor Image Trail homepage** with a single full-bleed
+illustration (a painterly desk scene — CRT monitor, VHS tapes, a campaign brief folder, an
+open notebook with sticky notes and pens, and wall notes/photos) where **specific physical
+artifacts in the art are the site's real navigation** — this doubles as Phase 3's "nav pills"
+requirement, just implemented as invisible hotspots over hand-picked objects in the scene
+instead of literal button chrome. Client provided the art as 3 renders of the same image at
+different resolutions (`homepage/` in the project root, git-ignored per the "real client
+content stays out of git" rule) and specified the artifact→page mapping directly.
+
+- **Image:** `public/homepage/scene.webp`, compressed via `ffmpeg` (`libwebp -quality 85`,
+  ~3.3MB PNG → ~280KB) from the client's `homepage/final_homepage_1920.png` (1920×1280, exact
+  3:2 ratio — the other two renders, `_4K_web` and `_8K`, weren't needed since this is a
+  desktop-first site and 1920px source is already above typical desktop viewport width).
+- **Structure:** a `relative aspect-[3/2] w-full max-w-[1600px]` container holds the `<Image
+  fill>` plus one absolutely-positioned `<Link>` per hotspot, each sized/placed with inline-style
+  percentages measured directly against the 1920×1280 source (via `ffmpeg` crop-and-inspect
+  iteration, not guessed) — percentages keep every hotspot pinned to its artifact regardless of
+  viewport width, since the container's own aspect-ratio never changes. On hover/focus a hotspot
+  shows a soft white ring + a small rounded pill label naming the destination (accessible via
+  `aria-label` on the `<Link>` too, and keyboard-focusable via `group-focus-visible`).
+- **The artifact → page mapping is the client's own instruction, not an invented one** — do not
+  change which object links where without asking:
+  - VHS tapes ("Raw Footage" / "Final Cut") → `/video-editing`
+  - "CAMPAIGN BRIEF" folder → `/marketing-ads`
+  - Open notebook + surrounding crumpled sticky notes + pens (one combined hotspot, not split
+    per-object) → `/editorial-direction`
+  - "Silly [Studio]" logo sticky note on the wall → `/visual-branding`
+  - Photo of the two founders on the wall → `/about`
+  - "Get In Touch" note on the wall → `/hire-us` (there's no separate `/contact` route — see the
+    Contact form section below, Hire Us already *is* the contact page)
+  - The cat and the CRT monitor screen are deliberately **not** clickable — client asked for "a
+    few" artifacts wired up, not every object in the scene.
+- **`src/components/cursor-trail.tsx` and `src/lib/cats.ts`/`public/cats/` were left in place,
+  just no longer imported anywhere** — they were a real, working, previously-speced Phase 1
+  feature (18 sourced cat photos), not dead placeholder code, so they weren't deleted outright
+  on the chance they get reused elsewhere. If a future pass confirms they're truly done being
+  useful, they can be removed then.
+- A visually-hidden (`sr-only`) `<h1>Silly Billi Studio</h1>` keeps the page's semantic heading
+  even though the real branding now reads off the illustration itself.
 
 ## Video Editing page (`/video-editing`) — done
 
@@ -573,7 +595,9 @@ engine from scratch.
 - **Mobile responsiveness:** desktop is the current priority. A simplified mobile view is
   wanted, but not yet — don't spend time on responsive breakpoints until asked, but don't
   write markup that would be painful to make responsive later either.
-- **Nav pills** (4 buttons homepage → service pages): deferred to Phase 3.
+- ~~**Nav pills** (4 buttons homepage → service pages): deferred to Phase 3.~~ Done, in a
+  different form than originally speced — see the Homepage section above. The client replaced
+  the plain-button plan with clickable artifacts inside the new illustrated homepage scene.
 
 ## Open decisions / not yet specified
 

@@ -29,7 +29,7 @@ strict mode is on with no errors.
 
 ## Phase 1 — Homepage
 
-**Goal:** hero headline + working Cursor Image Trail, desktop-first, touch-capable.
+**Goal (original):** hero headline + working Cursor Image Trail, desktop-first, touch-capable.
 
 - [x] Build hero section: centered "Silly Billi Agency" display headline.
 - [x] Source cat images into `/public/cats/` — 18 real cat photos provided and wired in.
@@ -43,10 +43,14 @@ strict mode is on with no errors.
       fade all match spec), layout holds at a mobile viewport width. Since the Pointer Events
       API is what makes this touch-compatible in the first place, this should carry over to
       real touch devices — but it's still worth a quick check on an actual phone before launch.
-- [x] No nav pills yet — homepage is just headline + trail for this phase.
 
-**Done when:** homepage is deployed, cursor trail feels good on desktop and works on touch,
-no console errors, no major layout shift.
+**Superseded:** the client later replaced this entirely with an illustrated desk-scene
+homepage where hand-picked artifacts are clickable nav links (see `CLAUDE.md`'s Homepage
+section) — the headline + Cursor Image Trail are no longer on `/`. `cursor-trail.tsx` and the
+cat assets were kept, just unused, in case they get reused elsewhere.
+
+**Done when:** ~~homepage is deployed, cursor trail feels good on desktop and works on touch,
+no console errors, no major layout shift.~~ Superseded — see above.
 
 ---
 
@@ -118,13 +122,13 @@ a new tab, and Lighthouse/page-weight on `/contact` shows no regression from add
 
 ## Phase 3 — Homepage nav pills
 
-**Goal:** wire the homepage to the service pages.
+**Goal (original):** wire the homepage to the service pages via 4 nav pill buttons.
 
-- [ ] Add the 4 nav pill buttons below the hero, styled per original spec.
-- [ ] Link to `/video-editing`, `/visual-branding`, `/editorial-direction`, `/marketing-ads`
-      (the latter three can 404 or be stubbed until their phases land).
-
-**Done when:** all 4 pills render and route correctly (even if some destinations are stubs).
+**Done, in a different form:** the client replaced plain nav-pill buttons with clickable
+artifacts inside the new illustrated homepage scene (see Phase 1 above and `CLAUDE.md`'s
+Homepage section) — VHS tapes → Video Editing, campaign brief folder → Marketing & Ads,
+notebook/sticky-notes cluster → Editorial Direction, wall logo → Visual Branding, founders'
+photo → About Us, "Get In Touch" note → Hire Us.
 
 ---
 
