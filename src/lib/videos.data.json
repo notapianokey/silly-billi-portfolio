@@ -578,27 +578,28 @@
       "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/green-screen-infographics.mp4"
     },
     {
-      "id": "archival-photo-id-graphics",
-      "title": "Archival Footage & Name-Tag ID Graphics",
+      "id": "commentary-reel-archival-cutaways",
+      "title": "Commentary Reel: Graphic Intro & Archival News Cutaways",
       "views": 0,
       "paletteIndex": 0,
-      "durationSeconds": 131,
-      "thumbnailSrc": "/videos/thumbnails/archival-photo-id-graphics.jpg",
+      "durationSeconds": 65,
+      "thumbnailSrc": "/videos/thumbnails/commentary-reel-archival-cutaways.jpg",
       "sourceUrl": "",
-      "description": "Archival Photo Integration: Cuts to black-and-white historical photographs the moment a name is mentioned, keeping the podcast panel's reaction visible underneath in a stacked layout.\r\n\r\nName-Tag ID Cards: Overlays a small headshot-and-name identity card directly on top of archival photos to instantly clarify who a background figure is, without the hosts needing to explain out loud.\r\n\r\nDirectional Callout Arrows: Adds hand-drawn-style arrows pointing at specific faces or details within a busy archival image so viewers know exactly where to look.\r\n\r\nMulti-Cam Panel Cutting: Switches between a wide 3-person panel shot and individual reactions to keep a long-form conversation visually active.",
+      "description": "Kinetic Graphic Intro: Opens on a custom-designed commemorative-coin animation over a repeating branded pattern backdrop to hook viewers before the speaker even appears.\r\n\r\nArchival News Cutaways: Cuts from the webcam-style talking head to aerial news footage the instant a real-world event is referenced, grounding the commentary in visual evidence.\r\n\r\nWebcam-Style Talking Head: Keeps the framing casual and direct-to-camera to match the conversational, reactive tone of the commentary.\r\n\r\nCentered Kinetic Captions: Times bold, centered captions to the spoken cadence so the piece reads clearly even on mute.",
       "category": "talking-head",
       "language": "english",
       "tags": [
-        "podcast",
-        "interview",
-        "archival-footage",
-        "multi-cam",
         "commentary",
+        "explainer",
+        "archival-footage",
         "kinetic-typography",
+        "motion-graphics",
         "animated-graphics",
-        "fast-paced-cuts"
+        "subtitled",
+        "b-roll-heavy",
+        "talking-head"
       ],
-      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/archival-photo-id-graphics.mp4"
+      "videoUrl": "https://6pfetlxlrz2r9k7y.public.blob.vercel-storage.com/videos/commentary-reel-archival-cutaways.mp4"
     },
     {
       "id": "this-mothers-interview-heartbreaking",
