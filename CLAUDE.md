@@ -122,46 +122,87 @@ rule) and specified the artifact→page mapping directly.
     Contact form section below, Hire Us already *is* the contact page)
   - The cat, the CRT monitor screen, and the mouse/mousepad are deliberately **not** clickable —
     client asked for specific artifacts wired up, not every object in the scene.
-- **"Sticker" interaction, not a rectangular hotspot — client's explicit correction.** The first
-  pass used invisible rectangular `<Link>` hitboxes over each object; the client rejected this
-  ("i dont want a clickable hotspot... i want the exact artifacts to be clickable like a
-  sticker") and asked for a visual affordance that makes the *actual object shape* read as
-  clickable — an outline/glow on hover, and the object itself looking a little bigger, "like a
-  component." Rebuilt as real cutout stickers:
-  - Each artifact also exists as its own small cropped image in `public/homepage/stickers/`
-    (`vhs.webp`, `brief.webp`, `notebook.webp`, `logo.webp`, `photo.webp`, `getintouch.webp`) —
-    a padded crop of just that region from the same 1920×1280 source, generated via `ffmpeg
-    crop` + `libwebp`.
-  - That crop is laid **exactly on top of the same object already drawn in the base
-    `scene.webp`**, positioned with percentage `left/top/width/height` matching the crop's
-    original pixel location — so at rest the two are pixel-identical and invisible as a seam.
-  - A CSS `clip-path: polygon(...)` (hand-traced against the object's real silhouette, as
-    percentages of the crop's own box — see the `clipPath` values in `STICKERS` in `page.tsx`)
-    clips each crop down to the object's actual outline rather than its bounding rectangle.
-    `clip-path` also restricts hit-testing/pointer-events to that same traced shape, so the
-    click target genuinely *is* the object's silhouette, not its rectangle — verified via
-    `elementFromPoint()` both inside the traced shape (hits the sticker) and just outside it in
-    the same bounding box (falls through to the plain background image behind it).
-  - On hover/focus (`src/app/page.module.css`, plain CSS Modules rather than Tailwind —
-    combining multiple `drop-shadow()` layers in one `filter` isn't expressible as a single
-    Tailwind arbitrary-value utility) the clipped sticker **lifts**: `transform: translateY(-3%)
-    scale(1.08)` (bigger) plus a multi-layer `filter: drop-shadow(...)` glow (the outline) —
-    `drop-shadow` (unlike `box-shadow`) is computed from the element's rendered/clipped alpha
-    shape, so the glow correctly hugs the traced silhouette instead of a rectangle. A small
-    destination-name pill still fades in on hover for clarity, positioned as a sibling (not
-    scaled with the sticker, so its text doesn't stretch).
-  - The notebook/sticky-notes/pens cluster uses one **concave** traced polygon (13 points) that
-    dips inward around the mouse/mousepad sitting in the middle of that area, so the mouse stays
-    excluded from the combined hotspot despite sitting inside its bounding box.
-  - **Verifying this in the Browser pane tool needed a workaround:** synthetic `hover`/`click`
-    simulation was unreliable for these clipped elements in-session (coordinates that
-    `elementFromPoint()` confirmed were inside the traced shape still sometimes failed to
-    register `:hover` or fire navigation). Confirmed correctness a different way instead: forced
-    the hover styles directly via JS (`element.style.transform`/`.filter`) and screenshotted —
-    proving the CSS/positioning is right — and confirmed navigation with a JS-triggered
-    `.click()`. **Lesson: if the automation tool's synthetic pointer events seem to silently
-    no-op on a `clip-path`-restricted element, verify via direct DOM/CSS inspection and a JS
-    `.click()` before assuming the implementation is broken.**
+- **"Sticker" interaction, not a rectangular hotspot — client's explicit correction, went
+  through two failed approaches before landing on the real fix.**
+  - **Attempt 1 (rejected):** invisible rectangular `<Link>` hitboxes over each object. Client
+    rejected this outright ("i dont want a clickable hotspot... i want the exact artifacts to be
+    clickable like a sticker") — wanted the *actual object shape* to read as clickable (outline/
+    glow on hover, object looking a little bigger), not an invisible box around it.
+  - **Attempt 2 (also wrong):** hand-typed `clip-path: polygon(...)` coordinates, eyeballed off
+    cropped screenshots, per artifact. Looked plausible in review but the client reported only
+    part of the VHS tapes and campaign brief folder actually responded to hover — the polygons
+    were just imprecise (irregular painted objects don't trace well by eye). **Lesson: don't
+    hand-type pixel/polygon coordinates for an irregular shape from a screenshot estimate — it
+    will be wrong in ways that aren't obvious until someone tests the real hover area.**
+  - **What actually works — a hand-filled pixel mask, not hand-typed coordinates.** The client
+    offered to help by marking up the art directly rather than me continuing to guess: she filled
+    each of the 6 artifacts solid with a distinct flat color (red/green/blue/yellow/magenta/cyan)
+    on a copy of `final_homepage_1920.png`, saved as `homepage/masked banner homepage.png`
+    (git-ignored raw content, same as the source renders). `scripts/build-homepage-stickers.mjs`
+    thresholds each color into a binary mask (tight tolerance + connected-component filtering, so
+    stray photo-texture pixels elsewhere in the painting — e.g. the cat's orange fur briefly
+    registering as "red" at a loose tolerance — don't get pulled in), then bakes that exact
+    silhouette into a real alpha channel on a crop of the *original, unmasked* scene image. No
+    clip-path, no polygon math — the sticker's own transparency **is** the shape. Output lives in
+    `public/homepage/stickers/` (`vhs.webp`, `brief.webp`, `notebook.webp`, `logo.webp`,
+    `photo.webp`, `getintouch.webp`), positioned in `STICKERS` in `page.tsx` with percentage
+    `left/top/width/height` matching the mask script's computed bounding box (padded ~40px for
+    hover-scale headroom), laid exactly on top of the same object in the base `scene.webp` — at
+    rest the two are pixel-identical. Re-running the mask script after a new marked-up image: copy
+    the printed `box` percentages into `STICKERS`.
+  - The notebook/sticky-notes/pens cluster mask correctly excludes both pens and the mousepad
+    (the client filled around them) — confirmed the real mousepad's actual painted blue is a
+    different, muted shade from the pure mask blue, so the threshold doesn't accidentally include
+    it. The "blue" mask also legitimately covers **two disconnected regions** (the main
+    notebook/sticky cluster and the separate pink-sticky patch) — the build script keeps both as
+    one combined bounding box/sticker rather than splitting them, matching the client's original
+    "notebook + all the sticky notes" grouping.
+  - **Two real, non-obvious bugs found and fixed while building this — both confirmed via raw
+    pixel inspection (canvas `getImageData` in the live browser, and `sharp`'s own raw buffer
+    output), not by eyeballing screenshots, after screenshot-based checks gave false confidence
+    twice:**
+    1. **Served-image format.** Sticker `<img>`s must NOT go through `next/image` — Next's
+       optimizer re-encodes everything it serves as lossy WebP/AVIF regardless of source format
+       or `quality` setting, which reintroduces faint non-zero alpha at compressed-block edges.
+       Invisible at rest, but `filter: drop-shadow(...)` on hover amplifies it into a visible
+       ghost rectangle. Fixed by serving these specific cutouts as plain `<img>` tags (with an
+       `eslint-disable-next-line @next/next/no-img-element`) pointing at pre-compressed
+       **lossless** WebP files (`sharp(...).webp({ lossless: true })` in the build script) — the
+       base `scene.webp` background stays on `next/image` since it has no transparency to protect.
+    2. **The actual "hazy striped" corruption the client saw.** `sharp`'s `.blur()` silently
+       promotes a single-channel raw buffer to 3-channel greyscale (R=G=B) — the build script kept
+       reading the blurred buffer as 1 byte/pixel, so it was actually reading every 3rd byte as a
+       pixel's alpha value. This produced an *exact* period-3 corruption pattern
+       (`255, 0, 0, 255, 0, 0, ...`) baked directly into every sticker's alpha channel — that's
+       what looked like a hazy stripe on hover. Fixed with `.toColourspace("b-w")` right after
+       `.blur()`, before reading the buffer back out. **Lesson: after any sharp pipeline step,
+       don't assume the channel count you started with — read `info.channels` back (or force it)
+       instead of hard-coding a stride.**
+  - On hover/focus (`src/app/page.module.css`, plain CSS Modules rather than Tailwind — combining
+    multiple `drop-shadow()` layers in one `filter` isn't expressible as a single Tailwind
+    arbitrary-value utility) the sticker **lifts**: `transform: translateY(-3%) scale(1.08)`
+    (bigger) plus a multi-layer `filter: drop-shadow(...)` glow (the outline) — `drop-shadow`
+    (unlike `box-shadow`) is computed from the element's real alpha shape, so the glow hugs the
+    traced silhouette instead of a rectangle. **All three drop-shadow layers use a symmetric `0 0`
+    offset, not a directional one** — an earlier version offset the dark contrast layer downward
+    (`0 14px 22px`) to fake a "lifting" shadow, which the container's `overflow-hidden` frame
+    edge clipped away entirely for the Campaign Brief folder (its sticker sits flush against the
+    bottom of the frame), leaving only the white glow layer — too low-contrast against the light
+    tan folder/desk to read as anything happening. A symmetric shadow keeps a visible contrast
+    halo on whichever sides aren't clipped, regardless of which frame edge an artifact is near.
+    A small destination-name pill still fades in on hover for clarity, positioned as a sibling
+    (not scaled with the sticker, so its text doesn't stretch).
+  - **Verifying any of this in the Browser pane tool needed a workaround:** synthetic
+    `hover`/`click` simulation was unreliable in-session — sometimes silently not registering
+    `:hover` even at coordinates confirmed correct via `elementFromPoint()`, and forcing a CSS
+    transition's target value via JS then reading `getComputedStyle()` **immediately** (same
+    tick) reads the transition's *starting* value, not its target, giving a false "it's not
+    applying" result. Reliable checks that actually worked: forcing styles via JS + a short
+    `setTimeout` wait before reading computed values or screenshotting; confirming navigation
+    with a JS-triggered `.click()`; and, most importantly, reading real decoded pixel bytes
+    (canvas `getImageData`, or `sharp`'s raw buffer output) rather than trusting a screenshot or
+    the Read tool's own image preview — both of those visually "looked fine" at points where the
+    underlying data was later proven corrupted.
 - **`src/components/cursor-trail.tsx` and `src/lib/cats.ts`/`public/cats/` were left in place,
   just no longer imported anywhere** — they were a real, working, previously-speced Phase 1
   feature (18 sourced cat photos), not dead placeholder code, so they weren't deleted outright
@@ -259,10 +300,23 @@ client content still needed — see Open decisions).
   into `public/videos/thumbnails/`, and rebuilt `VIDEO_PROJECTS`/`SHORT_PROJECTS` around those
   13 real projects (2 landscape → long-form grid, 11 portrait → Shorts shelf) instead of the
   earlier 6 fabricated placeholder entries. More real Shorts have been added the same way since
-  (e.g. `green-screen-infographics` and `archival-photo-id-graphics`, added when the client
-  dropped 2 new files into the folder) — same workflow each time: `ffprobe`/`ffmpeg` for a
-  thumbnail frame, a new `ShortProject` entry in `videos.data.json`, an entry in
-  `scripts/upload-video-clips.mjs`'s `FILES` map, then run that script to compress+upload.
+  (e.g. `green-screen-infographics` and `commentary-reel-archival-cutaways`) — same workflow each
+  time: `ffprobe`/`ffmpeg` for a thumbnail frame, a new `ShortProject` entry in
+  `videos.data.json`, an entry in `scripts/upload-video-clips.mjs`'s `FILES` map, then run that
+  script to compress+upload.
+  - **Identify "new" files in the folder by modification date, not by filename diffing against
+    what's already mapped.** The client reuses filenames — she renames an old, already-processed
+    file aside specifically to free up its name for new content (e.g. an old file became
+    `ssss.mp4` so a brand-new file could be added as `reel.mp4`). Diffing filenames against
+    `videos.data.json`/the `FILES` map got this backwards once: it flagged the renamed-aside old
+    file as "new" (wasting a Blob upload on content that was already live under a different id —
+    had to `del()` it and remove the wrongful data entry) while missing that `reel.mp4` now held
+    genuinely new content, since that filename was already a mapped id with a `videoUrl` set (so
+    the upload script's own "skip if it already has a videoUrl" dedup logic silently ignored the
+    swapped-in new content too). Check `ls -la --time-style=full-iso` (or similar) against
+    filenames already in `FILES` — a mapped filename whose current file has different duration/
+    dimensions than its data entry describes means the file was swapped, not that it's already
+    handled.
   - Video content data now lives in `src/lib/videos.data.json` (plain JSON, not hardcoded in
     `videos.ts`) specifically so it's editable — `videos.ts` just imports and re-exports it
     typed.
