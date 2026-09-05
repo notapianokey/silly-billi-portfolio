@@ -1,7 +1,6 @@
 "use client";
 
-import { MenuIcon, SearchIcon, UserCircleIcon, XIcon } from "lucide-react";
-import { EllipsisVertical } from "lucide-react";
+import { SearchIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -20,9 +19,6 @@ export function TopHeader({ query, onQueryChange }: TopHeaderProps) {
   return (
     <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background px-4 md:px-6">
       <div className="flex shrink-0 items-center gap-4">
-        <Button variant="ghost" size="icon" className="size-9 rounded-full">
-          <MenuIcon className="size-5" />
-        </Button>
         <Link href="/video-editing" className="flex items-center gap-1.5">
           <Image
             src="/brand/mascot.png"
@@ -87,12 +83,13 @@ export function TopHeader({ query, onQueryChange }: TopHeaderProps) {
       </div>
 
       <div className="flex shrink-0 items-center gap-2">
-        <Button variant="ghost" size="icon" className="size-9 rounded-full">
-          <EllipsisVertical className="size-5" />
-        </Button>
-        <Button variant="outline" className="gap-2 rounded-full">
-          <UserCircleIcon className="size-5" />
-          Sign in
+        <Button
+          variant="outline"
+          className="rounded-full"
+          nativeButton={false}
+          render={<Link href="/hire-us" />}
+        >
+          Hire Us
         </Button>
       </div>
     </header>

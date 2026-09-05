@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   ExternalLinkIcon,
@@ -20,6 +21,7 @@ import { EditVideoDialog } from "@/components/youtube/edit-video-dialog";
 import { SidebarRail } from "@/components/youtube/sidebar-rail";
 import { SocialEmbed } from "@/components/youtube/social-embed";
 import { TopHeader } from "@/components/youtube/top-header";
+import { shareLink } from "@/lib/share";
 import { cn } from "@/lib/utils";
 import {
   getEmbedInfo,
@@ -39,6 +41,9 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
   const [descriptionOpen, setDescriptionOpen] = useState(false);
   const [playing, setPlaying] = useState(true);
   const [muted, setMuted] = useState(true);
+  const [subscribed, setSubscribed] = useState(false);
+  const [liked, setLiked] = useState(false);
+  const [shared, setShared] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   if (index === -1) notFound();
@@ -48,6 +53,15 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
   const next = SHORT_PROJECTS[index + 1];
   const embedInfo = short.sourceUrl ? getEmbedInfo(short.sourceUrl) : null;
   const gradient = THUMBNAIL_PALETTE[short.paletteIndex % THUMBNAIL_PALETTE.length];
+  const baseLikes = Math.round(short.views / 3200) || 0;
+
+  async function handleShare() {
+    const result = await shareLink(`/video-editing/shorts/${short.id}`, short.title);
+    if (result === "copied" || result === "shared") {
+      setShared(true);
+      setTimeout(() => setShared(false), 2000);
+    }
+  }
 
   function togglePlay() {
     const video = videoRef.current;
@@ -165,9 +179,13 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                     <span className="text-sm font-semibold text-white">Silly Billi Studio</span>
                     <button
                       type="button"
-                      className="ml-1 rounded-full border border-white/70 px-3 py-1 text-xs font-medium text-white"
+                      onClick={() => setSubscribed((current) => !current)}
+                      className={cn(
+                        "ml-1 rounded-full border px-3 py-1 text-xs font-medium text-white",
+                        subscribed ? "border-white/30 bg-white/20" : "border-white/70",
+                      )}
                     >
-                      Subscribe
+                      {subscribed ? "Subscribed" : "Subscribe"}
                     </button>
                   </div>
                   <button
@@ -203,8 +221,17 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
 
             {/* Action rail */}
             <div className="flex flex-col items-center gap-5">
-              <RailButton icon={ThumbsUpIcon} label={String(Math.round(short.views / 3200) || 0)} />
-              <RailButton icon={ShareIcon} label="Share" />
+              <RailButton
+                icon={ThumbsUpIcon}
+                label={String(baseLikes + (liked ? 1 : 0))}
+                active={liked}
+                onClick={() => setLiked((current) => !current)}
+              />
+              <RailButton
+                icon={shared ? CheckIcon : ShareIcon}
+                label={shared ? "Copied" : "Share"}
+                onClick={handleShare}
+              />
               {short.sourceUrl && (
                 <a
                   href={short.sourceUrl}
@@ -243,14 +270,23 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
 function RailButton({
   icon: Icon,
   label,
+  onClick,
+  active,
 }: {
   icon: React.ComponentType<{ className?: string }>;
   label: string;
+  onClick?: () => void;
+  active?: boolean;
 }) {
   return (
-    <button type="button" className="flex flex-col items-center gap-1">
-      <span className="flex size-11 items-center justify-center rounded-full bg-secondary hover:bg-accent">
-        <Icon className="size-5" />
+    <button type="button" onClick={onClick} aria-pressed={active} className="flex flex-col items-center gap-1">
+      <span
+        className={cn(
+          "flex size-11 items-center justify-center rounded-full bg-secondary hover:bg-accent",
+          active && "bg-primary text-primary-foreground hover:bg-primary/80",
+        )}
+      >
+        <Icon className={cn("size-5", active && "fill-current")} />
       </span>
       <span className="text-xs font-medium text-muted-foreground">{label}</span>
     </button>

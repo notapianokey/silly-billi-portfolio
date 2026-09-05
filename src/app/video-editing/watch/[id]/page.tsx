@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  CheckIcon,
   ChevronDownIcon,
   ChevronUpIcon,
   ExternalLinkIcon,
@@ -14,7 +15,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { use, useState } from "react";
+import { use, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { EditVideoDialog } from "@/components/youtube/edit-video-dialog";
@@ -22,6 +23,7 @@ import { SidebarRail } from "@/components/youtube/sidebar-rail";
 import { SocialEmbed } from "@/components/youtube/social-embed";
 import { TopHeader } from "@/components/youtube/top-header";
 import { VideoRowCard } from "@/components/youtube/video-row-card";
+import { shareLink } from "@/lib/share";
 import { cn } from "@/lib/utils";
 import {
   getEmbedInfo,
@@ -35,18 +37,46 @@ interface WatchPageProps {
   params: Promise<{ id: string }>;
 }
 
+/** "1:32" / "1:02:05" -> seconds. Chapter timestamps match `formatDuration()`'s output format. */
+function parseTimestamp(timestamp: string): number {
+  const parts = timestamp.split(":").map(Number);
+  return parts.reduce((total, part) => total * 60 + part, 0);
+}
+
 export default function WatchPage({ params }: WatchPageProps) {
   const { id } = use(params);
   const video = VIDEO_PROJECTS.find((item) => item.id === id);
 
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
   const [query, setQuery] = useState("");
+  const [subscribed, setSubscribed] = useState(false);
+  const [reaction, setReaction] = useState<"up" | "down" | null>(null);
+  const [shareState, setShareState] = useState<"idle" | "shared" | "copied">("idle");
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   if (!video) notFound();
 
   const embedInfo = video.sourceUrl ? getEmbedInfo(video.sourceUrl) : null;
   const hasRealPlayback = embedInfo !== null || !!video.videoUrl;
   const upNext = VIDEO_PROJECTS.filter((item) => item.id !== video.id);
+  const baseLikes = Math.round(video.views / 1400);
+  const displayedLikes = baseLikes + (reaction === "up" ? 1 : 0);
+
+  async function handleShare() {
+    if (!video) return;
+    const result = await shareLink(`/video-editing/watch/${video.id}`, video.title);
+    if (result === "copied" || result === "shared") {
+      setShareState(result);
+      setTimeout(() => setShareState("idle"), 2000);
+    }
+  }
+
+  function seekTo(timestamp: string) {
+    const player = videoRef.current;
+    if (!player) return;
+    player.currentTime = parseTimestamp(timestamp);
+    player.play();
+  }
 
   return (
     <div className="min-h-screen">
@@ -66,6 +96,7 @@ export default function WatchPage({ params }: WatchPageProps) {
             >
               {video.videoUrl ? (
                 <video
+                  ref={videoRef}
                   src={video.videoUrl}
                   poster={video.thumbnailSrc}
                   controls
@@ -113,26 +144,57 @@ export default function WatchPage({ params }: WatchPageProps) {
                     <p className="text-sm font-medium">Silly Billi Studio</p>
                     <p className="text-xs text-muted-foreground">128K subscribers</p>
                   </div>
-                  <Button size="sm" className="ml-2 rounded-full">
-                    Subscribe
+                  <Button
+                    size="sm"
+                    variant={subscribed ? "secondary" : "default"}
+                    className="ml-2 rounded-full"
+                    onClick={() => setSubscribed((current) => !current)}
+                  >
+                    {subscribed ? "Subscribed" : "Subscribe"}
                   </Button>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <div className="flex items-center overflow-hidden rounded-full border">
-                    <span className="flex items-center gap-1.5 px-3 py-1.5 text-sm hover:bg-accent">
-                      <ThumbsUpIcon className="size-4" />
-                      {Math.round(video.views / 1400)}
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setReaction((current) => (current === "up" ? null : "up"))}
+                      aria-pressed={reaction === "up"}
+                      className={cn(
+                        "flex items-center gap-1.5 px-3 py-1.5 text-sm hover:bg-accent",
+                        reaction === "up" && "bg-accent font-medium",
+                      )}
+                    >
+                      <ThumbsUpIcon className={cn("size-4", reaction === "up" && "fill-current")} />
+                      {displayedLikes}
+                    </button>
                     <span className="h-5 w-px bg-border" />
-                    <span className="px-3 py-1.5 hover:bg-accent">
-                      <ThumbsDownIcon className="size-4" />
-                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setReaction((current) => (current === "down" ? null : "down"))}
+                      aria-pressed={reaction === "down"}
+                      className={cn("px-3 py-1.5 hover:bg-accent", reaction === "down" && "bg-accent")}
+                    >
+                      <ThumbsDownIcon className={cn("size-4", reaction === "down" && "fill-current")} />
+                    </button>
                   </div>
-                  <span className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm hover:bg-accent">
-                    <ShareIcon className="size-4" />
-                    Share
-                  </span>
+                  <button
+                    type="button"
+                    onClick={handleShare}
+                    className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm hover:bg-accent"
+                  >
+                    {shareState === "idle" ? (
+                      <>
+                        <ShareIcon className="size-4" />
+                        Share
+                      </>
+                    ) : (
+                      <>
+                        <CheckIcon className="size-4" />
+                        {shareState === "copied" ? "Link copied" : "Shared"}
+                      </>
+                    )}
+                  </button>
                   {video.sourceUrl && (
                     <a
                       href={video.sourceUrl}
@@ -166,7 +228,9 @@ export default function WatchPage({ params }: WatchPageProps) {
                       <li key={chapter.timestamp}>
                         <button
                           type="button"
-                          className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm hover:bg-accent"
+                          onClick={() => seekTo(chapter.timestamp)}
+                          disabled={!video.videoUrl}
+                          className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-left text-sm hover:bg-accent disabled:pointer-events-none disabled:opacity-50"
                         >
                           <span>{chapter.label}</span>
                           <span className="tabular-nums text-muted-foreground">

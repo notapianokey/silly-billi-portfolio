@@ -16,6 +16,7 @@ import { VIDEO_PROJECTS } from "@/lib/videos";
 export default function AboutPage() {
   const [query, setQuery] = useState("");
   const [descriptionExpanded, setDescriptionExpanded] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
 
   return (
     <div className="min-h-screen">
@@ -98,9 +99,14 @@ export default function AboutPage() {
 
               <button
                 type="button"
-                className="mt-4 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+                onClick={() => setSubscribed((current) => !current)}
+                className={
+                  subscribed
+                    ? "mt-4 rounded-full bg-secondary px-5 py-2 text-sm font-semibold text-secondary-foreground hover:opacity-90"
+                    : "mt-4 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
+                }
               >
-                Subscribe
+                {subscribed ? "Subscribed" : "Subscribe"}
               </button>
             </div>
           </div>
