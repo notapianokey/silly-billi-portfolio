@@ -36,8 +36,14 @@
 
 .stickerLink:hover .stickerImage,
 .stickerLink:focus-visible .stickerImage {
+  /* All three layers are symmetric (no y-offset) on purpose: a directional shadow gets clipped
+     by the frame's overflow-hidden edge for any artifact sitting flush against it (e.g. the
+     Campaign Brief folder, flush against the bottom) — losing the one layer with enough contrast
+     to read against a light background/light artifact and making the hover look like it does
+     nothing. A shadow that surrounds the object equally stays visible on whichever sides aren't
+     clipped, regardless of which edge it's near. */
   filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.95))
-    drop-shadow(0 0 16px rgba(255, 255, 255, 0.6)) drop-shadow(0 14px 22px rgba(0, 0, 0, 0.4));
+    drop-shadow(0 0 16px rgba(255, 255, 255, 0.6)) drop-shadow(0 0 20px rgba(0, 0, 0, 0.45));
 }
 
 .stickerLabel {
