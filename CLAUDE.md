@@ -484,20 +484,20 @@ rather than decoration. Current structure, top to bottom:
   — see below — not a `ComingSoon` stub.
 - About Us → `/about`.
 - Our Services → an expand/collapse dropdown (local `useState`, chevron rotates open), not a
-  link itself, containing: Video Editing (→ `/video-editing`, the only one of these four that's
-  actually built), Visual Branding (→ `/visual-branding`), Editorial Direction (→
-  `/editorial-direction`), Marketing & Ads (→ `/marketing-ads`) — the other three service pages
+  link itself, containing: Video Editing (→ `/video-editing`) and Visual Branding
+  (→ `/visual-branding`, real design now — see below), Editorial Direction (→
+  `/editorial-direction`), Marketing & Ads (→ `/marketing-ads`) — the latter two service pages
   are speced in full further down this file but not yet built.
 - Hire Us → `/hire-us`, Join Us → `/join-us`.
 
-**The remaining 3 not-yet-built destinations render a shared placeholder**,
+**The remaining 2 not-yet-built destinations render a shared placeholder**,
 `src/components/coming-soon.tsx` (mascot image, page title in the display font, "coming soon"
-copy, a link back to `/`) — used by `src/app/{visual-branding,editorial-direction,
-marketing-ads}/page.tsx`. This exists purely so the new nav doesn't 404; swap each one out for
-its real design/content as that phase actually gets built — don't leave a page on `ComingSoon`
-once there's real content to put there instead. (`/about`, `/channels-we-monetized`, `/hire-us`,
-and `/join-us` have real designs now — see below — the three discipline pages are still
-pending.)
+copy, a link back to `/`) — used by `src/app/{editorial-direction,marketing-ads}/page.tsx`. This
+exists purely so the new nav doesn't 404; swap each one out for its real design/content as that
+phase actually gets built — don't leave a page on `ComingSoon` once there's real content to put
+there instead. (`/about`, `/channels-we-monetized`, `/hire-us`, `/join-us`, and
+`/visual-branding` have real designs now — see below — the two remaining discipline pages are
+still pending.)
 
 ## Hire Us / Join Us pages (`/hire-us`, `/join-us`)
 
@@ -703,6 +703,103 @@ load/SSG) that forwards the payload to a **Google Apps Script Web App** URL read
   generally — don't introduce anything (eager third-party embeds, client-side SDKs loaded on
   every route, etc.) that adds to initial page weight without a clear ask.
 
+## Visual Branding page (`/visual-branding`) — Instagram profile clone
+
+First built as one perfected template — **Evan Thomsen** (`/visual-branding/evan-thomsen`) —
+per the client's explicit build order ("build this one page first and once we perfect it we
+will duplicate it for each brand"). `/visual-branding` itself just `redirect()`s to this one
+profile for now; the real explore/index page (an Instagram search/explore-style landing) is
+explicitly deferred until the client wants to start on it. Reference: two of the client's own
+Instagram screenshots (dark mode) — one her own profile (owner view), one a different real
+account (`hamna.ayub`, visitor view) — used as structural references, never as content to copy.
+
+- **Rendered as the literal phone/mobile layout even on desktop** — the client's explicit call,
+  not a responsive redesign. `src/components/instagram/phone-frame.tsx` is a fixed 390px-wide
+  column (iPhone content width, live-measured — not guessed), `rounded-[38px]`, scrolling
+  internally via a `.no-scrollbar` utility (`globals.css`) so it reads as a phone screen rather
+  than the page itself scrolling. **No site chrome at all** — no `SidebarRail`, no `TopHeader` —
+  client's explicit correction after an earlier version kept the YouTube-clone sidebar visible
+  next to it; this page is meant to read as the real app, not a page living inside the site's
+  other shell.
+- **Dark theme only, hardcoded** — client's explicit call (matches both reference screenshots;
+  no light-mode reference was given, so none was invented). A `.ig-font` utility class
+  (`globals.css`) applies Instagram's actual system-ui font stack (`-apple-system,
+  BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif`) instead of this site's
+  own Geist Sans brand font inside the phone frame — the whole point of the clone is to read as
+  literal Instagram, not the site's own typography.
+- **Icons are traced exactly from instagram.com's own live SVG markup, not a generic icon
+  library** — `src/components/instagram/icons.tsx`. Lucide (or any generic icon set)'s stroke
+  weights and corner radii never match Instagram's actual custom icon geometry; every icon in
+  that file was pulled via direct DOM inspection of a real profile and a real post (view-source
+  on the rendered `<svg>`, not eyeballed from a screenshot) — Posts/Reels/Tagged tab icons, the
+  Verified badge, Like/Comment/Share/Save, and the Carousel/video-badge icons. The **Reposts**
+  tab icon is the one exception: it's real chrome per the client's phone screenshot, but
+  Instagram's own web profile doesn't render that tab at all (app-only rollout, unavailable to
+  verify while logged out), so it's a best-effort approximation, not a traced copy.
+  - **Instagram's real Follow-button blue is `#0095F6`**, confirmed exact via the Verified
+    badge's own `fill` value already pulled from the DOM — not Tailwind's `sky-500`
+    approximation, which is a visibly different blue.
+  - **Lesson: verify against the live site, not a screenshot, whenever a claim is checkable.**
+    A screenshot-based guess put the grid tiles at a 4:5 aspect ratio and the header's second
+    icon as a hamburger menu; live-measuring an actual profile's DOM (`getBoundingClientRect()`
+    on adjacent grid post links) showed real tiles are exactly 124×165.33px — a **3:4** ratio,
+    not 4:5 — and the real second header icon is three dots (Instagram's actual profile menu),
+    not a hamburger. Grid gap is a real 1px (`gap-px`), avatar is 77px. Also worth noting: a
+    second AI model's suggestions for this page were mostly generic light-mode/owner-view
+    template advice that contradicted decisions already confirmed with the client (dark-only,
+    visitor-view buttons) — treat unverified suggestions from any source, including another
+    model, the same as a screenshot guess: check it against the real site before applying it.
+  - Computed-style inspection of real usernames/display names/stat numbers/bio text on
+    instagram.com all reported `letter-spacing: normal` — don't add a tightened
+    `letter-spacing` override chasing a "crisper" look; it would move away from the verified
+    real value, not toward it.
+- **Data model** — `src/lib/instagram.ts` + `instagram.data.json`, same typed-JSON-re-export
+  pattern as `channel.ts`/`channel.data.json`. `InstagramProfile` holds `handle`, `displayName`,
+  `avatarSrc`, `bio`, `externalLinks[]` (first one shown in full, rest summarized as "and N
+  more", matching real Instagram), `followers`/`following` (free-text display labels, never
+  fabricated — same "no invented stats" rule as the About page's omitted subscriber count),
+  `followedByLabel` (the "Followed by X, Y and N others" row — free text the client writes
+  herself; this concept doesn't really exist for a portfolio site with no logged-in viewer, so
+  it's never auto-generated or backed by real names), `pills[]` (the small chip row under the
+  bio, freeform strings), `highlights[]`, and `posts[]`. Ships with one empty profile
+  (`evan-thomsen`) — no invented posts, bio, or highlights; the two reference screenshots are
+  structural references only.
+- **Highlights empty state is a dashed "+ New" circle**, not nothing — matches real Instagram's
+  own empty-state affordance for a profile with zero highlights, and doubles as the entry point
+  into `EditProfileDialog` (which accepts an optional `trigger` override specifically so this
+  circle — and nothing else — can open it in place of the usual pencil icon).
+- **Full local edit UI**, same "only works under `npm run dev`, PATCH route writes straight to
+  disk" pattern as `/api/dev/channel` and `/api/dev/videos`, but `/api/dev/instagram/route.ts`
+  has one real difference: **media uploads go straight to Vercel Blob from the route itself**,
+  not to `public/`. Instagram posts (potentially many images/videos, added on an ongoing basis)
+  would bloat the git-committed `public/` folder the way raw client video already must avoid.
+  Images are compressed via `sharp` (now an explicit `package.json` dependency, not just
+  transitive) capped near Instagram's own real serving width (~1080px); videos are compressed
+  via a local `ffmpeg` shell-out (same H.264/CRF/faststart recipe as
+  `scripts/upload-video-clips.mjs`) — reasonable since, like every other `/api/dev/*` route,
+  this one only ever runs during local `npm run dev` alongside that script, which already
+  assumes `ffmpeg` is on PATH. Supports insert/delete/reorder for posts (carousel slide order
+  matters, so those get real up/down buttons) and highlights (order doesn't matter, so just
+  add/remove — same as `socialLinks`'s pattern on the channel editor).
+- **Post-detail view has a real action row** (Like/Comment/Share/Save) below the media —
+  initially missing entirely from the first build, added after review. Like and Save are real
+  local toggles (fills red / fills white on click), same "no decorative dead buttons" rule
+  applied everywhere else on this site (Subscribe, Like/Dislike on the watch pages). Share
+  reuses the existing `shareLink()` utility (`src/lib/share.ts`), sharing this profile's URL
+  since there's no dedicated per-post permalink route. Comment has no functionality behind it —
+  there's no comment system on this site at all — so it stays chrome, same category as the
+  Reels/Reposts/Tagged tabs.
+- **shadcn's `carousel` primitive was added** (`src/components/ui/carousel.tsx`, via
+  `npx shadcn@latest add carousel`, which also added `embla-carousel-react` as a real
+  dependency) for the post-detail view's multi-slide carousels — follows this repo's own
+  "check for an existing implementation before hand-rolling a new interactive component"
+  directive. The CLI prompted to overwrite `button.tsx` (declined) and aborted before writing
+  `carousel.tsx` itself, so that one file was hand-written matching the standard shadcn registry
+  output, adapted to this repo's Base UI `Button`.
+- **Grid tab icon note:** `PostsTabIcon` had to be hand-drawn even though it's traced exactly
+  from real markup (9 rounded `4.667×6` rectangles, not squares) — no icon library ships that
+  exact shape.
+
 ## Future: campaign landing pages & live A/B testing — reserved, not built yet
 
 Client's stated goal: later run paid + organic acquisition campaigns with dedicated landing
@@ -725,14 +822,6 @@ building today.
   to run.
 
 ## Other service pages (later phases — full spec for reference)
-
-### Visual Branding (`/visual-branding`) — Instagram profile clone
-Client profiles (e.g. "The Thomsen Company") with avatar, bio, follower/post stats, tab bar
-(Posts / Reels / Tagged), and a 3-column post grid. Carousel posts for tactile/physical asset
-breakdowns (e.g. a multi-slide chess-set project: final piece → concept sketches → inspiration
-cards → manufacturing process, with deep-dive caption). Reel/video posts for transformations
-like thumbnail overhauls. Click opens an Instagram-style modal with multi-slide carousel +
-caption. Reference: `instagram-web-clone-react` or similar Tailwind Instagram clones.
 
 ### Marketing & Ads (`/marketing-ads`) — Analytics dashboard clone
 Resembles Meta Ads Manager / Google Analytics. Date range picker, filter dropdown, KPI cards
@@ -761,8 +850,9 @@ engine from scratch.
 
 ## Open decisions / not yet specified
 
-- Real client content beyond "The Thomsen Company" example (needed for Visual Branding and
-  others) — placeholder/lorem content is fine until real assets are provided.
+- Real client content for Evan Thomsen's Instagram profile (bio, highlights, posts) — the
+  client is preparing real images to populate this herself via the local edit UI; nothing was
+  invented in the meantime. Real content for the other three service pages, still needed too.
 - Mobile layout approach per page (deferred).
 
 ## Category pills — content-type + language, one flat list (`videos.ts`, `category-pills.tsx`)
