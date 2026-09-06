@@ -177,3 +177,28 @@
     @apply font-sans;
   }
 }
+
+@layer utilities {
+  /* Hides the scrollbar while keeping the element scrollable — used by the Instagram clone's
+     phone frame and highlights row, since real Instagram never shows a visible scroll track. */
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Instagram's real system-ui font stack (pulled via computed-style inspection of
+     instagram.com), used instead of this site's own Geist Sans brand font inside the phone
+     frame — the whole point of the clone is to read as literal Instagram, not the site's
+     brand typography. */
+  .ig-font {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    /* No letter-spacing override here on purpose — computed-style inspection of usernames,
+       display names, stat numbers, and bio text on instagram.com all reported "normal" tracking,
+       not a tightened value, so adding one would move away from the verified real value. */
+  }
+}
