@@ -117,6 +117,7 @@ export async function PATCH(request: Request) {
       const pillsRaw = formData.get("pills");
       const highlightsRaw = formData.get("highlights");
       const avatar = formData.get("avatar");
+      const background = formData.get("background");
 
       if (typeof displayName === "string" && displayName.trim()) profile.displayName = displayName.trim();
       if (typeof bio === "string") profile.bio = bio;
@@ -154,6 +155,11 @@ export async function PATCH(request: Request) {
       if (avatar instanceof File && avatar.size > 0) {
         await deleteBlobBestEffort(profile.avatarSrc);
         profile.avatarSrc = await uploadImage(avatar, `instagram/${handle}/avatar.jpg`, 400);
+      }
+
+      if (background instanceof File && background.size > 0) {
+        await deleteBlobBestEffort(profile.backgroundSrc);
+        profile.backgroundSrc = await uploadImage(background, `instagram/${handle}/background.jpg`, 1080);
       }
 
       if (typeof highlightsRaw === "string") {

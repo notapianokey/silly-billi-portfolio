@@ -25,11 +25,11 @@ export function TabBar({ active, onChange }: { active: TabId; onChange: (tab: Ta
           type="button"
           onClick={() => onChange(tab.id)}
           className={cn(
-            "flex flex-1 items-center justify-center border-t py-2.5",
-            active === tab.id ? "border-white text-white" : "border-transparent text-neutral-500",
+            "flex flex-1 items-center justify-center border-b py-2.5",
+            active === tab.id ? "border-white text-white" : "border-transparent text-white/60",
           )}
         >
-          <tab.icon className="size-6" />
+          <tab.icon className="size-6 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
         </button>
       ))}
     </div>

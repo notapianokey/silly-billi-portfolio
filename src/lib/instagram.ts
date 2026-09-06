@@ -25,6 +25,10 @@ export interface InstagramProfile {
   handle: string;
   displayName: string;
   avatarSrc?: string;
+  /** Full-bleed brand photo behind the transparent/outline UI chrome — every profile gets its
+   *  own, per the client's design pivot away from a literal Instagram clone toward a stylized
+   *  branding-showcase mockup treatment. Unset falls back to a plain dark background. */
+  backgroundSrc?: string;
   bio?: string;
   externalLinks: { label: string; url: string }[];
   /** Free-text display labels (e.g. "551K") — not computed, and left blank until the client

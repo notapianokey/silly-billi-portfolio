@@ -7,11 +7,18 @@ import { EditProfileDialog } from "@/components/instagram/edit-profile-dialog";
 import { cn } from "@/lib/utils";
 import type { InstagramProfile } from "@/lib/instagram";
 
+const GLASS_SURFACE = "border-white/50 bg-white/10 text-white backdrop-blur-md hover:bg-white/20";
+const GLASS_BUTTON = cn("rounded-lg border py-1.5 text-sm font-medium", GLASS_SURFACE);
+
 /** Visitor-view action row (Follow/Following / Message / Email) rather than the literal
  *  owner-view (Edit Profile / Share Profile) from the reference screenshot — site visitors are
  *  viewing someone else's brand profile, not their own, matching the hamna.ayub reference. The
  *  dropdown chevron lives inside the Follow button itself once following (real Instagram never
- *  shows it as a separate button). Content editing lives in the small pencil trigger instead. */
+ *  shows it as a separate button). Content editing lives in the small pencil trigger instead.
+ *
+ *  Glassmorphic treatment (translucent white fill + backdrop blur, not just an outline) for
+ *  every button including Follow — the "environmental" pivot drops literal Instagram's filled
+ *  brand-blue primary CTA in favor of one consistent glass-chrome look over the brand photo. */
 export function ActionButtons({ profile }: { profile: InstagramProfile }) {
   const [following, setFollowing] = useState(false);
 
@@ -20,30 +27,18 @@ export function ActionButtons({ profile }: { profile: InstagramProfile }) {
       <button
         type="button"
         onClick={() => setFollowing((current) => !current)}
-        className={cn(
-          "flex flex-1 items-center justify-center gap-1 rounded-lg py-1.5 text-sm font-semibold",
-          following ? "bg-neutral-800 text-white" : "bg-[#0095F6] text-white hover:bg-[#1877F2]",
-        )}
+        className={cn("flex flex-1 items-center justify-center gap-1", GLASS_BUTTON)}
       >
         {following ? "Following" : "Follow"}
         {following && <ChevronDownIcon className="size-4" />}
       </button>
-      <button
-        type="button"
-        className="flex-1 rounded-lg bg-neutral-800 py-1.5 text-sm font-semibold text-white hover:bg-neutral-700"
-      >
+      <button type="button" className={cn("flex-1", GLASS_BUTTON)}>
         Message
       </button>
-      <button
-        type="button"
-        className="flex-1 rounded-lg bg-neutral-800 py-1.5 text-sm font-semibold text-white hover:bg-neutral-700"
-      >
+      <button type="button" className={cn("flex-1", GLASS_BUTTON)}>
         Email
       </button>
-      <EditProfileDialog
-        profile={profile}
-        triggerClassName="shrink-0 rounded-lg border-neutral-700 bg-transparent text-white hover:bg-neutral-800"
-      />
+      <EditProfileDialog profile={profile} triggerClassName={cn("shrink-0", GLASS_SURFACE)} />
     </div>
   );
 }

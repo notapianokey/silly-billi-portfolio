@@ -19,20 +19,20 @@ export function PostGrid({ handle, posts }: { handle: string; posts: InstagramPo
         <button
           type="button"
           onClick={() => setAddOpen(true)}
-          className="flex size-8 items-center justify-center rounded-full text-neutral-400 hover:bg-neutral-800 hover:text-white"
+          className="flex size-8 items-center justify-center rounded-full text-white/70 hover:bg-white/10 hover:text-white"
           aria-label="Add post"
         >
-          <PlusIcon className="size-4" />
+          <PlusIcon className="size-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
         </button>
       </div>
 
       {posts.length === 0 ? (
-        <div className="flex flex-col items-center gap-2 py-16 text-center text-neutral-500">
-          <CarouselIcon className="size-6" />
+        <div className="ig-text-shadow flex flex-col items-center gap-2 py-16 text-center text-white/80">
+          <CarouselIcon className="size-6 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
           <p className="text-sm font-medium">Posts coming soon</p>
         </div>
       ) : (
-        <div className="grid grid-cols-3 gap-px bg-neutral-800">
+        <div className="grid grid-cols-3 gap-px bg-transparent">
           {posts.map((post) => {
             const cover = post.media[0];
             return (

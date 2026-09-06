@@ -48,6 +48,8 @@ export function EditProfileDialog({ profile, triggerClassName, trigger }: EditPr
   const [pills, setPills] = useState<string[]>(profile.pills);
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string | undefined>(profile.avatarSrc);
+  const [backgroundFile, setBackgroundFile] = useState<File | null>(null);
+  const [backgroundPreview, setBackgroundPreview] = useState<string | undefined>(profile.backgroundSrc);
   const [highlights, setHighlights] = useState<HighlightRow[]>(
     profile.highlights.map((h) => ({ id: h.id, label: h.label, coverSrc: h.coverSrc })),
   );
@@ -75,6 +77,13 @@ export function EditProfileDialog({ profile, triggerClassName, trigger }: EditPr
     if (!file) return;
     setAvatarFile(file);
     setAvatarPreview(URL.createObjectURL(file));
+  }
+
+  function handleBackgroundChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    setBackgroundFile(file);
+    setBackgroundPreview(URL.createObjectURL(file));
   }
 
   function updateHighlight(id: string, label: string) {
@@ -111,6 +120,7 @@ export function EditProfileDialog({ profile, triggerClassName, trigger }: EditPr
     );
     formData.set("pills", JSON.stringify(pills.map((p) => p.trim()).filter(Boolean)));
     if (avatarFile) formData.set("avatar", avatarFile);
+    if (backgroundFile) formData.set("background", backgroundFile);
     formData.set(
       "highlights",
       JSON.stringify(highlights.filter((h) => h.label.trim()).map((h) => ({ id: h.id, label: h.label }))),
@@ -179,6 +189,26 @@ export function EditProfileDialog({ profile, triggerClassName, trigger }: EditPr
               </div>
               <input type="file" accept="image/png,image/jpeg" onChange={handleAvatarChange} className="text-sm" />
             </div>
+          </div>
+
+          <div>
+            <label className="mb-1.5 block text-sm font-medium">Background photo</label>
+            <div className="flex flex-col gap-2">
+              <div className="relative h-24 w-full overflow-hidden rounded-lg bg-secondary">
+                {backgroundPreview && (
+                  <Image src={backgroundPreview} alt="" fill className="object-cover" unoptimized />
+                )}
+              </div>
+              <input
+                type="file"
+                accept="image/png,image/jpeg"
+                onChange={handleBackgroundChange}
+                className="text-sm"
+              />
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Full-bleed brand photo behind the profile — every profile gets its own.
+            </p>
           </div>
 
           <div>

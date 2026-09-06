@@ -30,7 +30,7 @@ export default function InstagramProfilePage({ params }: ProfilePageProps) {
   return (
     <div className="min-h-screen bg-neutral-950">
       <div className="flex justify-center py-5">
-        <PhoneFrame>
+        <PhoneFrame backgroundSrc={profile.backgroundSrc}>
           <InstagramHeaderBar handle={profile.handle} />
           <ProfileHeader profile={profile} />
           <ActionButtons profile={profile} />
@@ -47,5 +47,5 @@ export default function InstagramProfilePage({ params }: ProfilePageProps) {
 }
 
 function EmptyTab({ label }: { label: string }) {
-  return <p className="py-16 text-center text-sm text-neutral-500">{label} coming soon</p>;
+  return <p className="ig-text-shadow py-16 text-center text-sm text-white/80">{label} coming soon</p>;
 }

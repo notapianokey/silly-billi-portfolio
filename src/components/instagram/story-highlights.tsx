@@ -15,10 +15,10 @@ export function StoryHighlights({ profile }: { profile: InstagramProfile }) {
           profile={profile}
           trigger={
             <div className="flex flex-col items-center gap-1">
-              <div className="flex size-16 items-center justify-center rounded-full border border-dashed border-neutral-600">
-                <PlusIcon className="size-6 text-neutral-500" />
+              <div className="flex size-16 items-center justify-center rounded-full border border-dashed border-white/60 bg-transparent">
+                <PlusIcon className="size-6 text-white/70" />
               </div>
-              <span className="text-xs text-neutral-400">New</span>
+              <span className="ig-text-shadow text-[12px] text-white">New</span>
             </div>
           }
         />
@@ -30,14 +30,14 @@ export function StoryHighlights({ profile }: { profile: InstagramProfile }) {
     <div className="no-scrollbar flex shrink-0 gap-4 overflow-x-auto px-4 pb-2">
       {profile.highlights.map((highlight) => (
         <div key={highlight.id} className="flex shrink-0 flex-col items-center gap-1">
-          <div className="rounded-full border border-neutral-700 p-0.5">
+          <div className="rounded-full border border-white/60 bg-transparent p-[2px]">
             <div className="relative size-16 overflow-hidden rounded-full bg-neutral-800">
               {highlight.coverSrc && (
                 <Image src={highlight.coverSrc} alt="" fill sizes="64px" className="object-cover" />
               )}
             </div>
           </div>
-          <span className="max-w-16 truncate text-xs text-neutral-300">{highlight.label}</span>
+          <span className="ig-text-shadow max-w-16 truncate text-[12px] text-white">{highlight.label}</span>
         </div>
       ))}
     </div>

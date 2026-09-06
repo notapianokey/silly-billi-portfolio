@@ -201,4 +201,11 @@
        display names, stat numbers, and bio text on instagram.com all reported "normal" tracking,
        not a tightened value, so adding one would move away from the verified real value. */
   }
+
+  /* Subtle text shadow for chrome text sitting directly over a brand background photo (the
+     mockup-style treatment — background photo behind transparent/outline UI). Imperceptible
+     over the plain black fallback background, just insurance against a busy photo underneath. */
+  .ig-text-shadow {
+    text-shadow: 0 1px 3px rgb(0 0 0 / 0.5);
+  }
 }

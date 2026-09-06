@@ -8,7 +8,7 @@ import type { InstagramProfile } from "@/lib/instagram";
  *  aren't real accounts on this site). */
 function BioText({ bio }: { bio: string }) {
   return (
-    <p className="whitespace-pre-wrap text-sm text-neutral-200">
+    <p className="ig-text-shadow whitespace-pre-wrap text-sm text-neutral-100">
       {bio.split(/(\s+)/).map((token, index) =>
         token.startsWith("@") && token.length > 1 ? (
           <span key={index} className="font-medium text-sky-400">
@@ -22,6 +22,10 @@ function BioText({ bio }: { bio: string }) {
   );
 }
 
+/** All text sits directly over a full-bleed brand background photo now (the mockup-style
+ *  pivot) rather than a flat black panel, so borders/labels lean lighter (white/opacity) and
+ *  carry a subtle text-shadow (see .ig-text-shadow) instead of the darker neutral tones used
+ *  when this was a plain dark background. */
 export function ProfileHeader({ profile }: { profile: InstagramProfile }) {
   const [firstLink, ...restLinks] = profile.externalLinks;
 
@@ -44,7 +48,7 @@ export function ProfileHeader({ profile }: { profile: InstagramProfile }) {
         </div>
       </div>
 
-      <div className="flex flex-col gap-0.5">
+      <div className="ig-text-shadow flex flex-col gap-0.5">
         <p className="text-sm font-semibold">{profile.displayName}</p>
         {profile.bio && <BioText bio={profile.bio} />}
         {firstLink && (
@@ -52,12 +56,12 @@ export function ProfileHeader({ profile }: { profile: InstagramProfile }) {
             href={firstLink.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-1 flex items-center gap-1 text-sm font-medium text-neutral-300"
+            className="mt-1 flex items-center gap-1 text-sm font-medium text-neutral-100"
           >
             <LinkIcon className="size-3.5" />
             {firstLink.label}
             {restLinks.length > 0 && (
-              <span className="text-neutral-500">and {restLinks.length} more</span>
+              <span className="text-neutral-300">and {restLinks.length} more</span>
             )}
           </a>
         )}
@@ -67,7 +71,7 @@ export function ProfileHeader({ profile }: { profile: InstagramProfile }) {
             {profile.pills.map((pill) => (
               <span
                 key={pill}
-                className="rounded-full border border-neutral-700 px-3 py-1 text-xs font-medium text-neutral-200"
+                className="rounded-full border border-white/50 px-3 py-1 text-xs font-medium text-neutral-100"
               >
                 {pill}
               </span>
@@ -82,7 +86,7 @@ export function ProfileHeader({ profile }: { profile: InstagramProfile }) {
                 <div key={i} className="size-5 rounded-full border-2 border-black bg-neutral-700" />
               ))}
             </div>
-            <p className="text-sm text-neutral-300">{profile.followedByLabel}</p>
+            <p className="text-sm text-neutral-100">{profile.followedByLabel}</p>
           </div>
         )}
       </div>
@@ -92,9 +96,9 @@ export function ProfileHeader({ profile }: { profile: InstagramProfile }) {
 
 function Stat({ value, label }: { value: string; label: string }) {
   return (
-    <div className="flex flex-col items-center">
+    <div className="ig-text-shadow flex flex-col items-center">
       <span className="text-base font-semibold">{value}</span>
-      <span className="text-xs text-neutral-400">{label}</span>
+      <span className="text-xs text-neutral-200">{label}</span>
     </div>
   );
 }
