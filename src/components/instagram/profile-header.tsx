@@ -29,10 +29,10 @@ export function ProfileHeader({ profile }: { profile: InstagramProfile }) {
     <div className="flex shrink-0 flex-col gap-4 px-4 py-4">
       <div className="flex items-center gap-6">
         <div className="rounded-full bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 p-[2px]">
-          <div className="relative size-20 shrink-0 overflow-hidden rounded-full bg-black p-[2px]">
+          <div className="relative size-[77px] shrink-0 overflow-hidden rounded-full bg-black p-[2px]">
             <div className="relative size-full overflow-hidden rounded-full bg-neutral-800">
               {profile.avatarSrc && (
-                <Image src={profile.avatarSrc} alt="" fill sizes="80px" className="object-cover" />
+                <Image src={profile.avatarSrc} alt="" fill sizes="77px" className="object-cover" />
               )}
             </div>
           </div>

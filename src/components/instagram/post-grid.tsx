@@ -40,7 +40,7 @@ export function PostGrid({ handle, posts }: { handle: string; posts: InstagramPo
                 key={post.id}
                 type="button"
                 onClick={() => setActivePost(post)}
-                className="relative aspect-[4/5] bg-neutral-900"
+                className="relative aspect-[3/4] bg-neutral-900"
               >
                 {cover?.type === "image" ? (
                   <Image src={cover.src} alt="" fill sizes="200px" className="object-cover" />
