@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import type { InstagramProfile } from "@/lib/instagram";
 
 const GLASS_SURFACE = "border-white/50 bg-white/10 text-white backdrop-blur-md hover:bg-white/20";
-const GLASS_BUTTON = cn("rounded-lg border py-1.5 text-sm font-medium", GLASS_SURFACE);
+const GLASS_BUTTON = cn("rounded-lg border py-1 text-[13px] font-medium", GLASS_SURFACE);
 
 /** Visitor-view action row (Follow/Following / Message / Email) rather than the literal
  *  owner-view (Edit Profile / Share Profile) from the reference screenshot — site visitors are
@@ -23,7 +23,7 @@ export function ActionButtons({ profile }: { profile: InstagramProfile }) {
   const [following, setFollowing] = useState(false);
 
   return (
-    <div className="flex shrink-0 items-center gap-2 px-4 pb-4">
+    <div className="flex shrink-0 items-center gap-2.5 px-6 pb-6">
       <button
         type="button"
         onClick={() => setFollowing((current) => !current)}

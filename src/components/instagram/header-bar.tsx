@@ -16,18 +16,18 @@ import { VerifiedBadgeIcon } from "@/components/instagram/icons";
  *  bg-neutral-800 line/border would look like an opaque UI panel instead of transparent chrome. */
 export function InstagramHeaderBar({ handle }: { handle: string }) {
   return (
-    <div className="ig-text-shadow flex shrink-0 items-center justify-between px-4 py-3">
+    <div className="ig-text-shadow flex shrink-0 items-center justify-between px-6 py-5">
       <div className="flex items-center gap-2">
-        <ChevronLeftIcon className="size-6 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
-        <span className="text-xl">{handle}</span>
-        <VerifiedBadgeIcon className="size-[18px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
+        <ChevronLeftIcon className="size-5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
+        <span className="text-base font-medium">{handle}</span>
+        <VerifiedBadgeIcon className="size-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
       </div>
       <div className="flex items-center gap-1">
-        <button type="button" className="flex size-9 items-center justify-center rounded-full border border-white/40">
-          <BellIcon className="size-5" strokeWidth={1.75} />
+        <button type="button" className="flex size-8 items-center justify-center rounded-full border border-white/40">
+          <BellIcon className="size-4" strokeWidth={1.75} />
         </button>
-        <button type="button" className="flex size-9 items-center justify-center rounded-full border border-white/40">
-          <MoreHorizontalIcon className="size-5" strokeWidth={1.75} />
+        <button type="button" className="flex size-8 items-center justify-center rounded-full border border-white/40">
+          <MoreHorizontalIcon className="size-4" strokeWidth={1.75} />
         </button>
       </div>
     </div>

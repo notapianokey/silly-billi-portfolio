@@ -122,9 +122,9 @@ export function ClipIcon({ className }: { className?: string }) {
 /** Approximation only — instagram.com's own web profile doesn't render a Reposts tab to verify
  *  against (even though it's app-only feature is visible in the client's phone screenshot), so
  *  this one icon isn't a traced copy like the others in this file. */
-export function RepostsTabIcon({ className }: { className?: string }) {
+export function RepostsTabIcon({ className, strokeWidth = 2 }: { className?: string; strokeWidth?: number }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" className={className}>
       <path d="m17 2 4 4-4 4" />
       <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
       <path d="m7 22-4-4 4-4" />

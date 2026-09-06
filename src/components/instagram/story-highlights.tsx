@@ -10,13 +10,13 @@ import type { InstagramProfile } from "@/lib/instagram";
 export function StoryHighlights({ profile }: { profile: InstagramProfile }) {
   if (profile.highlights.length === 0) {
     return (
-      <div className="flex shrink-0 px-4 pb-2">
+      <div className="flex shrink-0 px-6 pb-4">
         <EditProfileDialog
           profile={profile}
           trigger={
             <div className="flex flex-col items-center gap-1">
-              <div className="flex size-16 items-center justify-center rounded-full border border-dashed border-white/60 bg-transparent">
-                <PlusIcon className="size-6 text-white/70" />
+              <div className="flex size-14 items-center justify-center rounded-full border border-dashed border-white/60 bg-transparent">
+                <PlusIcon className="size-5 text-white/70" />
               </div>
               <span className="ig-text-shadow text-[12px] text-white">New</span>
             </div>
@@ -27,17 +27,17 @@ export function StoryHighlights({ profile }: { profile: InstagramProfile }) {
   }
 
   return (
-    <div className="no-scrollbar flex shrink-0 gap-4 overflow-x-auto px-4 pb-2">
+    <div className="no-scrollbar flex shrink-0 gap-4 overflow-x-auto px-6 pb-4">
       {profile.highlights.map((highlight) => (
         <div key={highlight.id} className="flex shrink-0 flex-col items-center gap-1">
           <div className="rounded-full border border-white/60 bg-transparent p-[2px]">
-            <div className="relative size-16 overflow-hidden rounded-full bg-neutral-800">
+            <div className="relative size-14 overflow-hidden rounded-full bg-neutral-800">
               {highlight.coverSrc && (
-                <Image src={highlight.coverSrc} alt="" fill sizes="64px" className="object-cover" />
+                <Image src={highlight.coverSrc} alt="" fill sizes="56px" className="object-cover" />
               )}
             </div>
           </div>
-          <span className="ig-text-shadow max-w-16 truncate text-[12px] text-white">{highlight.label}</span>
+          <span className="ig-text-shadow max-w-14 truncate text-[12px] text-white">{highlight.label}</span>
         </div>
       ))}
     </div>
