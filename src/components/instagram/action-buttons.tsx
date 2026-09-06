@@ -22,7 +22,7 @@ export function ActionButtons({ profile }: { profile: InstagramProfile }) {
         onClick={() => setFollowing((current) => !current)}
         className={cn(
           "flex flex-1 items-center justify-center gap-1 rounded-lg py-1.5 text-sm font-semibold",
-          following ? "bg-neutral-800 text-white" : "bg-sky-500 text-white hover:bg-sky-600",
+          following ? "bg-neutral-800 text-white" : "bg-[#0095F6] text-white hover:bg-[#1877F2]",
         )}
       >
         {following ? "Following" : "Follow"}

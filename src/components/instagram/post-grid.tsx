@@ -40,7 +40,7 @@ export function PostGrid({ handle, posts }: { handle: string; posts: InstagramPo
                 key={post.id}
                 type="button"
                 onClick={() => setActivePost(post)}
-                className="relative aspect-[3/4] bg-neutral-900"
+                className="relative aspect-[3/4] overflow-hidden bg-neutral-900"
               >
                 {cover?.type === "image" ? (
                   <Image src={cover.src} alt="" fill sizes="200px" className="object-cover" />
@@ -53,10 +53,10 @@ export function PostGrid({ handle, posts }: { handle: string; posts: InstagramPo
                   </span>
                 )}
                 {post.type === "carousel" && (
-                  <CarouselIcon className="absolute right-1.5 top-1.5 size-4 text-white drop-shadow" />
+                  <CarouselIcon className="absolute right-1.5 top-1.5 size-4 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" />
                 )}
                 {post.type === "video" && (
-                  <ClipIcon className="absolute right-1.5 top-1.5 size-4 text-white drop-shadow" />
+                  <ClipIcon className="absolute right-1.5 top-1.5 size-4 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" />
                 )}
               </button>
             );
