@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       { protocol: "https", hostname: "i.ytimg.com" },
       { protocol: "https", hostname: "yt3.googleusercontent.com" },
+      // Vercel Blob — Instagram post/highlight/avatar media is self-hosted here (same store as
+      // the video-editing clips), unlike video files which stay off next/image entirely.
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
     ],
   },
 };
