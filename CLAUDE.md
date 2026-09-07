@@ -236,6 +236,58 @@ rule) and specified the artifact→page mapping directly.
   rectangle) — its mask has a second disjoint region (the separate pink sticky note) that a single
   row-envelope polygon can't represent without wrongly bridging the gap, and it isn't close
   enough to another artifact for the overlap problem to apply there anyway.
+- **Two art-directed scene variants, not one image stretched/padded to every screen** — the
+  client reported thick gray pillarbox bars on her ultrawide monitor (the 3:2 stage correctly
+  letterboxes/pillarboxes on any screen whose ratio isn't exactly 3:2, per the "no scroll, no
+  visible frame" design above, but a real ultrawide monitor is far enough from 3:2 that the bars
+  read as broken rather than intentional). No single fixed aspect ratio avoids bars on every
+  screen — real ratios run continuously from ~4:3 (iPad) to ~32:9 (super-ultrawide) — so instead
+  of chasing one "correct" ratio, the client provided a second, separately-painted 7:3 ultrawide
+  render (`homepage/panoramic_desk_scene.jpg`, git-ignored raw content like the other renders)
+  with its own hand-filled color-key mask (`homepage/ultra wide masked.png`) for a second round
+  of the same sticker-building pipeline.
+  - **Confirmed via direct pixel diff (not assumed) that the ultrawide render is a genuine
+    separate composition, not the same pixels padded onto a wider canvas** — cropping either
+    edge of the ultrawide image and diffing against the original 3:2 art (via `sharp`, raw
+    buffer comparison) showed ~60-68% mean per-byte difference, far beyond what re-encoding
+    alone would cause. Object spacing/proportions actually differ between the two paintings, so
+    the existing sticker crops/positions could not be reused or merely repositioned — a full
+    second masking pass was required, same workflow as the original (client fills each of the 6
+    artifacts with the same flat color key on a copy of the new render).
+  - `scripts/build-homepage-stickers-wide.mjs` is a copy of `build-homepage-stickers.mjs`
+    pointed at the ultrawide mask/scene pair instead, outputting to
+    `public/homepage/stickers-wide/`. Re-run it the same way after any future re-mark of that
+    image and copy the printed `box`/`clipPath` values into `STICKERS_WIDE` in `page.tsx`.
+  - **Breakpoint: `(min-aspect-ratio: 2/1)`**, comfortably between real laptop ratios (16:10 ≈
+    1.6, 16:9 ≈ 1.78) and real ultrawide monitors (21:9 ≈ 2.33+), so normal screens always get
+    the 3:2 art and only genuinely wide screens switch.
+  - **Switching is pure CSS, no JS** — deliberately consistent with this file's existing "no
+    theme-toggle JS, `@media (prefers-color-scheme)` only" pattern (see the Theme note above).
+    The base scene uses a plain `<picture>` with a `<source media="(min-aspect-ratio: 2/1)">`
+    instead of `next/image`, specifically because `<picture>`'s art-direction is the one
+    mechanism guaranteed by spec to fetch only the matching source — two `next/image`/`<img>`
+    instances toggled by CSS `display:none` would NOT give that guarantee, since an eager/
+    priority image fetches as soon as it's in the DOM regardless of an ancestor's `display:none`,
+    which would silently double the hero image download. `STICKERS`/`STICKERS_WIDE` both render
+    into the same `.stage` at all times (12 `<Link>`s total); the inactive set is hidden via
+    `.stickerLink.variantNarrow`/`.variantWide` classes (`display:none`), which also removes it
+    from the accessibility tree/tab order for free and lets its `loading="lazy"` cutout images
+    skip fetching entirely in evergreen browsers.
+  - **Real cascade bug hit while building this, caught by screenshot not by reasoning about the
+    CSS up front:** the variant-toggle selectors were originally bare `.variantWide`/
+    `.variantNarrow` (not qualified with `.stickerLink`), placed earlier in the file than the
+    pre-existing `.stickerLink { display: block }` rule. Same specificity (0,1,0) + later source
+    order meant `.stickerLink` always won, silently overriding the hide back to visible — both
+    sticker sets rendered superimposed on top of each other. Fixed by qualifying the selectors as
+    `.stickerLink.variantWide`/`.variantNarrow` (specificity (0,2,0), wins regardless of order).
+    **Lesson: a variant-toggle class competing with an existing same-specificity rule on the same
+    element needs higher specificity, not just correct-looking `display` values — verify by
+    actually rendering the page, not by reading the CSS.**
+  - Verified (not assumed) via the Browser pane: computed `display` on all 12 sticker `<Link>`s
+    at both a normal (1600×900) and an ultrawide (2560×1080) viewport, `picture img.currentSrc`
+    resolving to the correct file at each, and an actual `.click()` navigation on the ultrawide
+    variant — synthetic `hover` was skipped as a check for this, per the "unreliable in-session"
+    finding above; DOM/computed-style/network checks were used instead.
 - **`src/components/cursor-trail.tsx` and `src/lib/cats.ts`/`public/cats/` were left in place,
   just no longer imported anywhere** — they were a real, working, previously-speced Phase 1
   feature (18 sourced cat photos), not dead placeholder code, so they weren't deleted outright
