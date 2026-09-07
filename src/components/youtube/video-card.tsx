@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
 import { getViewsLabel, type VideoProject } from "@/lib/videos";
 
@@ -38,18 +37,6 @@ export function VideoCard({ video }: VideoCardProps) {
             {video.id === "main" ? "Varied Views" : getViewsLabel(video.views, video.sourceUrl)}
           </span>
         </Link>
-        <EditVideoDialog
-          id={video.id}
-          kind="video"
-          title={video.title}
-          description={video.description}
-          thumbnailSrc={video.thumbnailSrc}
-          sourceUrl={video.sourceUrl}
-          category={video.category}
-          language={video.language}
-          tags={video.tags}
-          triggerClassName="h-fit shrink-0 rounded-full p-1.5 opacity-0 hover:bg-accent group-hover:opacity-100"
-        />
       </div>
     </div>
   );

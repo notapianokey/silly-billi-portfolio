@@ -2,7 +2,6 @@ import { ExternalLinkIcon, PlayIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { EditVideoDialog } from "./edit-video-dialog";
 import { VideoThumbnail } from "./video-thumbnail";
 import { getPlatformLabel, getViewsLabel, SHORT_PROJECTS, type ShortProject } from "@/lib/videos";
 
@@ -42,37 +41,23 @@ export function ShortsShelf({ shorts = SHORT_PROJECTS, anchor = true }: ShortsSh
                 aspect="9:16"
               />
             </Link>
-            <div className="mt-2 flex items-start justify-between gap-1">
-              <div className="min-w-0">
-                <p className="line-clamp-2 text-sm font-medium leading-snug">{short.title}</p>
-                <p className="mt-1 text-xs text-muted-foreground">
-                  {getViewsLabel(short.views, short.sourceUrl)}
-                </p>
-                {short.sourceUrl && (
-                  <a
-                    href={short.sourceUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(event) => event.stopPropagation()}
-                    className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                  >
-                    <ExternalLinkIcon className="size-3" />
-                    View on {getPlatformLabel(short.sourceUrl)}
-                  </a>
-                )}
-              </div>
-              <EditVideoDialog
-                id={short.id}
-                kind="short"
-                title={short.title}
-                description={short.description}
-                thumbnailSrc={short.thumbnailSrc}
-                sourceUrl={short.sourceUrl}
-                category={short.category}
-                language={short.language}
-                tags={short.tags}
-                triggerClassName="size-6 shrink-0 rounded-full p-1 opacity-0 hover:bg-accent group-hover:opacity-100"
-              />
+            <div className="mt-2">
+              <p className="line-clamp-2 text-sm font-medium leading-snug">{short.title}</p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                {getViewsLabel(short.views, short.sourceUrl)}
+              </p>
+              {short.sourceUrl && (
+                <a
+                  href={short.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(event) => event.stopPropagation()}
+                  className="mt-1 inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
+                >
+                  <ExternalLinkIcon className="size-3" />
+                  View on {getPlatformLabel(short.sourceUrl)}
+                </a>
+              )}
             </div>
           </div>
         ))}

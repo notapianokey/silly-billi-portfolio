@@ -17,7 +17,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { use, useRef, useState } from "react";
 
-import { EditVideoDialog } from "@/components/youtube/edit-video-dialog";
 import { SidebarRail } from "@/components/youtube/sidebar-rail";
 import { SocialEmbed } from "@/components/youtube/social-embed";
 import { TopHeader } from "@/components/youtube/top-header";
@@ -247,18 +246,6 @@ export default function ShortWatchPage({ params }: ShortWatchPageProps) {
                   </span>
                 </a>
               )}
-              <EditVideoDialog
-                id={short.id}
-                kind="short"
-                title={short.title}
-                description={short.description}
-                thumbnailSrc={short.thumbnailSrc}
-                sourceUrl={short.sourceUrl}
-                category={short.category}
-                language={short.language}
-                tags={short.tags}
-                triggerClassName="size-11 rounded-full bg-secondary"
-              />
             </div>
           </div>
         </main>

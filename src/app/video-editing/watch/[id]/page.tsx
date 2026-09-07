@@ -18,7 +18,6 @@ import { notFound } from "next/navigation";
 import { use, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { EditVideoDialog } from "@/components/youtube/edit-video-dialog";
 import { SidebarRail } from "@/components/youtube/sidebar-rail";
 import { SocialEmbed } from "@/components/youtube/social-embed";
 import { TopHeader } from "@/components/youtube/top-header";
@@ -115,21 +114,7 @@ export default function WatchPage({ params }: WatchPageProps) {
             </div>
 
             <div className="flex flex-col gap-3 py-4">
-              <div className="flex items-start justify-between gap-2">
-                <h1 className="text-lg font-semibold leading-snug">{video.title}</h1>
-                <EditVideoDialog
-                  id={video.id}
-                  kind="video"
-                  title={video.title}
-                  description={video.description}
-                  thumbnailSrc={video.thumbnailSrc}
-                  sourceUrl={video.sourceUrl}
-                  category={video.category}
-                  language={video.language}
-                  tags={video.tags}
-                  triggerClassName="shrink-0 rounded-full"
-                />
-              </div>
+              <h1 className="text-lg font-semibold leading-snug">{video.title}</h1>
 
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
