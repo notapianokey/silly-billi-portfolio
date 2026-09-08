@@ -288,6 +288,20 @@ rule) and specified the artifact→page mapping directly.
     resolving to the correct file at each, and an actual `.click()` navigation on the ultrawide
     variant — synthetic `hover` was skipped as a check for this, per the "unreliable in-session"
     finding above; DOM/computed-style/network checks were used instead.
+  - **Even two art-directed variants can't be pixel-perfect on every screen** — real ultrawide
+    monitors alone aren't one ratio (2560×1080 ≈ 2.37, 3440×1440 ≈ 2.39, 5120×1440 ≈ 3.56 — none
+    of them exactly the art's 2.333), so a thin margin on whichever axis is looser is
+    unavoidable regardless of how many fixed-ratio variants exist. Rather than chase an exact
+    match to one specific monitor, `.backdrop` in `page.module.css` fills that margin with a
+    heavily blurred (`blur(70px)`), scaled-up (`scale(1.2)`, so blur's own edge falloff never
+    shows a soft seam at the frame edge), dimmed copy of the SAME scene image sitting behind the
+    stage — the same trick fullscreen video players use for letterbox bars. It reuses the
+    already-fetched image bytes (identical URL to the foreground `<picture>`, served from cache)
+    so there's zero extra network cost, and switches source at the same `(min-aspect-ratio:
+    2/1)` breakpoint as everything else here. Verified via computed styles (`backgroundImage`
+    resolving to the correct file) at an off-ratio ultrawide viewport (3440×1440), not just by
+    eyeballing a screenshot — the difference is subtle at a glance since the wall tone in the
+    art is already close to the old flat `#a8a19e`.
 - **`src/components/cursor-trail.tsx` and `src/lib/cats.ts`/`public/cats/` were left in place,
   just no longer imported anywhere** — they were a real, working, previously-speced Phase 1
   feature (18 sourced cat photos), not dead placeholder code, so they weren't deleted outright
@@ -702,7 +716,7 @@ exactly the kind of breaking change that note warns about). Fixed by adding
 so this fixes it everywhere, not just the one thumbnail that got reported). A `next.config.ts`
 change needs a full dev server restart (not just HMR) to take effect.
 
-## Search — tags-driven, covers Shorts too (`video-editing/page.tsx`, `edit-video-dialog.tsx`)
+## Search — tags-driven, covers Shorts too (`video-editing/page.tsx`, `top-header.tsx`)
 
 Original search only matched a video's title/tags substring, and never touched Shorts at all —
 weak, since `tags` was empty on almost everything. Reworked:
@@ -714,16 +728,22 @@ weak, since `tags` was empty on almost everything. Reworked:
 - **Shorts are now searched too** (`ShortProject.tags: string[]` added), not just filtered by
   category/language. `filteredShorts` in `video-editing/page.tsx` applies the same
   category-or-language check *and* the same query match as `filteredVideos`.
-- **Tags are editable per-project** via `EditVideoDialog` (pencil icon) — a comma-separated
-  input plus a row of clickable suggestion chips from `SUGGESTED_TAGS` in `videos.ts` (a
-  starting vocabulary of edit-type/style tags — freeform, not an enforced enum, so any tag can
-  still be typed by hand). Persisted through the same `/api/dev/videos` PATCH route as
-  everything else. Tags currently sit mostly empty — the client is populating them herself
-  using this vocabulary; don't invent tags for her.
-- **`EditVideoDialog`'s body needed `max-h-[70vh] overflow-y-auto`** once the Category/
-  Language/Tags fields were added — before that fix the dialog could grow taller than the
-  viewport with no way to scroll, making Save/Cancel unreachable. Same pattern as
-  `EditChannelDialog` already used.
+- **Tags were originally editable per-project via `EditVideoDialog` (pencil icon), which no
+  longer exists** — removed along with the rest of the local edit UI once the client started
+  sharing `/video-editing` publicly (see "Real content + local edit UI" above). Tags now live
+  purely as freeform values directly in `videos.data.json`; editing one means editing that file
+  on request, not a UI action. Populated tags use hyphenated plain words (`split-screen`,
+  `kinetic-typography`), never invented — same "don't invent tags for her" rule as before, it
+  just has no dialog attached to it anymore.
+- **`TopHeader`'s search-suggestion dropdown was a hardcoded, hashtag-cased placeholder list**
+  (`#splitscreen`, `#kinetictypography`, etc.) left over from before real tags existed — it
+  drifted out of sync with the client's actual (hyphenated, no `#`) tag vocabulary, so clicking
+  most suggestions substring-matched nothing and returned zero results. Fixed by
+  `getSearchTagSuggestions()` in `videos.ts`, which derives suggestions live from the real tags
+  present on `VIDEO_PROJECTS`/`SHORT_PROJECTS` (ranked by how many projects use each, capped to
+  8), so every suggestion is guaranteed to match something and the list self-updates as tags get
+  added — no more hand-maintained list to drift. Placeholder text and the dropdown's `#` prefix
+  were dropped to match (`"Search podcast, documentary, split screen..."`).
 - **Removed the non-functional mic button** from `TopHeader` — real YouTube chrome, but there
   was no speech-to-search wired up behind it, so it was dead decoration.
 

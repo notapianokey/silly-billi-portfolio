@@ -25,16 +25,33 @@ export const LANGUAGE_CATEGORIES: CategoryDef[] = [
 /** All pills shown in the top filter row, in display order. */
 export const PILL_CATEGORIES: CategoryDef[] = [...VIDEO_CATEGORIES, ...LANGUAGE_CATEGORIES];
 
-export const SEARCH_TAG_SUGGESTIONS = [
-  "#podcast",
-  "#documentary",
-  "#talkinghead",
-  "#splitscreen",
-  "#kinetictypography",
-  "#motiongraphics",
-  "#reaction",
-  "#archivalfootage",
-];
+/**
+ * Search-bar suggestion chips, derived from the real tags actually present on
+ * VIDEO_PROJECTS/SHORT_PROJECTS rather than a hand-typed list — a hardcoded list drifted out of
+ * sync with the client's real (freeform, hyphenated-word) tag vocabulary and produced hashtag-
+ * cased suggestions like "#splitscreen"/"#kinetictypography" that didn't substring-match the
+ * real "split-screen"/"kinetic-typography" tags, so clicking one always showed zero results.
+ * Deriving from live data means a suggestion is only ever offered if it will actually match
+ * something, and stays correct as the client adds/edits tags without a code change. Ranked by
+ * how many projects use each tag (most useful first), capped to keep the dropdown short. A
+ * leading "#" is stripped for comparison/display only — some entries were typed with one by
+ * accident (this file's own placeholder text used to suggest hashtag style) — the underlying
+ * stored tag data itself is untouched.
+ */
+export function getSearchTagSuggestions(limit = 8): string[] {
+  const counts = new Map<string, number>();
+  for (const item of [...VIDEO_PROJECTS, ...SHORT_PROJECTS]) {
+    for (const rawTag of item.tags) {
+      const tag = rawTag.replace(/^#/, "").trim();
+      if (!tag) continue;
+      counts.set(tag, (counts.get(tag) ?? 0) + 1);
+    }
+  }
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, limit)
+    .map(([tag]) => tag);
+}
 
 /** Fallback background for any project without a real thumbnailSrc yet. */
 export const THUMBNAIL_PALETTE = [

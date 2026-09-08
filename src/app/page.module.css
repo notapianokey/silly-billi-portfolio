@@ -41,6 +41,7 @@
  */
 .stage {
   position: relative;
+  z-index: 1;
   width: min(100dvw, calc(100dvh * 1.5));
   height: min(100dvh, calc(100dvw / 1.5));
 }
@@ -49,6 +50,36 @@
   .stage {
     width: min(100dvw, calc(100dvh * 7 / 3));
     height: min(100dvh, calc(100dvw * 3 / 7));
+  }
+}
+
+/*
+ * Even with two art-directed variants (3:2 / 7:3), a fixed-ratio image can never be a pixel-
+ * perfect match for every screen — real ultrawide monitors alone range from 2560×1080 (2.37) to
+ * 3440×1440 (2.39) to 5120×1440 (3.56), none of them exactly 2.333, so a thin margin on
+ * whichever axis is looser is unavoidable. Rather than leave that margin flat `#a8a19e`, it's
+ * filled with a heavily blurred, scaled-up copy of the SAME scene image sitting behind the
+ * stage — same trick fullscreen video players use for letterbox bars. Reuses the already-
+ * fetched image bytes (same URL as the foreground `<picture>`, so the browser serves it from
+ * cache — zero extra network cost), just re-rendered as an out-of-focus backdrop instead of a
+ * flat color, so any leftover sliver reads as atmosphere, not a broken layout.
+ */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url("/homepage/scene.webp");
+  background-size: cover;
+  background-position: center;
+  /* Scaled up past 100% so blur's own edge falloff never shows a soft/transparent seam at the
+     backdrop's border — the blurred, oversized image always fully covers the frame. */
+  transform: scale(1.2);
+  filter: blur(70px) saturate(1.15) brightness(0.55);
+}
+
+@media (min-aspect-ratio: 2/1) {
+  .backdrop {
+    background-image: url("/homepage/scene-wide.webp");
   }
 }
 

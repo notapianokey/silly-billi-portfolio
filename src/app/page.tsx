@@ -172,6 +172,10 @@ export default function Home() {
   return (
     <main className="relative flex h-dvh w-dvw items-center justify-center overflow-hidden bg-[#a8a19e]">
       <h1 className="sr-only">Silly Billi Studio</h1>
+      {/* Blurred backdrop for whatever margin is left around the stage on a screen that isn't
+          exactly 3:2 or exactly 7:3 — see page.module.css for why a flat color was replaced
+          with this. */}
+      <div className={styles.backdrop} aria-hidden="true" />
       <div className={styles.stage}>
         {/* Native art-direction: the browser fetches exactly ONE of these sources based on
             which media query matches (spec-guaranteed — unlike two next/image instances toggled
