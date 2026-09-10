@@ -550,20 +550,19 @@ rather than decoration. Current structure, top to bottom:
   — see below — not a `ComingSoon` stub.
 - About Us → `/about`.
 - Our Services → an expand/collapse dropdown (local `useState`, chevron rotates open), not a
-  link itself, containing: Video Editing (→ `/video-editing`) and Visual Branding
+  link itself, containing: Video Editing (→ `/video-editing`), Visual Branding
   (→ `/visual-branding`, real design now — see below), Editorial Direction (→
-  `/editorial-direction`), Marketing & Ads (→ `/marketing-ads`) — the latter two service pages
-  are speced in full further down this file but not yet built.
+  `/editorial-direction`, still a `ComingSoon` stub), Marketing & Ads (→ `/marketing-ads`, real
+  design now — see below).
 - Hire Us → `/hire-us`, Join Us → `/join-us`.
 
-**The remaining 2 not-yet-built destinations render a shared placeholder**,
-`src/components/coming-soon.tsx` (mascot image, page title in the display font, "coming soon"
-copy, a link back to `/`) — used by `src/app/{editorial-direction,marketing-ads}/page.tsx`. This
-exists purely so the new nav doesn't 404; swap each one out for its real design/content as that
-phase actually gets built — don't leave a page on `ComingSoon` once there's real content to put
-there instead. (`/about`, `/channels-we-monetized`, `/hire-us`, `/join-us`, and
-`/visual-branding` have real designs now — see below — the two remaining discipline pages are
-still pending.)
+**The one remaining not-yet-built destination (`/editorial-direction`) renders a shared
+placeholder**, `src/components/coming-soon.tsx` (mascot image, page title in the display font,
+"coming soon" copy, a link back to `/`) — used by `src/app/editorial-direction/page.tsx`. This
+exists purely so the nav doesn't 404; swap it out for the real design/content once that phase
+gets built — don't leave a page on `ComingSoon` once there's real content to put there instead.
+Every other discipline page (`/about`, `/channels-we-monetized`, `/hire-us`, `/join-us`,
+`/visual-branding`, `/marketing-ads`) has a real design now.
 
 ## Hire Us / Join Us pages (`/hire-us`, `/join-us`)
 
@@ -775,15 +774,65 @@ load/SSG) that forwards the payload to a **Google Apps Script Web App** URL read
   generally — don't introduce anything (eager third-party embeds, client-side SDKs loaded on
   every route, etc.) that adds to initial page weight without a clear ask.
 
-## Visual Branding page (`/visual-branding`) — Instagram profile clone
+## Visual Branding index (`/visual-branding`) — real-content bento wall
 
-First built as one perfected template — **Evan Thomsen** (`/visual-branding/evan-thomsen`) —
-per the client's explicit build order ("build this one page first and once we perfect it we
-will duplicate it for each brand"). `/visual-branding` itself just `redirect()`s to this one
-profile for now; the real explore/index page (an Instagram search/explore-style landing) is
-explicitly deferred until the client wants to start on it. Reference: two of the client's own
-Instagram screenshots (dark mode) — one her own profile (owner view), one a different real
-account (`hamna.ayub`, visitor view) — used as structural references, never as content to copy.
+First built as one perfected profile template — **Evan Thomsen** (`/visual-branding/evan-thomsen`,
+see the next section) — per the client's explicit build order ("build this one page first and
+once we perfect it we will duplicate it for each brand"), with `/visual-branding` itself just
+`redirect()`ing to that one profile. Later rebuilt (2026-09-09) into a real index page, after the
+client provided a reference brand-book HTML export (12-column bento grid, mixed image/caption
+tiles, tile-shadow + hover-lift, rounded corners) and real delivered assets for a client project
+(`Visual Branding/The Thomsen Company/` — git-ignored raw folder, per the "real client content
+stays out of git" rule).
+
+- **Content model, confirmed via two rounds of clarifying questions** (the client's first answer
+  — "redesign the index grid" — was ambiguous about which of two things she meant): the index is
+  **one continuous mosaic mixing many real asset tiles from a single brand's actual delivered
+  work**, not one tile per client brand. Currently 13 tiles, all from The Thomsen Company (coat
+  of arms, chess-set concept art, individual chess-piece illustrations, a construction blueprint,
+  workshop flat-lay photography). **Every tile still links out to that brand's own
+  `/visual-branding/[handle]` profile page** — the client's own words: "clicking any tile would
+  lead to its relevant IG page UI." All 13 currently point to `evan-thomsen`. As more brands' real
+  content lands, their tiles join this same wall rather than getting a separate index card each.
+- **Data model:** `src/lib/visual-branding-bento.data.json` + `visual-branding-bento.ts`
+  (`BENTO_TILES: BentoTile[]`) — separate from `instagram.data.json`/`instagram.ts`, which still
+  holds the individual profile pages' content. Each tile has `imageSrc`, `caption`/`subcaption`
+  (short, purely descriptive of what's depicted — no fabricated production claims; the reference
+  file included specific unverifiable claims like exact sketch counts and fabrication methods
+  that weren't reused), `background` (`"paper"`/`"dark"`/`"none"` — the tile backdrop behind a
+  transparent-PNG logo/heraldry cutout), `fit` (`"contain"` for logo-style assets, `"cover"` for
+  full-bleed photos), explicit `colStart`/`colEnd`/`rowStart`/`rowEnd` grid-line numbers, and
+  `linkedHandle`.
+- **Assets live on Vercel Blob**, not `public/` — `scripts/upload-thomsen-bento-assets.mjs`
+  compresses each source file via `sharp` (capped 1600px, webp) and uploads to
+  `visual-branding-bento/{id}.webp`, same reasoning as Instagram post media below (many images
+  added over time would bloat the git-committed `public/` folder). One-off content-population
+  script (prints URLs, no local edit UI), same category as the monetized-channels page's
+  population workflow — re-run/extend it the same way when the next brand's assets arrive.
+- **Layout lesson — explicit grid lines, not `grid-flow-dense` auto-placement, for an irregular
+  tile set.** The first attempt used Tailwind span classes + `grid-flow-dense` (this had worked
+  fine for an earlier, simpler 10-tile grid where every tile was the same provenance). With 13
+  tiles of genuinely varied size/shape, dense auto-placement left 32 empty cells — confirmed both
+  by a DOM cell-scan script and by screenshot, not assumed. Fixed by partitioning the grid into
+  row-bands where each band's tile areas are hand-verified to sum exactly to `width × height`
+  before writing any CSS (see the worked math in `visual-branding-bento.ts`'s doc comment), then
+  applying each tile's grid-line numbers via inline `style` — Tailwind can't generate
+  `col-span-${n}`-style classes from a runtime number; arbitrary-value classes must be literal
+  strings in source. Verify any future layout change here the same way: a JS scan of every grid
+  cell's occupancy, not just eyeballing a screenshot — a screenshot at small scale can also make a
+  correctly-rendering illustration tile look blank/black when the artwork has a lot of internal
+  negative space (happened here, was a false alarm, confirmed via canvas `getImageData` pixel
+  sampling rather than re-screenshotting).
+- **No text on tiles was the rule for the previous (one-tile-per-brand) version of this page** —
+  superseded by the client's own request for the brand-book style, which is caption-heavy by
+  design. The "back" chevron in `InstagramHeaderBar` (see the profile-page section below) now
+  links to `/visual-branding`, since that's a real destination to link back to.
+
+## Visual Branding profile pages (`/visual-branding/[handle]`) — Instagram profile clone
+
+Reference: two of the client's own Instagram screenshots (dark mode) — one her own profile
+(owner view), one a different real account (`hamna.ayub`, visitor view) — used as structural
+references, never as content to copy.
 
 - **Rendered as the literal phone/mobile layout even on desktop** — the client's explicit call,
   not a responsive redesign. `src/components/instagram/phone-frame.tsx` is a fixed 390px-wide
@@ -872,6 +921,31 @@ account (`hamna.ayub`, visitor view) — used as structural references, never as
   from real markup (9 rounded `4.667×6` rectangles, not squares) — no icon library ships that
   exact shape.
 
+## Marketing & Ads page (`/marketing-ads`) — analytics dashboard clone
+
+Clone of a Meta Ads Manager / Google Analytics-style campaign dashboard, matching the spec that
+used to live under "Other service pages" below (moved here now that it's built).
+
+- **Own dedicated chrome** (`AdsSidebar`/`AdsTopbar` in `src/components/dashboard/`), not the
+  site's YouTube-styled `SidebarRail`/`TopHeader` — same reasoning as the Instagram clone: this
+  page is meant to read as the real tool, and stacking the site's own nav next to a second,
+  different platform's nav would break that. The sidebar's Silly Billi mark links back to `/`.
+- **KPI cards** (`KpiCard`: impressions, CTR, conversion multiplier, each with a % change
+  indicator) driven by `PERIOD_SUMMARY[range]`, plus a **campaign performance table**
+  (`CampaignTable`) filterable by date range and platform (`AdsTopbar`'s dropdowns, local
+  `useState` in `page.tsx` — no URL/query-param state yet).
+- **Data:** `src/lib/marketing.data.json` + `marketing.ts` (`CAMPAIGNS`, `PERIOD_SUMMARY`,
+  `formatCompactNumber`/`formatMultiplier`/`formatPercent` helpers) — **all placeholder data**,
+  same "no real campaigns exist yet, don't fabricate them" posture as the monetized-channels page
+  before the client provides real numbers.
+- `campaign-detail.tsx` exists for the spec's "clicking a row expands to show audience
+  breakdowns, ad copy variations, creative sets, funnel strategies" behavior — check the current
+  component before assuming that expand interaction is fully wired up, since this section is
+  being written from the diff, not a live verification pass.
+- New dependencies for this page: `date-fns` (date formatting) and `react-day-picker` (the range
+  picker, via shadcn's `calendar.tsx`) — added to `package.json`. Also newly added shadcn
+  primitives: `card.tsx`, `table.tsx`, `dropdown-menu.tsx`, `popover.tsx`, `collapsible.tsx`.
+
 ## Future: campaign landing pages & live A/B testing — reserved, not built yet
 
 Client's stated goal: later run paid + organic acquisition campaigns with dedicated landing
@@ -893,14 +967,7 @@ building today.
   scaffold `/lp/` or `middleware.ts` speculatively — build it when there's an actual campaign
   to run.
 
-## Other service pages (later phases — full spec for reference)
-
-### Marketing & Ads (`/marketing-ads`) — Analytics dashboard clone
-Resembles Meta Ads Manager / Google Analytics. Date range picker, filter dropdown, KPI cards
-up top (impressions, CTR, conversion multiplier — with % change indicators), and a campaign
-performance table below. Clicking a row expands to show audience breakdowns, ad copy
-variations, creative sets, and funnel strategies. Reference: shadcn/ui dashboard example,
-shadcn-admin, or Tremor (tremor.so) for metric cards, expandable data tables, date pickers.
+## Remaining service page (later phase — full spec for reference)
 
 ### Editorial Direction (`/editorial-direction`) — Google Docs workspace clone
 File/app bar (File, Edit, View, Tools, doc title, blue Share button). Collapsible left outline
@@ -922,9 +989,12 @@ engine from scratch.
 
 ## Open decisions / not yet specified
 
-- Real client content for Evan Thomsen's Instagram profile (bio, highlights, posts) — the
+- Real client content for Evan Thomsen's Instagram profile page (bio, highlights, own posts —
+  distinct from the index's bento tiles, which now have real Thomsen Company brand assets) — the
   client is preparing real images to populate this herself via the local edit UI; nothing was
-  invented in the meantime. Real content for the other three service pages, still needed too.
+  invented in the meantime.
+- Real campaign data for `/marketing-ads` (currently placeholder) and a real build for
+  `/editorial-direction` (still `ComingSoon`).
 - Mobile layout approach per page (deferred).
 
 ## Category pills — content-type + language, one flat list (`videos.ts`, `category-pills.tsx`)
