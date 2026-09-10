@@ -4,17 +4,13 @@ import { cn } from "@/lib/utils";
 
 /** The fixed mobile-width content column every Instagram-clone page renders inside of —
  *  deliberately not responsive to the viewport, per the client's "phone version even on
- *  desktop" instruction. Scrolls internally so it reads as a phone screen rather than
- *  stretching the outer page. Transparent — the background photo lives at the page level now
- *  (full-viewport bleed, not confined to this column), not owned by this component. */
+ *  desktop" instruction. No longer owns its own scroll container (see the page component for
+ *  why) — content just flows normally and the page itself scrolls, so the mouse wheel works
+ *  everywhere on screen, not just directly over this column. Transparent — the background
+ *  photo lives at the page level (full-viewport, position: fixed), not owned by this component. */
 export function PhoneFrame({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div
-      className={cn(
-        "ig-font no-scrollbar relative z-10 h-[calc(100vh-2.5rem)] w-full max-w-[470px] overflow-y-auto text-white",
-        className,
-      )}
-    >
+    <div className={cn("ig-font relative z-10 w-full max-w-[470px] text-white", className)}>
       {children}
     </div>
   );

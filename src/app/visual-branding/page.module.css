@@ -1,0 +1,36 @@
+/* Bento wall for the Visual Branding index — mirrors the "brand book" bento style the client
+   referenced (12-col grid, tile-shadow, hover-lift, generous-but-not-excessive rounding). Mobile
+   stays a plain single-column stack (no dense packing) since desktop fidelity is the priority
+   per this project's conventions; the 12-col dense grid only engages at lg. */
+
+.wall {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 1024px) {
+  .wall {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 90px;
+    grid-auto-flow: dense;
+    gap: 12px;
+  }
+}
+
+.tile {
+  box-shadow:
+    0 12px 32px -8px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.45s;
+}
+
+.tile:hover {
+  transform: scale(1.02);
+  box-shadow:
+    0 20px 50px -12px rgba(0, 0, 0, 0.32),
+    0 0 0 1px rgba(0, 0, 0, 0.04) inset;
+}

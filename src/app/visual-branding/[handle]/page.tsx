@@ -22,11 +22,16 @@ interface ProfilePageProps {
  *  no TopHeader) — this is meant to read as the real app, not a page inside the rest of the
  *  site's YouTube-styled shell.
  *
- *  The brand background photo is full-viewport here (fixed, covers the entire browser window),
- *  not confined to the narrow mobile-width content column — the client's explicit correction
- *  after an earlier version left dark empty margins on either side of the phone-width UI on
- *  desktop. Only the actual chrome (header, buttons, grid, etc.) stays mobile-width; the photo
- *  behind it fills the whole screen. */
+ *  The brand background photo is full-viewport here (truly `fixed` to the browser window via
+ *  its own wrapper div, not just `next/image`'s own absolute positioning), not confined to the
+ *  narrow mobile-width content column — the client's explicit correction after an earlier
+ *  version left dark empty margins on either side of the phone-width UI on desktop.
+ *
+ *  The page scrolls natively now (no inner fixed-height overflow-y-auto column) — that inner
+ *  scroll container used to be the only thing that responded to the mouse wheel, so scrolling
+ *  over the dark side margins (most of the screen on a wide desktop) did nothing. A real
+ *  `position: fixed` background plus normal page scroll fixes that: the wheel scrolls the whole
+ *  page anywhere on it, and the background still stays pinned regardless. */
 export default function InstagramProfilePage({ params }: ProfilePageProps) {
   const { handle } = use(params);
   const profile = getInstagramProfile(handle);
@@ -37,15 +42,12 @@ export default function InstagramProfilePage({ params }: ProfilePageProps) {
   return (
     <div className="relative min-h-screen bg-black">
       {profile.backgroundSrc && (
-        <>
-          {/* next/image's `fill` sets its own absolute inset-0 inline — equivalent to fixed
-              full-viewport coverage here since the outer page itself never scrolls (only the
-              phone-width content column scrolls internally). */}
+        <div className="fixed inset-0 -z-10">
           <Image src={profile.backgroundSrc} alt="" fill sizes="100vw" className="object-cover" priority />
           {/* Contrast overlay — keeps white chrome text legible over a bright or busy brand
               photo. Harmless dead weight over the plain black fallback (no backgroundSrc). */}
           <div className="pointer-events-none absolute inset-0 bg-black/20" />
-        </>
+        </div>
       )}
 
       <div className="relative flex justify-center py-5">

@@ -1,0 +1,146 @@
+{
+  "dateRanges": [
+    { "id": "7d", "label": "Last 7 days" },
+    { "id": "30d", "label": "Last 30 days" },
+    { "id": "90d", "label": "Last 90 days" }
+  ],
+  "summary": {
+    "7d": { "impressions": 486000, "impressionsChange": 6.2, "ctr": 3.1, "ctrChange": -0.4, "roas": 3.6, "roasChange": 0.3 },
+    "30d": { "impressions": 2140000, "impressionsChange": 18.4, "ctr": 3.4, "ctrChange": 0.6, "roas": 4.2, "roasChange": 0.8 },
+    "90d": { "impressions": 6380000, "impressionsChange": 24.7, "ctr": 3.0, "ctrChange": 1.1, "roas": 3.9, "roasChange": 0.5 }
+  },
+  "campaigns": [
+    {
+      "id": "podcast-growth-conversions",
+      "name": "Podcast Growth — Conversions",
+      "platform": "Meta",
+      "status": "Active",
+      "objective": "Conversions",
+      "metrics": {
+        "7d": { "impressions": 118000, "clicks": 3650, "ctr": 3.1, "spend": 2100, "conversions": 214, "roas": 4.1 },
+        "30d": { "impressions": 512000, "clicks": 16800, "ctr": 3.3, "spend": 8900, "conversions": 940, "roas": 4.6 },
+        "90d": { "impressions": 1490000, "clicks": 46200, "ctr": 3.1, "spend": 25400, "conversions": 2610, "roas": 4.3 }
+      },
+      "audience": [
+        { "segment": "25–34, Male", "share": 38 },
+        { "segment": "35–44, Male", "share": 24 },
+        { "segment": "25–34, Female", "share": 19 },
+        { "segment": "18–24, All", "share": 12 },
+        { "segment": "45+, All", "share": 7 }
+      ],
+      "adCopy": [
+        { "headline": "The podcast episode everyone's talking about", "body": "New full episode is live — tap in before your feed spoils it." },
+        { "headline": "48 minutes that'll change how you see this", "body": "Our most-shared episode yet. Full conversation, no cuts." }
+      ],
+      "creativeSets": [
+        { "name": "Cold-open cutdown", "type": "Video", "count": 3 },
+        { "name": "Quote carousel", "type": "Carousel", "count": 5 },
+        { "name": "Static thumbnail set", "type": "Image", "count": 4 }
+      ],
+      "landingViewRate": 0.667
+    },
+    {
+      "id": "brand-awareness-search-display",
+      "name": "Brand Awareness — Search & Display",
+      "platform": "Google",
+      "status": "Active",
+      "objective": "Awareness",
+      "metrics": {
+        "7d": { "impressions": 210000, "clicks": 4300, "ctr": 2.0, "spend": 1450, "conversions": 58, "roas": 2.6 },
+        "30d": { "impressions": 890000, "clicks": 19800, "ctr": 2.2, "spend": 6200, "conversions": 265, "roas": 2.9 },
+        "90d": { "impressions": 2650000, "clicks": 55100, "ctr": 2.1, "spend": 18300, "conversions": 740, "roas": 2.7 }
+      },
+      "audience": [
+        { "segment": "In-market: Marketing services", "share": 41 },
+        { "segment": "Affinity: Media & Entertainment", "share": 27 },
+        { "segment": "Custom intent: Creator tools", "share": 20 },
+        { "segment": "Remarketing", "share": 12 }
+      ],
+      "adCopy": [
+        { "headline": "Silly Billi Studio — Video Editing & Brand Direction", "body": "From raw footage to a finished channel identity. See the work." },
+        { "headline": "Your next editor is already booked — we're not", "body": "Editing, branding, and campaigns under one roof." }
+      ],
+      "creativeSets": [
+        { "name": "Responsive display set", "type": "Image", "count": 6 },
+        { "name": "Search headline variants", "type": "Image", "count": 8 }
+      ],
+      "landingViewRate": 0.712
+    },
+    {
+      "id": "documentary-launch-retargeting",
+      "name": "Documentary Launch — Retargeting",
+      "platform": "Meta",
+      "status": "Active",
+      "objective": "Conversions",
+      "metrics": {
+        "7d": { "impressions": 64000, "clicks": 2800, "ctr": 4.4, "spend": 980, "conversions": 121, "roas": 5.2 },
+        "30d": { "impressions": 268000, "clicks": 12600, "ctr": 4.7, "spend": 4100, "conversions": 560, "roas": 5.8 },
+        "90d": { "impressions": 640000, "clicks": 28900, "ctr": 4.5, "spend": 9800, "conversions": 1240, "roas": 5.4 }
+      },
+      "audience": [
+        { "segment": "Video viewers 75%+", "share": 46 },
+        { "segment": "Website visitors, 30 days", "share": 32 },
+        { "segment": "Lookalike 1% — past viewers", "share": 22 }
+      ],
+      "adCopy": [
+        { "headline": "You watched the trailer. Here's the full story.", "body": "The documentary is live now — pick up where you left off." },
+        { "headline": "Still thinking about that trailer?", "body": "The full documentary just dropped." }
+      ],
+      "creativeSets": [
+        { "name": "Trailer recut", "type": "Video", "count": 2 },
+        { "name": "Reaction cutdowns", "type": "Video", "count": 4 }
+      ],
+      "landingViewRate": 0.825
+    },
+    {
+      "id": "shorts-amplification-tiktok",
+      "name": "Shorts Amplification",
+      "platform": "TikTok",
+      "status": "Paused",
+      "objective": "Traffic",
+      "metrics": {
+        "7d": { "impressions": 42000, "clicks": 1900, "ctr": 4.5, "spend": 310, "conversions": 19, "roas": 1.8 },
+        "30d": { "impressions": 312000, "clicks": 15400, "ctr": 4.9, "spend": 2400, "conversions": 148, "roas": 2.1 },
+        "90d": { "impressions": 980000, "clicks": 44700, "ctr": 4.6, "spend": 7600, "conversions": 402, "roas": 1.9 }
+      },
+      "audience": [
+        { "segment": "18–24, All", "share": 52 },
+        { "segment": "25–34, All", "share": 31 },
+        { "segment": "13–17, All", "share": 17 }
+      ],
+      "adCopy": [
+        { "headline": "This edit style is taking over feeds", "body": "See the full cut, sound on." },
+        { "headline": "POV: your feed just got better", "body": "Full clip on our page." }
+      ],
+      "creativeSets": [
+        { "name": "Vertical clip pack", "type": "Video", "count": 7 }
+      ],
+      "landingViewRate": 0.597
+    },
+    {
+      "id": "holiday-push-preroll",
+      "name": "Holiday Push — Pre-Roll",
+      "platform": "YouTube",
+      "status": "Ended",
+      "objective": "Awareness",
+      "metrics": {
+        "7d": { "impressions": 52000, "clicks": 780, "ctr": 1.5, "spend": 640, "conversions": 9, "roas": 1.4 },
+        "30d": { "impressions": 158000, "clicks": 2400, "ctr": 1.5, "spend": 1900, "conversions": 31, "roas": 1.6 },
+        "90d": { "impressions": 620000, "clicks": 9100, "ctr": 1.5, "spend": 7200, "conversions": 112, "roas": 1.5 }
+      },
+      "audience": [
+        { "segment": "Affinity: Shoppers", "share": 44 },
+        { "segment": "Life event: Holiday shopping", "share": 33 },
+        { "segment": "Remarketing", "share": 23 }
+      ],
+      "adCopy": [
+        { "headline": "6 seconds you'll actually want to watch", "body": "Our holiday spot, unskippable for a reason." }
+      ],
+      "creativeSets": [
+        { "name": "6s bumper", "type": "Video", "count": 2 },
+        { "name": "15s pre-roll", "type": "Video", "count": 1 }
+      ],
+      "landingViewRate": 0.667
+    }
+  ]
+}

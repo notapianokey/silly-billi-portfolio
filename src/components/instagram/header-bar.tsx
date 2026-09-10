@@ -1,15 +1,18 @@
 import { BellIcon, ChevronLeftIcon, MoreHorizontalIcon } from "lucide-react";
+import Link from "next/link";
 
 import { VerifiedBadgeIcon } from "@/components/instagram/icons";
 
 /** Instagram's own top bar. Kept fully decorative for now (per this session's answer) — no
- *  function behind the back/bell/menu icons yet; the client will decide later which get real
- *  links vs. get removed. The verified badge is traced exactly from instagram.com's own SVG
- *  (see components/instagram/icons.tsx); the second icon is three dots (Instagram's real profile
+ *  function behind the bell/menu icons yet; the client will decide later which get real links
+ *  vs. get removed. The verified badge is traced exactly from instagram.com's own SVG (see
+ *  components/instagram/icons.tsx); the second icon is three dots (Instagram's real profile
  *  menu), not a hamburger — that was a wrong icon choice, not a simplification. Bell/dots sit
  *  inside circular tap targets matching the reference screenshot; Instagram only renders that
  *  icon for logged-in viewers, which this can't verify against without signing into a real
- *  account, so its exact glyph is a best-effort match, not a traced copy.
+ *  account, so its exact glyph is a best-effort match, not a traced copy. The back chevron is a
+ *  real link now (to the /visual-branding index) — it was pure decoration until that index page
+ *  existed to link back to.
  *
  *  No solid divider under the header and light (not dark) button borders — this page now sits
  *  over a full-bleed brand background photo (the mockup-style pivot), where a solid
@@ -18,7 +21,9 @@ export function InstagramHeaderBar({ handle }: { handle: string }) {
   return (
     <div className="ig-text-shadow flex shrink-0 items-center justify-between px-6 py-5">
       <div className="flex items-center gap-2">
-        <ChevronLeftIcon className="size-5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
+        <Link href="/visual-branding" aria-label="Back to Visual Branding">
+          <ChevronLeftIcon className="size-5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
+        </Link>
         <span className="text-base font-medium">{handle}</span>
         <VerifiedBadgeIcon className="size-4 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]" />
       </div>
