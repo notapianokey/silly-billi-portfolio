@@ -5,6 +5,7 @@ export default function ComingSoonPage() {
     <ComingSoon
       title="Silly Billi Studio"
       description="Our new home is getting settled in. Check back soon!"
+      showBackLink={false}
     />
   );
 }
