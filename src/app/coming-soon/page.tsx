@@ -4,7 +4,7 @@ export default function ComingSoonPage() {
   return (
     <ComingSoon
       title="Silly Billi Studio"
-      description="Our new home is getting settled in. Check back soon!"
+      description="Intellectual Media. Built to Last."
       showBackLink={false}
     />
   );

@@ -7,13 +7,12 @@ const COMING_SOON_HOSTS = new Set([
 ]);
 
 export function proxy(request: NextRequest) {
-  const host = request.headers.get("host")?.split(":")[0];
   const { pathname } = request.nextUrl;
-  if (host && COMING_SOON_HOSTS.has(host) && pathname !== "/coming-soon") {
+  if (pathname.startsWith("/_next/") || pathname === "/coming-soon") {
+    return;
+  }
+  const host = request.headers.get("host")?.split(":")[0];
+  if (host && COMING_SOON_HOSTS.has(host)) {
     return NextResponse.rewrite(new URL("/coming-soon", request.url));
   }
 }
-
-export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-};
