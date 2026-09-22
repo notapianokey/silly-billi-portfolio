@@ -416,6 +416,8 @@
   gap: clamp(24px, 4vw, 64px);
   align-items: flex-start;
   position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 .whoRow--rida {
   margin-bottom: clamp(48px, 7vw, 104px);
