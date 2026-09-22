@@ -47,6 +47,7 @@ next-env.d.ts
 /BRANDINGEDITORIALTHUMBNAILS/
 /carousels/
 /homepage/
+/About Us/
 
 .vercel
 .env*

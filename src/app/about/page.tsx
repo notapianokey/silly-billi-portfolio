@@ -1,148 +1,413 @@
 "use client";
 
-import { ClapperboardIcon, ExternalLinkIcon } from "lucide-react";
+import { Libre_Baskerville, Mulish } from "next/font/google";
+import localFont from "next/font/local";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
-import { EditChannelDialog } from "@/components/channel/edit-channel-dialog";
-import { ShortsShelf } from "@/components/youtube/shorts-shelf";
-import { SidebarRail } from "@/components/youtube/sidebar-rail";
-import { TopHeader } from "@/components/youtube/top-header";
-import { VideoCard } from "@/components/youtube/video-card";
-import { CHANNEL_PROFILE } from "@/lib/channel";
-import { VIDEO_PROJECTS } from "@/lib/videos";
+import styles from "./page.module.css";
+
+const displayFont = Libre_Baskerville({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-display",
+});
+const bodyFont = Mulish({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-body",
+});
+const scriptFont = localFont({
+  src: "../../fonts/BiroScriptPlus-Regular.otf",
+  variable: "--font-script",
+});
+
+const SHOTS = ["/about/c1.jpg", "/about/c2.jpg", "/about/c3.jpg", "/about/c4.jpg", "/about/c5.jpg", "/about/c6.jpg"];
+
+// The booking destination the handoff calls "#talk" for every real CTA — this site's
+// contact form lives on Hire Us, so that's where "claim your audit" / "connect" go.
+const BOOKING_HREF = "/hire-us";
 
 export default function AboutPage() {
-  const [query, setQuery] = useState("");
-  const [descriptionExpanded, setDescriptionExpanded] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
+  const [shot, setShot] = useState(0);
+  const step = (d: number) => setShot((s) => (s + d + SHOTS.length) % SHOTS.length);
 
   return (
-    <div className="min-h-screen">
-      <TopHeader query={query} onQueryChange={setQuery} />
-      <SidebarRail />
-
-      <div className="md:pl-60">
-        <main className="px-4 py-6 md:px-[6%] lg:px-[8%]">
-          {/* Banner — real YouTube channel banners aren't full-bleed: they sit inset from the
-              content column with ~16px rounded corners and hold a ~6.2:1 aspect ratio, capped
-              at a max height. Measured directly off a live channel page, not guessed. */}
-          <div
-            className="aspect-[31/5] max-h-48 w-full overflow-hidden rounded-2xl bg-cover bg-center"
-            style={{
-              backgroundImage: CHANNEL_PROFILE.bannerSrc
-                ? `url(${CHANNEL_PROFILE.bannerSrc})`
-                : undefined,
-            }}
-          >
-            {!CHANNEL_PROFILE.bannerSrc && (
-              <div className="h-full w-full bg-gradient-to-r from-fuchsia-500 to-purple-700" />
-            )}
+    <div className={`${styles.page} ${displayFont.variable} ${bodyFont.variable} ${scriptFont.variable}`}>
+      <nav className={styles.nav}>
+        <Link href="/" aria-label="Silly Billi Studio — home" className={`${styles.navHome} ${styles.pressable}`}>
+          <Image src="/about/mascot-face.png" alt="Silly Billi, the studio cat" width={58} height={58} />
+        </Link>
+        <div className={styles.navLinks}>
+          <div className={`${styles.navLinksInner} ${styles.eyebrow}`}>
+            <a href="#about" className={styles.navLink}>About</a>
+            <span className={styles.navDivider} />
+            <a href="#work" className={styles.navLink}>How we work</a>
+            <span className={styles.navDivider} />
+            <a href="#who" className={styles.navLink}>Who we are</a>
+            <span className={styles.navDivider} />
+            <a href="#talk" className={styles.navLink}>Let&apos;s talk</a>
           </div>
+        </div>
+        <a href="#talk" className={`${styles.navCta} ${styles.eyebrow} ${styles.pressable}`}>Get in Touch</a>
+      </nav>
 
-          {/* Channel header */}
-          <div className="flex flex-col gap-4 py-4 sm:flex-row sm:items-start">
-            <Image
-              src="/brand/mascot.png"
-              alt="Silly Billi Studio"
-              width={160}
-              height={160}
-              className="size-28 shrink-0 rounded-full object-cover sm:size-36 md:size-40"
-            />
-
-            <div className="min-w-0 flex-1">
-              <div className="flex items-start justify-between gap-2">
-                <h1 className="font-[family-name:var(--font-display)] text-2xl font-extrabold tracking-tight sm:text-4xl">
-                  Silly Billi Studio
-                </h1>
-                <EditChannelDialog
-                  description={CHANNEL_PROFILE.description}
-                  bannerSrc={CHANNEL_PROFILE.bannerSrc}
-                  socialLinks={CHANNEL_PROFILE.socialLinks}
-                  triggerClassName="shrink-0 rounded-full"
-                />
+      <section id="about" className={styles.hero}>
+        <div className={styles.heroInner}>
+          <div className={styles.heroTitleCol}>
+            <div className={`${styles.eyebrow} ${styles.heroEyebrow}`}>About Us</div>
+            <h1 className={`${styles.display} ${styles.heroTitle}`}>
+              High-Context Content Editing for Serious Ideas.
+            </h1>
+          </div>
+          <div className={styles.heroCardCol}>
+            <div className={styles.heroCard}>
+              <div className={styles.heroCardRow}>
+                <div className={`${styles.eyebrow} ${styles.heroCardLabel}`}>Tool Operator</div>
+                <div className={`${styles.display} ${styles.heroCardValue}`}>Knows the software.</div>
               </div>
-              <p className="mt-1 text-sm text-muted-foreground">
-                @sillybillistudio · 4000+ videos delivered
-              </p>
-
-              <button
-                type="button"
-                onClick={() => setDescriptionExpanded((current) => !current)}
-                className="mt-3 max-w-2xl text-left text-sm text-muted-foreground"
-              >
-                <span className={descriptionExpanded ? undefined : "line-clamp-2"}>
-                  {CHANNEL_PROFILE.description}
-                </span>
-                <span className="ml-1 font-medium text-foreground">
-                  {descriptionExpanded ? "Show less" : "...more"}
-                </span>
-              </button>
-
-              {CHANNEL_PROFILE.socialLinks.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {CHANNEL_PROFILE.socialLinks.map((link) => (
-                    <a
-                      key={link.url}
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-medium hover:bg-accent"
-                    >
-                      <ExternalLinkIcon className="size-3.5" />
-                      {link.label}
-                    </a>
-                  ))}
+              <div className={`${styles.heroCardRow} ${styles["heroCardRow--mustard"]}`}>
+                <div className={`${styles.eyebrow} ${styles.heroCardLabel}`}>Content Editor</div>
+                <div className={`${styles.display} ${styles.heroCardValue} ${styles["heroCardValue--bold"]}`}>
+                  Knows the software + understands the nuance in your raw footage.
                 </div>
-              )}
+              </div>
+            </div>
+            <div className={`${styles.script} ${styles.heroScript}`}>
+              We genuinely care about your ideas and want to make sure whoever watches your
+              content understands you the way you want to be understood. :)
+            </div>
+          </div>
+        </div>
+      </section>
 
-              <button
-                type="button"
-                onClick={() => setSubscribed((current) => !current)}
-                className={
-                  subscribed
-                    ? "mt-4 rounded-full bg-secondary px-5 py-2 text-sm font-semibold text-secondary-foreground hover:opacity-90"
-                    : "mt-4 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90"
-                }
+      <section id="work" className={styles.work}>
+        <div className={`${styles.display} ${styles.workTitle}`}>The gap we kept seeing</div>
+
+        <div className={styles.workRow}>
+          <div className={styles.workIndex}>[ 01 - 1 ]</div>
+          <div className={styles.workBlock}>
+            <div className={styles.workBullet} />
+            <div>
+              <div className={styles.workLabel}>flash without substance</div>
+              <p className={styles.workText}>
+                We kept seeing the same gap. Most editors cut for flash and flare without
+                understanding what&apos;s actually being said. When the subject matter is dense,
+                that gap shows. The cuts miss the point. The pacing kills the argument. The
+                content ends up polished but forgettable.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className={`${styles.workRow} ${styles["workRow--end"]}`}>
+          <div className={styles.workBlock} style={{ order: 2 }}>
+            <div className={styles.workBullet} />
+            <div>
+              <div className={styles.workLabel}>production meets strategy</div>
+              <p className={styles.workText}>
+                Before Silly Billi, we led editing and content teams from two different sides of
+                the table. <a href="#haider">Haider</a> ran post-production for networks
+                producing geopolitics, philosophy, and cultural commentary.{" "}
+                <a href="#rida">Rida</a> built content strategy and brand systems around dense,
+                expert-led ideas.
+              </p>
+            </div>
+          </div>
+          <div className={styles.workIndex} style={{ order: 1 }}>[ 01 - 2 ]</div>
+        </div>
+
+        <div className={styles.workCentered}>
+          <div className={styles.workCenteredBullet} />
+          <div>
+            <div className={styles.workCenteredIndex}>[ 01 - 3 ]</div>
+            <div className={styles.workLabel}>idea-first editing</div>
+            <p className={`${styles.display} ${styles.workCenteredText}`}>
+              We built Silly بِلّی around the opposite premise. Editors who go deep into the
+              subject before they touch a single clip. Strategy that treats every piece of
+              content as part of one ecosystem, not a one off post. The result is content people
+              actually watch, follow, and come back for, without losing the nuance that made the
+              idea worth making.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.audience}>
+        <div className={styles.audienceLeft}>
+          <div className={styles.audienceCard}>
+            <div className={`${styles.eyebrow} ${styles.audienceEyebrow}`}>
+              SERIOUS PEOPLE WITH SERIOUS IDEAS
+            </div>
+            <div className={`${styles.display} ${styles.audienceHeading}`}>
+              We work with podcasters, macro thinkers, geopolitical analysts, &amp; thought
+              leaders.
+            </div>
+          </div>
+          <p className={styles.audienceParagraph}>
+            You bring the dense research and the raw footage; we bring the editorial eye that
+            keeps your audience tuned in, without losing the nuance that made the video worth
+            making in the first place.
+          </p>
+        </div>
+        <div className={styles.audienceRight}>
+          <span className={`${styles.script} ${styles.audienceScript}`}>
+            If you&apos;re tired of micromanaging editors who don&apos;t understand your subject
+            matter, we&apos;re the team you hand the raw files to and just let run with it.
+          </span>
+          <div className={styles.audienceBtnWrap}>
+            <Link href={BOOKING_HREF} className={`${styles.btnMustard} ${styles.pressable}`}>
+              CLAIM YOUR FREE CONTENT AUDIT
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section aria-label="Proof" className={styles.proof}>
+        <div className={styles.proofCell}>
+          <div className={`${styles.display} ${styles.proofNumber}`}>1M+</div>
+          <div className={styles.proofLabel}>SUBSCRIBERS ON EON PODCAST</div>
+        </div>
+        <div className={styles.proofCell}>
+          <div className={`${styles.display} ${styles.proofNumber}`}>15k → 200k+</div>
+          <div className={styles.proofLabel}>
+            YOUTUBE SUBSCRIBERS GROWTH FOR A GEOPOLITICAL ANALYST
+          </div>
+        </div>
+        <div className={styles.proofCell}>
+          <div className={`${styles.display} ${styles.proofNumber}`}>4000+</div>
+          <div className={styles.proofLabel}>FINAL VIDEOS DELIVERED</div>
+        </div>
+      </section>
+
+      <section id="who" className={styles.who}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/about/cat-orange.png" alt="" aria-hidden="true" className={styles.whoCat} />
+
+        <div className={`${styles.display} ${styles.whoTitle}`}>Meet Silly and Billi</div>
+
+        <div className={`${styles.whoRow} ${styles["whoRow--rida"]}`}>
+          <div className={styles.whoIndex}>[ 02 - 1 ]</div>
+          <div className={styles.whoPhotoCol} style={{ order: 3 }}>
+            <div className={styles.frame} style={{ aspectRatio: 0.709 }}>
+              <div
+                className={styles.frameInset}
+                style={{ left: "7.9%", right: "7.5%", top: "5.1%", bottom: "6.6%" }}
               >
-                {subscribed ? "Subscribed" : "Subscribe"}
-              </button>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/about/rida.jpg" alt="Rida Ali" />
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/about/frame-yellow-trim.png" alt="" aria-hidden="true" className={styles.frameArt} />
+              <div
+                className={`${styles.script} ${styles.frameScript}`}
+                style={{ left: 55, top: 421, width: 129, height: 96, fontSize: 90, color: "var(--sb-mustard)" }}
+              >
+                Silly
+              </div>
             </div>
           </div>
-
-          {/* Tabs */}
-          <div className="flex gap-6 border-b text-sm font-medium">
-            <span className="border-b-2 border-foreground pb-3">Home</span>
-            <Link href="/hire-us" className="pb-3 text-muted-foreground hover:text-foreground">
-              Hire Us
-            </Link>
-            <Link href="/join-us" className="pb-3 text-muted-foreground hover:text-foreground">
-              Join Us
-            </Link>
-          </div>
-
-          {/* Featured video — empty until a real show reel is cut */}
-          <div className="flex items-center justify-center gap-3 rounded-xl border border-dashed py-14 text-center text-muted-foreground">
-            <ClapperboardIcon className="size-6" />
-            <span className="text-sm font-medium">Show Reel will be uploaded soon</span>
-          </div>
-
-          {/* Videos */}
-          <div className="pt-6">
-            <h2 className="mb-3 text-lg font-semibold">Videos</h2>
-            <div className="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {VIDEO_PROJECTS.map((video) => (
-                <VideoCard key={video.id} video={video} />
-              ))}
+          <div className={styles.whoTextCol} style={{ order: 2 }}>
+            <h3 id="rida" className={`${styles.display} ${styles.whoName}`}>Rida Ali</h3>
+            <div className={`${styles.whoRole} ${styles["whoRole--orange"]}`}>
+              Co-Founder, Marketing Strategist &amp; Content Ecosystem Builder
+            </div>
+            <p className={styles.whoBio}>
+              Rida has spent close to 10 years building the systems behind a brand&apos;s digital
+              presence: website architecture, brand narrative, and the content strategy that ties
+              them together.
+              <br />
+              <br />
+              She built The Thomsen Company&apos;s brand and website from scratch for a
+              referral-only wealth management firm serving ultra-high-net-worth families, content
+              built to close deals, not chase views. She also took the Eon Podcast from zero to
+              138,000 Instagram followers, 65,500 YouTube subscribers, and 371,000 TikTok
+              followers within its first six months, and built The Matrix, its paid membership
+              community, from the ground up.
+              <br />
+              <br />
+              Her work spans wealth management, asset protection, real estate, and philosophy and
+              thought leadership, the same territory Silly بِلّی works in now. At Silly بِلّی, she
+              leads the strategy: turning a client&apos;s ideas into a system, not a scattered
+              feed of posts.
+            </p>
+            <div className={styles.whoBtnWrap}>
+              <Link href={BOOKING_HREF} className={`${styles.btnBlue} ${styles.pressable}`}>
+                Connect with Rida
+              </Link>
             </div>
           </div>
+        </div>
 
-          <div className="mt-8 pb-10">
-            <ShortsShelf />
+        <div className={styles.whoRow}>
+          <div className={styles.whoTextCol} style={{ order: 3 }}>
+            <h3 id="haider" className={`${styles.display} ${styles.whoName}`}>Haider Ali Shah</h3>
+            <div className={`${styles.whoRole} ${styles["whoRole--green"]}`}>
+              Co-Founder, Head of Content &amp; Lead Narrative Editor
+            </div>
+            <p className={styles.whoBio}>
+              Haider has spent his career inside the edit. He scaled the Eon Podcast Network from
+              zero to over 1 million subscribers across 5+ channels, producing geopolitics,
+              philosophy, and cultural commentary at a pace few editors sustain.
+            </p>
+            <p className={styles.whoBio}>
+              He grew Dimitri Lascaris&apos;s YouTube channel from 15,000 to over 196,000
+              subscribers, handling complex geopolitical and journalistic material for a
+              politically engaged, global audience.
+            </p>
+            <p className={styles.whoBio}>
+              He also directed post-production on a feature-length documentary, turning 15+ hours
+              of unstructured footage into a 58-minute film that&apos;s been watched over 125,000
+              times. At Silly بِلّی, he leads narrative and post-production: the hook, the pacing,
+              the cut that keeps someone watching to the end.
+            </p>
+            <div className={styles.whoBtnWrap}>
+              <Link href={BOOKING_HREF} className={`${styles.btnBlue} ${styles.pressable}`}>
+                Connect with Haider
+              </Link>
+            </div>
           </div>
-        </main>
-      </div>
+          <div className={styles.whoPhotoCol} style={{ order: 2, position: "relative" }}>
+            <div className={styles.frame} style={{ aspectRatio: 0.822, position: "relative", zIndex: 1 }}>
+              <div
+                className={styles.frameInset}
+                style={{ left: "8.2%", right: "9.3%", top: "6.8%", bottom: "5.8%" }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/about/haider.jpg" alt="Haider Ali Shah" />
+              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/about/frame-red-trim.png" alt="" aria-hidden="true" className={styles.frameArt} />
+              <div
+                className={`${styles.script} ${styles.frameScript}`}
+                style={{ left: 76, top: 69, width: 126, height: 92, fontSize: 90, color: "var(--sb-orange)" }}
+              >
+                billi
+              </div>
+            </div>
+          </div>
+          <div className={styles.whoIndex} style={{ order: 1 }}>[ 02 - 2 ]</div>
+        </div>
+      </section>
+
+      <section className={styles.words}>
+        <div className={styles.wordsLeft}>
+          <div className={`${styles.eyebrow} ${styles.wordsEyebrow}`}>[ 03 ] In their words</div>
+          <div className={styles.wordsSub}>What clients say mid-project</div>
+          <span className={`${styles.script} ${styles.wordsSub} ${styles.wordsScript}`}>
+            Straight from the group chats.
+          </span>
+          <div className={styles.quoteList}>
+            <figure className={styles.quote}>
+              <blockquote className={`${styles.display} ${styles.quoteBlock}`}>
+                &quot;This is a new standard... Seriously elevated.&quot;
+              </blockquote>
+              <figcaption className={styles.quoteCaption}>— Evan</figcaption>
+            </figure>
+            <figure className={styles.quote}>
+              <blockquote className={`${styles.display} ${styles.quoteBlock}`}>
+                &quot;Many thanks for your excellent contributions... 300,000 subscribers, here we
+                come!&quot;
+              </blockquote>
+              <figcaption className={styles.quoteCaption}>— Dimitri Lascaris</figcaption>
+            </figure>
+          </div>
+          <div className={styles.carousel}>
+            <button
+              type="button"
+              onClick={() => step(-1)}
+              aria-label="Previous message"
+              className={`${styles.carouselBtn} ${styles.pressable}`}
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={() => step(1)}
+              aria-label="Next message"
+              className={`${styles.carouselBtn} ${styles.pressable}`}
+            >
+              →
+            </button>
+            <span className={styles.carouselLabel}>
+              {String(shot + 1).padStart(2, "0")} / {String(SHOTS.length).padStart(2, "0")}
+            </span>
+          </div>
+        </div>
+        <div className={styles.wordsRight}>
+          <div className={styles.screenshotFrame}>
+            {SHOTS.map((src, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                key={src}
+                src={src}
+                alt={`Client message ${i + 1}`}
+                hidden={i !== shot}
+                className={styles.screenshotImg}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="talk" className={styles.talk}>
+        <div className={styles.talkRow}>
+          <div className={styles.talkLeft}>
+            <div className={`${styles.eyebrow} ${styles.talkEyebrow}`}>[ 04 ] TLDR;</div>
+            <h2 className={`${styles.display} ${styles.talkHeading}`}>
+              We aren&apos;t button pushing editors. We understand the tools AND the ideas.
+            </h2>
+          </div>
+          <div className={styles.talkRight}>
+            <span className={`${styles.script} ${styles.talkScript}`}>
+              Send over your channel and let&apos;s see what&apos;s getting lost in translation.
+            </span>
+            <Link href={BOOKING_HREF} className={`${styles.btnMustard} ${styles.pressable}`} style={{ height: 52 }}>
+              CLAIM YOUR FREE CONTENT AUDIT
+            </Link>
+          </div>
+        </div>
+
+        <footer className={styles.footer}>
+          <div className={styles.footerCols}>
+            <div className={styles.footerCol}>
+              <div className={styles.footerColTitle}>See Our Work</div>
+              <Link href="/video-editing" className={`${styles.display} ${styles.footerLink}`}>
+                Video Editing
+              </Link>
+              <Link href="/visual-branding" className={`${styles.display} ${styles.footerLink}`}>
+                Visual Branding
+              </Link>
+              <Link href="/editorial-direction" className={`${styles.display} ${styles.footerLink}`}>
+                Editorial Direction
+              </Link>
+            </div>
+            <div className={styles.footerCol}>
+              <div className={styles.footerColTitle}>Studio</div>
+              <Link href="/join-us" className={`${styles.display} ${styles.footerLink}`}>
+                Join Us
+              </Link>
+              <a href="#about" className={`${styles.display} ${styles.footerLink}`}>About Us</a>
+              <a href="#about" className={`${styles.display} ${styles.footerLink}`}>Don&apos;t like our name?</a>
+              <a href="#about" className={`${styles.display} ${styles.footerLink}`}>Hey AI, learn about us</a>
+            </div>
+            <div className={styles.footerCol}>
+              <div className={styles.footerColTitle}>Say hello</div>
+              <a href="mailto:hello@sillybilli.studio" className={`${styles.display} ${styles.footerLink}`}>
+                hello@sillybilli.studio
+              </a>
+              <div className={styles.footerSocial}>
+                <a href="#talk" className={`${styles.display} ${styles.footerLink}`}>Instagram</a>
+                <a href="#talk" className={`${styles.display} ${styles.footerLink}`}>LinkedIn</a>
+                <a href="#talk" className={`${styles.display} ${styles.footerLink}`}>YouTube</a>
+              </div>
+            </div>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/about/logo-silly-studio.png" alt="Silly بِلّی Studio" className={styles.footerLogo} />
+        </footer>
+      </section>
     </div>
   );
 }
