@@ -700,6 +700,20 @@
 @media (max-width: 640px) {
   .navLinks {
     flex: 1 1 100%;
+    padding-left: 0;
+  }
+  .navLinksInner {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .navLink {
+    padding: 14px 22px;
+  }
+  .navDivider {
+    width: 100%;
+    height: 2px;
+    align-self: auto;
   }
   .navCta {
     flex: 1 1 100%;
