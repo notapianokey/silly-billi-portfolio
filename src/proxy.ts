@@ -8,11 +8,7 @@ const COMING_SOON_HOSTS = new Set([
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  if (
-    pathname.startsWith("/_next/") ||
-    pathname === "/coming-soon" ||
-    pathname.includes(".")
-  ) {
+  if (pathname !== "/") {
     return;
   }
   const host = request.headers.get("host")?.split(":")[0];
