@@ -189,7 +189,7 @@ export default function AboutPage() {
 
         <div className={`${styles.whoRow} ${styles["whoRow--rida"]}`}>
           <div className={styles.whoIndex}>[ 02 - 1 ]</div>
-          <div className={styles.whoPhotoCol} style={{ order: 3 }}>
+          <div className={`${styles.whoPhotoCol} ${styles["whoPhotoCol--rida"]}`}>
             <div className={styles.frame} style={{ aspectRatio: 0.709 }}>
               <div
                 className={styles.frameInset}
@@ -215,7 +215,7 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
-          <div className={styles.whoTextCol} style={{ order: 2 }}>
+          <div className={`${styles.whoTextCol} ${styles["whoTextCol--rida"]}`}>
             <h3 id="rida" className={`${styles.display} ${styles.whoName}`}>Rida Ali</h3>
             <div className={`${styles.whoRole} ${styles["whoRole--orange"]}`}>
               Co-Founder, Marketing Strategist &amp; Content Ecosystem Builder

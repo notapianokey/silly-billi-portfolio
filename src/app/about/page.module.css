@@ -422,6 +422,12 @@
 .whoRow--rida {
   margin-bottom: clamp(48px, 7vw, 104px);
 }
+.whoPhotoCol--rida {
+  order: 3;
+}
+.whoTextCol--rida {
+  order: 2;
+}
 .whoIndex {
   flex: 0 1 120px;
   font-size: 13px;
@@ -705,5 +711,13 @@
   .footerCols {
     flex-direction: column;
     gap: clamp(20px, 6vw, 32px);
+  }
+  /* Rida's photo/text order flips to match Haider's (photo first) — desktop
+     (where they sit side by side, text-left/photo-right) is untouched. */
+  .whoPhotoCol--rida {
+    order: 2;
+  }
+  .whoTextCol--rida {
+    order: 3;
   }
 }
