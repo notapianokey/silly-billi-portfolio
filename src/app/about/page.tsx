@@ -202,7 +202,14 @@ export default function AboutPage() {
               <img src="/about/frame-yellow-trim.png" alt="" aria-hidden="true" className={styles.frameArt} />
               <div
                 className={`${styles.script} ${styles.frameScript}`}
-                style={{ left: 55, top: 421, width: 129, height: 96, fontSize: 90, color: "var(--sb-mustard)" }}
+                style={{
+                  left: "13.75%",
+                  top: "74.6%",
+                  width: "32.25%",
+                  height: "17%",
+                  fontSize: "22.5cqw",
+                  color: "var(--sb-mustard)",
+                }}
               >
                 Silly
               </div>
@@ -281,7 +288,14 @@ export default function AboutPage() {
               <img src="/about/frame-red-trim.png" alt="" aria-hidden="true" className={styles.frameArt} />
               <div
                 className={`${styles.script} ${styles.frameScript}`}
-                style={{ left: 76, top: 69, width: 126, height: 92, fontSize: 90, color: "var(--sb-orange)" }}
+                style={{
+                  left: "19%",
+                  top: "14.2%",
+                  width: "31.5%",
+                  height: "18.9%",
+                  fontSize: "22.5cqw",
+                  color: "var(--sb-orange)",
+                }}
               >
                 billi
               </div>
@@ -389,7 +403,9 @@ export default function AboutPage() {
                 Join Us
               </Link>
               <a href="#about" className={`${styles.display} ${styles.footerLink}`}>About Us</a>
-              <a href="#about" className={`${styles.display} ${styles.footerLink}`}>Don&apos;t like our name?</a>
+              <Link href="/sadface" className={`${styles.display} ${styles.footerLink}`}>
+                Don&apos;t like our name?
+              </Link>
               <a href="#about" className={`${styles.display} ${styles.footerLink}`}>Hey AI, learn about us</a>
             </div>
             <div className={styles.footerCol}>
