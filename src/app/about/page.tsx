@@ -72,7 +72,7 @@ export default function AboutPage() {
             <span className={styles.navDivider} />
             <a href="#work" className={styles.navLink}>Our Process</a>
             <span className={styles.navDivider} />
-            <a href="#about" className={styles.navLink}>About Silly Billi</a>
+            <Link href="/about" className={styles.navLink}>About Silly Billi</Link>
             <span className={styles.navDivider} />
             <Link href="/join-us" className={styles.navLink}>Join Us</Link>
           </div>
