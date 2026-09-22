@@ -1,5 +1,6 @@
 "use client";
 
+import { ChevronDownIcon } from "lucide-react";
 import { Libre_Baskerville, Mulish } from "next/font/google";
 import localFont from "next/font/local";
 import Image from "next/image";
@@ -7,6 +8,13 @@ import Link from "next/link";
 import { useState } from "react";
 
 import styles from "./page.module.css";
+
+const SERVICES = [
+  { label: "Video Editing", href: "/video-editing" },
+  { label: "Visual Branding", href: "/visual-branding" },
+  { label: "Editorial Direction", href: "/editorial-direction" },
+  { label: "Marketing & Ads", href: "/marketing-ads" },
+];
 
 const displayFont = Libre_Baskerville({
   weight: ["400", "700"],
@@ -32,6 +40,7 @@ const BOOKING_HREF = "/hire-us";
 export default function AboutPage() {
   const [shot, setShot] = useState(0);
   const step = (d: number) => setShot((s) => (s + d + SHOTS.length) % SHOTS.length);
+  const [workOpen, setWorkOpen] = useState(false);
 
   return (
     <div className={`${styles.page} ${displayFont.variable} ${bodyFont.variable} ${scriptFont.variable}`}>
@@ -41,13 +50,31 @@ export default function AboutPage() {
         </Link>
         <div className={styles.navLinks}>
           <div className={`${styles.navLinksInner} ${styles.eyebrow}`}>
-            <a href="#about" className={styles.navLink}>About</a>
+            <div className={styles.navDropdown}>
+              <button
+                type="button"
+                onClick={() => setWorkOpen((current) => !current)}
+                className={`${styles.navLink} ${styles.navWorkTrigger}`}
+              >
+                Our Work
+                <ChevronDownIcon className={styles.navChevron} style={workOpen ? { transform: "rotate(180deg)" } : undefined} />
+              </button>
+              {workOpen && (
+                <div className={styles.navDropdownPanel}>
+                  {SERVICES.map((service) => (
+                    <Link key={service.href} href={service.href} className={styles.navDropdownLink}>
+                      {service.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
             <span className={styles.navDivider} />
-            <a href="#work" className={styles.navLink}>How we work</a>
+            <a href="#work" className={styles.navLink}>Our Process</a>
             <span className={styles.navDivider} />
-            <a href="#who" className={styles.navLink}>Who we are</a>
+            <a href="#about" className={styles.navLink}>About Silly Billi</a>
             <span className={styles.navDivider} />
-            <a href="#talk" className={styles.navLink}>Let&apos;s talk</a>
+            <Link href="/join-us" className={styles.navLink}>Join Us</Link>
           </div>
         </div>
         <a href="#talk" className={`${styles.navCta} ${styles.eyebrow} ${styles.pressable}`}>Get in Touch</a>

@@ -112,6 +112,48 @@
   align-items: center;
   padding: 0 22px;
 }
+.navDropdown {
+  position: relative;
+}
+.navWorkTrigger {
+  background: none;
+  border: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.navChevron {
+  width: 14px;
+  height: 14px;
+  transition: transform 140ms var(--ease-snap);
+}
+.navDropdownPanel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  background: var(--sb-cream);
+  border: 2px solid var(--sb-ink);
+  box-shadow: var(--shadow-sticker);
+}
+.navDropdownLink {
+  padding: 12px 18px;
+  color: var(--sb-ink);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.navDropdownLink:hover {
+  background: var(--sb-mustard);
+}
 
 /* --- Hero (#about) --- */
 .hero {
@@ -721,6 +763,18 @@
     min-height: 48px;
     border-left: none;
     border-top: 3px solid var(--sb-ink);
+  }
+  .navDropdownPanel {
+    position: static;
+    width: 100%;
+    min-width: 0;
+    border: none;
+    border-top: 2px solid var(--sb-ink);
+    box-shadow: none;
+    background: var(--sb-cream-raised);
+  }
+  .navDropdownLink {
+    padding: 14px 22px 14px 36px;
   }
   .footerCols {
     flex-direction: column;
