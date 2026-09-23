@@ -95,220 +95,90 @@ The original repo directory contained an unrelated generic HTML/CSS/JS portfolio
 ("Colin Gridley") — that was discarded entirely except two real Silly Billi brand assets
 (mascot illustration, wordmark logo), which were kept and moved into `public/brand/`.
 
-## Homepage (`src/app/page.tsx`) — done, redesigned as a clickable illustrated scene
+## Homepage (`src/app/page.tsx`) — v2: single-screen 8-card control panel
 
-**Replaced the original headline + Cursor Image Trail homepage** with a single full-bleed
-illustration (a painterly desk scene — CRT monitor, VHS tapes, a campaign brief folder, an
-open notebook with sticky notes and pens, and wall notes/photos) where **specific physical
-artifacts in the art are the site's real navigation** — this doubles as Phase 3's "nav pills"
-requirement, just implemented as clickable objects inside the scene instead of literal button
-chrome. Client provided the art as 3 renders of the same image at different resolutions
-(`homepage/` in the project root, git-ignored per the "real client content stays out of git"
-rule) and specified the artifact→page mapping directly.
+**Replaced the illustrated-desk-scene homepage (clickable "sticker" artifacts) with a
+full-viewport, no-scroll grid of 8 flat-color link cards around a center mascot** — a client
+design handoff (`homepage/Silly Billi Homepage Design/` in the project root, git-ignored per the
+"real client content stays out of git" rule — the raw handoff bundle included a README spec and
+a working HTML/CSS reference prototype). The scene/sticker approach is fully superseded; its
+assets are still on disk (`public/homepage/scene*.webp`, `public/homepage/stickers*`) but nothing
+references them anymore. Not deleted outright, same "leave working-but-unused assets in place"
+precedent as `cursor-trail.tsx`/`cats.ts`.
 
-- **Image:** `public/homepage/scene.webp`, compressed via `ffmpeg` (`libwebp -quality 85`,
-  ~3.3MB PNG → ~280KB) from the client's `homepage/final_homepage_1920.png` (1920×1280, exact
-  3:2 ratio — the other two renders, `_4K_web` and `_8K`, weren't needed since this is a
-  desktop-first site and 1920px source is already above typical desktop viewport width).
-- **The artifact → page mapping is the client's own instruction, not an invented one** — do not
-  change which object links where without asking:
-  - VHS tapes ("Raw Footage" / "Final Cut") → `/video-editing`
-  - "CAMPAIGN BRIEF" folder → `/marketing-ads`
-  - Open notebook + surrounding crumpled sticky notes + pens (one combined hotspot, not split
-    per-object) → `/editorial-direction`
-  - "Silly [Studio]" logo sticky note on the wall → `/visual-branding`
-  - Photo of the two founders on the wall → `/about`
-  - "Get In Touch" note on the wall → `/hire-us` (there's no separate `/contact` route — see the
-    Contact form section below, Hire Us already *is* the contact page)
-  - The cat, the CRT monitor screen, and the mouse/mousepad are deliberately **not** clickable —
-    client asked for specific artifacts wired up, not every object in the scene.
-- **"Sticker" interaction, not a rectangular hotspot — client's explicit correction, went
-  through two failed approaches before landing on the real fix.**
-  - **Attempt 1 (rejected):** invisible rectangular `<Link>` hitboxes over each object. Client
-    rejected this outright ("i dont want a clickable hotspot... i want the exact artifacts to be
-    clickable like a sticker") — wanted the *actual object shape* to read as clickable (outline/
-    glow on hover, object looking a little bigger), not an invisible box around it.
-  - **Attempt 2 (also wrong):** hand-typed `clip-path: polygon(...)` coordinates, eyeballed off
-    cropped screenshots, per artifact. Looked plausible in review but the client reported only
-    part of the VHS tapes and campaign brief folder actually responded to hover — the polygons
-    were just imprecise (irregular painted objects don't trace well by eye). **Lesson: don't
-    hand-type pixel/polygon coordinates for an irregular shape from a screenshot estimate — it
-    will be wrong in ways that aren't obvious until someone tests the real hover area.**
-  - **What actually works — a hand-filled pixel mask, not hand-typed coordinates.** The client
-    offered to help by marking up the art directly rather than me continuing to guess: she filled
-    each of the 6 artifacts solid with a distinct flat color (red/green/blue/yellow/magenta/cyan)
-    on a copy of `final_homepage_1920.png`, saved as `homepage/masked banner homepage.png`
-    (git-ignored raw content, same as the source renders). `scripts/build-homepage-stickers.mjs`
-    thresholds each color into a binary mask (tight tolerance + connected-component filtering, so
-    stray photo-texture pixels elsewhere in the painting — e.g. the cat's orange fur briefly
-    registering as "red" at a loose tolerance — don't get pulled in), then bakes that exact
-    silhouette into a real alpha channel on a crop of the *original, unmasked* scene image. No
-    clip-path, no polygon math — the sticker's own transparency **is** the shape. Output lives in
-    `public/homepage/stickers/` (`vhs.webp`, `brief.webp`, `notebook.webp`, `logo.webp`,
-    `photo.webp`, `getintouch.webp`), positioned in `STICKERS` in `page.tsx` with percentage
-    `left/top/width/height` matching the mask script's computed bounding box (padded ~40px for
-    hover-scale headroom), laid exactly on top of the same object in the base `scene.webp` — at
-    rest the two are pixel-identical. Re-running the mask script after a new marked-up image: copy
-    the printed `box` percentages into `STICKERS`.
-  - The notebook/sticky-notes/pens cluster mask correctly excludes both pens and the mousepad
-    (the client filled around them) — confirmed the real mousepad's actual painted blue is a
-    different, muted shade from the pure mask blue, so the threshold doesn't accidentally include
-    it. The "blue" mask also legitimately covers **two disconnected regions** (the main
-    notebook/sticky cluster and the separate pink-sticky patch) — the build script keeps both as
-    one combined bounding box/sticker rather than splitting them, matching the client's original
-    "notebook + all the sticky notes" grouping.
-  - **Two real, non-obvious bugs found and fixed while building this — both confirmed via raw
-    pixel inspection (canvas `getImageData` in the live browser, and `sharp`'s own raw buffer
-    output), not by eyeballing screenshots, after screenshot-based checks gave false confidence
-    twice:**
-    1. **Served-image format.** Sticker `<img>`s must NOT go through `next/image` — Next's
-       optimizer re-encodes everything it serves as lossy WebP/AVIF regardless of source format
-       or `quality` setting, which reintroduces faint non-zero alpha at compressed-block edges.
-       Invisible at rest, but `filter: drop-shadow(...)` on hover amplifies it into a visible
-       ghost rectangle. Fixed by serving these specific cutouts as plain `<img>` tags (with an
-       `eslint-disable-next-line @next/next/no-img-element`) pointing at pre-compressed
-       **lossless** WebP files (`sharp(...).webp({ lossless: true })` in the build script) — the
-       base `scene.webp` background stays on `next/image` since it has no transparency to protect.
-    2. **The actual "hazy striped" corruption the client saw.** `sharp`'s `.blur()` silently
-       promotes a single-channel raw buffer to 3-channel greyscale (R=G=B) — the build script kept
-       reading the blurred buffer as 1 byte/pixel, so it was actually reading every 3rd byte as a
-       pixel's alpha value. This produced an *exact* period-3 corruption pattern
-       (`255, 0, 0, 255, 0, 0, ...`) baked directly into every sticker's alpha channel — that's
-       what looked like a hazy stripe on hover. Fixed with `.toColourspace("b-w")` right after
-       `.blur()`, before reading the buffer back out. **Lesson: after any sharp pipeline step,
-       don't assume the channel count you started with — read `info.channels` back (or force it)
-       instead of hard-coding a stride.**
-  - On hover/focus (`src/app/page.module.css`, plain CSS Modules rather than Tailwind — combining
-    multiple `drop-shadow()` layers in one `filter` isn't expressible as a single Tailwind
-    arbitrary-value utility) the sticker **lifts**: `transform: translateY(-3%) scale(1.08)`
-    (bigger) plus a multi-layer `filter: drop-shadow(...)` glow (the outline) — `drop-shadow`
-    (unlike `box-shadow`) is computed from the element's real alpha shape, so the glow hugs the
-    traced silhouette instead of a rectangle. **All three drop-shadow layers use a symmetric `0 0`
-    offset, not a directional one** — an earlier version offset the dark contrast layer downward
-    (`0 14px 22px`) to fake a "lifting" shadow, which the container's `overflow-hidden` frame
-    edge clipped away entirely for the Campaign Brief folder (its sticker sits flush against the
-    bottom of the frame), leaving only the white glow layer — too low-contrast against the light
-    tan folder/desk to read as anything happening. A symmetric shadow keeps a visible contrast
-    halo on whichever sides aren't clipped, regardless of which frame edge an artifact is near.
-    A small destination-name pill still fades in on hover for clarity, positioned as a sibling
-    (not scaled with the sticker, so its text doesn't stretch).
-  - **Verifying any of this in the Browser pane tool needed a workaround:** synthetic
-    `hover`/`click` simulation was unreliable in-session — sometimes silently not registering
-    `:hover` even at coordinates confirmed correct via `elementFromPoint()`, and forcing a CSS
-    transition's target value via JS then reading `getComputedStyle()` **immediately** (same
-    tick) reads the transition's *starting* value, not its target, giving a false "it's not
-    applying" result. Reliable checks that actually worked: forcing styles via JS + a short
-    `setTimeout` wait before reading computed values or screenshotting; confirming navigation
-    with a JS-triggered `.click()`; and, most importantly, reading real decoded pixel bytes
-    (canvas `getImageData`, or `sharp`'s raw buffer output) rather than trusting a screenshot or
-    the Read tool's own image preview — both of those visually "looked fine" at points where the
-    underlying data was later proven corrupted.
-- **Full-bleed layout, no scroll, no visible frame** (`.stage` in `page.module.css`) — client's
-  explicit correction, the first version had padding + `max-w-[1600px]` + `rounded-2xl shadow-xl`
-  centered on a themed background, which produced visible bars around a "framed photo" look (and
-  went near-black in dark mode, since it used the theme's `bg-background` token). `main` is now
-  `h-dvh w-dvw overflow-hidden` with a fixed neutral gray background (`#a8a19e`, sampled from the
-  art's own wall tone — deliberately NOT the theme token, so it doesn't go dark-mode-black), and
-  the stage sizes itself with `width: min(100dvw, calc(100dvh * 1.5)); height: min(100dvh,
-  calc(100dvw / 1.5))` rather than Tailwind's usual `aspect-[3/2] w-full max-h-full` combo.
-  **That combo doesn't work here**: once `max-height` clamps the height, browsers only
-  retroactively shrink the *other* axis to preserve `aspect-ratio` when that axis started as
-  `auto` — an explicit `width: 100%` (`w-full`) does not get shrunk back, so the stage silently
-  stretched to whatever the viewport's own aspect ratio was (e.g. 16:9) instead of holding 3:2.
-  Computing both dimensions directly with `min()`/`calc()` sidesteps that ambiguity. Verified at
-  both a wide (1600×900) and a narrower (1200×900) viewport — pillarboxed or letterboxed
-  correctly on whichever axis is the tighter constraint, always exactly 3:2, never scrolling.
-- **Hover hit-testing is a separate element from the visual sticker** (`.hitArea` vs `.sticker`
-  in `page.module.css`) — client reported the cursor flickering between the VHS tapes and the
-  campaign brief folder near their shared boundary. Root cause: with no `clip-path` at all on the
-  clickable `<Link>`, its hit area is the full *padded* rectangle (padding exists for hover-scale
-  headroom), and the VHS/brief padded rectangles overlap significantly even though the visible
-  objects don't touch — same overlap, smaller, also exists for the About Us / Hire Us / Visual
-  Branding cluster. Fixed by adding a second, loose polygon (`hitPath` in `STICKERS`, also
-  generated by `build-homepage-stickers.mjs` from the same mask data — a row-envelope trace with
-  a generous outward margin, not hand-guessed) applied via `clip-path` to a dedicated invisible
-  `.hitArea` span. The visual `.sticker` span stays **unclipped** so its own hover grow/lift
-  animation isn't cut off by that same tight-ish polygon. `.stickerLink` (the `<a>` itself) is
-  `pointer-events: none`; only `.hitArea` (`pointer-events: auto`) actually receives the cursor —
-  `:hover`/`:focus-visible` on the ancestor `<a>` and click-navigation both still work, since
-  hover state and click bubbling propagate up the DOM ancestor chain regardless of the ancestor's
-  own `pointer-events` value. The notebook/sticky-notes cluster has no `hitPath` (stays a plain
-  rectangle) — its mask has a second disjoint region (the separate pink sticky note) that a single
-  row-envelope polygon can't represent without wrongly bridging the gap, and it isn't close
-  enough to another artifact for the overlap problem to apply there anyway.
-- **Two art-directed scene variants, not one image stretched/padded to every screen** — the
-  client reported thick gray pillarbox bars on her ultrawide monitor (the 3:2 stage correctly
-  letterboxes/pillarboxes on any screen whose ratio isn't exactly 3:2, per the "no scroll, no
-  visible frame" design above, but a real ultrawide monitor is far enough from 3:2 that the bars
-  read as broken rather than intentional). No single fixed aspect ratio avoids bars on every
-  screen — real ratios run continuously from ~4:3 (iPad) to ~32:9 (super-ultrawide) — so instead
-  of chasing one "correct" ratio, the client provided a second, separately-painted 7:3 ultrawide
-  render (`homepage/panoramic_desk_scene.jpg`, git-ignored raw content like the other renders)
-  with its own hand-filled color-key mask (`homepage/ultra wide masked.png`) for a second round
-  of the same sticker-building pipeline.
-  - **Confirmed via direct pixel diff (not assumed) that the ultrawide render is a genuine
-    separate composition, not the same pixels padded onto a wider canvas** — cropping either
-    edge of the ultrawide image and diffing against the original 3:2 art (via `sharp`, raw
-    buffer comparison) showed ~60-68% mean per-byte difference, far beyond what re-encoding
-    alone would cause. Object spacing/proportions actually differ between the two paintings, so
-    the existing sticker crops/positions could not be reused or merely repositioned — a full
-    second masking pass was required, same workflow as the original (client fills each of the 6
-    artifacts with the same flat color key on a copy of the new render).
-  - `scripts/build-homepage-stickers-wide.mjs` is a copy of `build-homepage-stickers.mjs`
-    pointed at the ultrawide mask/scene pair instead, outputting to
-    `public/homepage/stickers-wide/`. Re-run it the same way after any future re-mark of that
-    image and copy the printed `box`/`clipPath` values into `STICKERS_WIDE` in `page.tsx`.
-  - **Breakpoint: `(min-aspect-ratio: 2/1)`**, comfortably between real laptop ratios (16:10 ≈
-    1.6, 16:9 ≈ 1.78) and real ultrawide monitors (21:9 ≈ 2.33+), so normal screens always get
-    the 3:2 art and only genuinely wide screens switch.
-  - **Switching is pure CSS, no JS** — deliberately consistent with this file's existing "no
-    theme-toggle JS, `@media (prefers-color-scheme)` only" pattern (see the Theme note above).
-    The base scene uses a plain `<picture>` with a `<source media="(min-aspect-ratio: 2/1)">`
-    instead of `next/image`, specifically because `<picture>`'s art-direction is the one
-    mechanism guaranteed by spec to fetch only the matching source — two `next/image`/`<img>`
-    instances toggled by CSS `display:none` would NOT give that guarantee, since an eager/
-    priority image fetches as soon as it's in the DOM regardless of an ancestor's `display:none`,
-    which would silently double the hero image download. `STICKERS`/`STICKERS_WIDE` both render
-    into the same `.stage` at all times (12 `<Link>`s total); the inactive set is hidden via
-    `.stickerLink.variantNarrow`/`.variantWide` classes (`display:none`), which also removes it
-    from the accessibility tree/tab order for free and lets its `loading="lazy"` cutout images
-    skip fetching entirely in evergreen browsers.
-  - **Real cascade bug hit while building this, caught by screenshot not by reasoning about the
-    CSS up front:** the variant-toggle selectors were originally bare `.variantWide`/
-    `.variantNarrow` (not qualified with `.stickerLink`), placed earlier in the file than the
-    pre-existing `.stickerLink { display: block }` rule. Same specificity (0,1,0) + later source
-    order meant `.stickerLink` always won, silently overriding the hide back to visible — both
-    sticker sets rendered superimposed on top of each other. Fixed by qualifying the selectors as
-    `.stickerLink.variantWide`/`.variantNarrow` (specificity (0,2,0), wins regardless of order).
-    **Lesson: a variant-toggle class competing with an existing same-specificity rule on the same
-    element needs higher specificity, not just correct-looking `display` values — verify by
-    actually rendering the page, not by reading the CSS.**
-  - Verified (not assumed) via the Browser pane: computed `display` on all 12 sticker `<Link>`s
-    at both a normal (1600×900) and an ultrawide (2560×1080) viewport, `picture img.currentSrc`
-    resolving to the correct file at each, and an actual `.click()` navigation on the ultrawide
-    variant — synthetic `hover` was skipped as a check for this, per the "unreliable in-session"
-    finding above; DOM/computed-style/network checks were used instead.
-  - **Even two art-directed variants can't be pixel-perfect on every screen** — real ultrawide
-    monitors alone aren't one ratio (2560×1080 ≈ 2.37, 3440×1440 ≈ 2.39, 5120×1440 ≈ 3.56 — none
-    of them exactly the art's 2.333), so a thin margin on whichever axis is looser is
-    unavoidable regardless of how many fixed-ratio variants exist. Rather than chase an exact
-    match to one specific monitor, `.backdrop` in `page.module.css` fills that margin with a
-    heavily blurred (`blur(70px)`), scaled-up (`scale(1.2)`, so blur's own edge falloff never
-    shows a soft seam at the frame edge), dimmed copy of the SAME scene image sitting behind the
-    stage — the same trick fullscreen video players use for letterbox bars. It reuses the
-    already-fetched image bytes (identical URL to the foreground `<picture>`, served from cache)
-    so there's zero extra network cost, and switches source at the same `(min-aspect-ratio:
-    2/1)` breakpoint as everything else here. Verified via computed styles (`backgroundImage`
-    resolving to the correct file) at an off-ratio ultrawide viewport (3440×1440), not just by
-    eyeballing a screenshot — the difference is subtle at a glance since the wall tone in the
-    art is already close to the old flat `#a8a19e`.
-- **`src/components/cursor-trail.tsx` and `src/lib/cats.ts`/`public/cats/` were left in place,
-  just no longer imported anywhere** — they were a real, working, previously-speced Phase 1
-  feature (18 sourced cat photos), not dead placeholder code, so they weren't deleted outright
-  on the chance they get reused elsewhere. If a future pass confirms they're truly done being
-  useful, they can be removed then.
-- A visually-hidden (`sr-only`) `<h1>Silly Billi Studio</h1>` keeps the page's semantic heading
-  even though the real branding now reads off the illustration itself.
+- **Layout:** `<main>` is `h-dvh w-dvw overflow-hidden` with `clamp()` outer padding, containing
+  a CSS grid (`grid-cols-[1.2fr_1fr_1fr_0.9fr] grid-rows-[1fr_1.3fr_1.3fr_0.9fr]`, `clamp()` gap)
+  — fluid via `clamp()`/grid, but always exactly one viewport, never scrolling, matching this
+  project's homepage precedent. Built with plain Tailwind utility classes (including arbitrary
+  values for the `clamp()`/`cubic-bezier()` one-off values) rather than a CSS module — unlike the
+  old scene's stickers, nothing here needs multi-layer `drop-shadow()` composition or clip-path
+  polygon math, so Tailwind alone covers it cleanly.
+- **8 link cards** (flat color, `2px` ink border, `4px 4px 0` hard offset shadow, square corners,
+  `hover:` = nudge + brighten, `active:` = press flush with shadow removed) plus one **non-link
+  center cell**: the Silly Billi mascot (flat orange face illustration, expression swaps on
+  hover) with a hand-written-style caption line beneath it. Card 04 ("Thesis") is visually
+  distinct — 4 stacked color bands in one bordered box, not a flat single-color card, styled
+  inline per band rather than as a fifth reusable component (one-off layout, not worth a second
+  abstraction).
+- **Hover-to-preview, not a nav dropdown:** hovering (or focusing, for keyboard users) any of the
+  8 cards sets a single `hover` state key, which drives both the mascot's expression image
+  (`public/homepage/expressions/orange/{expression}.webp`) and the caption text via one lookup
+  table (`FACE_BY_HOVER` in `page.tsx`) — mirrors the handoff's own state model exactly (one
+  `hover` value, two derived outputs). Idle (nothing hovered) shows the neutral face and "pick
+  one. the cat is watching."
+- **Mascot width is computed in JS on mount + window resize** (`useMascotWidth()`), formula taken
+  directly from the handoff: `clamp(90, min(vw*0.36, vh*0.52-50), 480)` — this, not CSS alone, is
+  what keeps the whole page scroll-free at any viewport, since the grid's row/column `fr` tracks
+  alone can't guarantee the mascot never pushes the surrounding cards off-screen.
+- **Fonts are scoped to this page only, not wired into the site-wide `--font-display` token** —
+  the handoff's type system (Libre Baskerville display serif, Mulish bold-caps UI/eyebrow text,
+  a hand-written script for the caption) is specific to this one screen's design language, not a
+  site-wide rebrand; `--font-display` (Bricolage Grotesque) still drives every other page's
+  headings (About, Hire Us, Join Us, ComingSoon). Loaded via three separate `next/font/google`
+  calls directly in `page.tsx` (`Libre_Baskerville`, `Mulish`) applied via `.className`, not CSS
+  variables threaded through `layout.tsx` — avoids any risk of the new fonts leaking into other
+  pages. **One font substitution from the handoff:** the spec calls for "Biro Script Plus" for
+  the caption, a commercial font not available via Google Fonts (or any free source found) —
+  substituted **Caveat**, a free hand-written/ballpoint-style Google Font in the same spirit.
+  Flag this to the client if she has a licensed copy of the original to swap in later.
+- **Colors are hardcoded hex constants in `page.tsx`** (mustard `#F2A81D`, orange `#E24A1E`, blue
+  `#1E4FA0`, green `#1C9A5A`, purple `#7C5DA8`, cream `#F1E5C7`, ink `#141414`) — the handoff
+  names these as tokens from a bound "Silly Billi Studio Design System" this repo doesn't have a
+  copy of yet, so per the handoff's own fallback instruction ("otherwise hardcode these") they're
+  hardcoded directly rather than invented as new `globals.css` tokens speculatively.
+- **Card destination routes — best-effort mapping, not all client-confirmed.** The handoff's own
+  README flags 5 of the 8 cards (Our Process, Services, Results, About, Ecosystems) as linking to
+  "placeholder anchors" with no confirmed final route, and says to check with the client before
+  shipping. Given the instruction to ship this immediately, each card was mapped to the closest
+  existing real page rather than left as a dead `#anchor`:
+  - 01 Our Process → `/hire-us` (its copy — "how we handle your content" — matches Hire Us's
+    existing 4-step "how it works" section)
+  - 02 Services (Video Portfolio) → `/video-editing`
+  - 03 Contact → `/hire-us` (the site's real contact mechanism — see Contact form section)
+  - 04 Thesis (content editor vs. tool operator manifesto) → `/about`
+  - 05 Results (subscriber/video stats) → `/channels-we-monetized` (real proof of the stat, not
+    just a repeated number)
+  - 06 About ("Our Lore") → `/about`
+  - 07 Who We're For (target-client description) → `/hire-us`
+  - 08 Ecosystems ("Brand & Strategy Systems") → `/visual-branding`
+  Several cards share a destination (three → `/hire-us`, two → `/about`) since there's no
+  dedicated page yet for "process," "thesis," or "who we're for" as distinct concepts — confirm
+  with the client whether any of these should get their own page later, same open-item posture as
+  everywhere else in this file that a route doesn't exist yet.
+- **Card 07's second line of body copy is intentionally left truncated** ("Serious people with
+  serious ideas.") rather than padded out with the README's suggested completion — that
+  suggested sentence is verbatim identical to card 03's own body copy, which reads like a
+  copy-paste artifact in the handoff rather than a deliberate repeat; the HTML reference
+  prototype (marked "final" copy) has it truncated, so that's what shipped. Flag to the client
+  for real final copy.
+- Expression assets (`assets/expressions/orange/*.png` in the handoff, 9 flat single-color cutout
+  faces) were converted to lossless WebP (`sharp .webp({ lossless: true })`, ~65% smaller) into
+  `public/homepage/expressions/orange/` — same "compress once at ingest, not at runtime" pattern
+  as thumbnails/blob uploads elsewhere in this file. `angry` and `silly` are unused by the current
+  hover map (silly is only reachable via an idle-face setting the handoff exposes as a prop but
+  this build didn't wire up — no consumer needed it, so it wasn't added speculatively).
+- A visually-hidden (`sr-only`) `<h1>Silly Billi Studio</h1>` keeps the page's semantic heading,
+  same as the previous homepage version.
 
 ## Mascot asset (`public/brand/mascot.png`)
 
