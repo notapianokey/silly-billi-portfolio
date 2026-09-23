@@ -156,15 +156,15 @@ precedent as `cursor-trail.tsx`/`cats.ts`.
   - 02 Services (Video Portfolio) → `/video-editing`
   - 03 Contact → `/hire-us` (the site's real contact mechanism — see Contact form section)
   - 04 Thesis (content editor vs. tool operator manifesto) → `/about`
-  - 05 Results (subscriber/video stats) → `/channels-we-monetized` (real proof of the stat, not
-    just a repeated number)
+  - 05 Results (subscriber/video stats) → `/about` — client's explicit call (overriding an
+    earlier `/channels-we-monetized` guess made before she reviewed it)
   - 06 About ("Our Lore") → `/about`
-  - 07 Who We're For (target-client description) → `/hire-us`
+  - 07 Who We're For (target-client description) → `/about` — same client call as 05
   - 08 Ecosystems ("Brand & Strategy Systems") → `/visual-branding`
-  Several cards share a destination (three → `/hire-us`, two → `/about`) since there's no
-  dedicated page yet for "process," "thesis," or "who we're for" as distinct concepts — confirm
-  with the client whether any of these should get their own page later, same open-item posture as
-  everywhere else in this file that a route doesn't exist yet.
+  Four of the eight cards (04, 05, 06, 07) now point at `/about` — client's explicit choice, not
+  a leftover placeholder guess — since there's no dedicated page yet for "process," "thesis," or
+  "who we're for" as distinct concepts. Confirm with her whether any of these should get their
+  own page later.
 - **Card 07's second line of body copy is intentionally left truncated** ("Serious people with
   serious ideas.") rather than padded out with the README's suggested completion — that
   suggested sentence is verbatim identical to card 03's own body copy, which reads like a

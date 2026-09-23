@@ -212,7 +212,7 @@ export default function Home() {
 
         <Card
           hoverKey="careers"
-          href="/channels-we-monetized"
+          href="/about"
           bg={GREEN}
           color={INK}
           setHover={setHover}
@@ -246,7 +246,7 @@ export default function Home() {
 
         <Card
           hoverKey="services"
-          href="/hire-us"
+          href="/about"
           bg={MUSTARD}
           color={INK}
           setHover={setHover}
