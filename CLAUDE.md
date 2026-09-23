@@ -205,19 +205,36 @@ precedent as `cursor-trail.tsx`/`cats.ts`.
 - **Responsive: this page — and only this page so far — has a real breakpoint, the site-wide
   "deferred" note above no longer applies to it.** Below `lg` (1024px), `<main>` switches from
   the fixed no-scroll `h-dvh`/`overflow-hidden` viewport to a normal scrolling
-  `min-h-dvh`/`overflow-y-auto` page, and the grid drops every `lg:col-start-*`/`row-start-*`
-  placement class, collapsing to a single scrolling column in source order (01 → 08) with the
-  mascot pulled to the top via `order-first lg:order-none` (a plain flex column reads oddly with
-  the mascot buried mid-list; leading with it works like a small hero). The `clamp()` font sizes
-  already tuned for the desktop grid cells didn't need separate mobile values — their floors
-  read fine at full column width.
+  `min-h-dvh`/`overflow-y-auto` page.
+  - **Compact 2-column grid around a centered mascot, not a plain single-column list — client's
+    explicit correction after the first version.** The first mobile pass collapsed every card to
+    `col-span-2` (full width, one per row) with the mascot forced to the very top via
+    `order-first`; client rejected this as "just an enlist form" and asked for the desktop
+    composition's spirit to survive — cards *around* the mascot, smaller/denser rather than
+    restructured into a list. Fixed by giving the grid `grid-cols-2` at the base breakpoint (only
+    `lg:` restores the desktop `grid-cols-[1.2fr_1fr_1fr_0.9fr]`) and an explicit `col-span-1` or
+    `col-span-2` per card based on how much text it holds (short cards like 02/03/05/06 pair up
+    at `col-span-1`; longer ones — 01, 04's thesis card, 07, 08 — take the full `col-span-2`
+    row). Also **dropped the `order-first` override entirely** rather than replacing it: the
+    mascot's own DOM position already sits between card 04 and card 05 (see the JSX order below),
+    so leaving `order` alone means it renders naturally mid-page with four cards above and four
+    below — literally "boxes around it" — instead of needing a manual reorder.
+  - **Every font size, the card padding, the gap, and the shadow offset now have an explicit
+    smaller mobile base plus an `lg:` override reinstating the original desktop value** — e.g. a
+    card headline like `text-xl leading-tight lg:text-[clamp(24px,3vw,52px)] lg:leading-[1.05]`.
+    This was necessary, not just cosmetic: the desktop `clamp()` sizes have a fixed floor (e.g.
+    24px) that `vw`-scaling alone never drops below no matter how narrow the viewport, so at
+    mobile width — now with cards half as wide again, from the 2-column layout above — that floor
+    was already too large to read as "smaller boxes." `CARD_BASE`'s padding (`py-2 px-2.5`) and
+    the grid gap (`gap-2.5`) got the same treatment for the same reason.
   - **Breakpoint is `lg` (1024px), not the more obvious `md` (768px) — verified, not assumed.**
     At `md` a real iPad-portrait width (768×1024) still got the fixed desktop grid, and its
     `grid-rows-[1fr_1.3fr_1.3fr_0.9fr]` truly overflowed there: the Thesis card's "Content
     Editor" band visibly bled text into the "Tool Operator" band below it. Confirmed both ways in
     the Browser pane (768px broken, 1024px clean, no scroll) before picking `lg` — this is
     specifically because this page's cards hold far more text than a typical nav-pill breakpoint
-    decision needs to account for, not a mistake to copy elsewhere without checking.
+    decision needs to account for, not a mistake to copy elsewhere without checking. Re-verified
+    at 375px/768px/1024px again after the 2-column redesign — no overflow at any of them.
   - Touch (previous entry) needed no changes for this — `onTouchEnd`'s preview-then-go logic is
     layout-independent, and was re-verified with the same synthetic-`TouchEvent`-dispatch method
     at the mobile viewport after this change.
