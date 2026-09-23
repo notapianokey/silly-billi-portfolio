@@ -177,6 +177,16 @@ precedent as `cursor-trail.tsx`/`cats.ts`.
   as thumbnails/blob uploads elsewhere in this file. `angry` and `silly` are unused by the current
   hover map (silly is only reachable via an idle-face setting the handoff exposes as a prop but
   this build didn't wire up — no consumer needed it, so it wasn't added speculatively).
+- **The idle/no-hover mascot face is a 10th image, `idle.webp`, not one of the handoff's original
+  9** — client supplied a new wide-eyed expression directly (not sourced from the design handoff
+  folder) specifically to replace `neutral` as what shows when nothing's hovered. Confirmed via
+  pixel diff against all 9 existing expressions before treating it as new (closest match was
+  `silly.webp` at a mean-diff of ~8/255 per channel — nowhere near the near-zero a real duplicate
+  would produce), so it was processed through the same pipeline (`sharp`, resized to the existing
+  640×640, lossless webp, preserving the source's already-correct alpha transparency) and saved
+  as its own file rather than overwriting `neutral.webp` — `neutral` stays available as a
+  distinct expression in case a future hover state wants it. `IDLE` in `page.tsx` now points at
+  `"idle"` instead of `"neutral"`.
 - A visually-hidden (`sr-only`) `<h1>Silly Billi Studio</h1>` keeps the page's semantic heading,
   same as the previous homepage version.
 - **Touch gets the same preview-then-go interaction as mouse hover, via a `touchend`

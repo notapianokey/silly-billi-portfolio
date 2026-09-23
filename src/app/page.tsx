@@ -18,7 +18,7 @@ const GREEN = "#1C9A5A";
 const PURPLE = "#7C5DA8";
 
 type HoverKey = "work" | "journal" | "contact" | "process" | "careers" | "cat" | "services" | "clients";
-type Expression = "neutral" | "happy" | "nerdy" | "surprised" | "sleepy" | "winking" | "blushing";
+type Expression = "neutral" | "happy" | "nerdy" | "surprised" | "sleepy" | "winking" | "blushing" | "idle";
 
 // Hover key -> [mascot expression, hand-written caption under the mascot]. Source: the client's
 // design handoff (homepage/Silly Billi Homepage Design/design_handoff_homepage).
@@ -32,7 +32,7 @@ const FACE_BY_HOVER: Record<HoverKey, [Expression, string]> = {
   services: ["happy", "my people."],
   clients: ["nerdy", "brand systems. built to last."],
 };
-const IDLE: [Expression, string] = ["neutral", "pick one. the cat is watching."];
+const IDLE: [Expression, string] = ["idle", "pick one. the cat is watching."];
 
 const CARD_BASE =
   "group relative flex min-h-0 flex-col justify-between gap-2 overflow-hidden border-2 border-[#141414] " +
