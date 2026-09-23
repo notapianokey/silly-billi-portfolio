@@ -46,6 +46,7 @@ function Card({
   gridClass,
   bg,
   color,
+  hover,
   setHover,
   children,
 }: {
@@ -54,6 +55,7 @@ function Card({
   gridClass: string;
   bg: string;
   color: string;
+  hover: HoverKey | null;
   setHover: (key: HoverKey | null) => void;
   children: ReactNode;
 }) {
@@ -64,6 +66,16 @@ function Card({
       onMouseLeave={() => setHover(null)}
       onFocus={() => setHover(hoverKey)}
       onBlur={() => setHover(null)}
+      onTouchEnd={(e) => {
+        // Touch has no hover, so the first tap previews (like a mouse hover) instead of
+        // navigating immediately; preventDefault suppresses the synthetic click that would
+        // otherwise follow. A second tap on the same, already-previewed card lets the
+        // (now-unprevented) click through to navigate.
+        if (hover !== hoverKey) {
+          e.preventDefault();
+          setHover(hoverKey);
+        }
+      }}
       style={{ backgroundColor: bg, color }}
       className={`${CARD_BASE} ${gridClass}`}
     >
@@ -108,6 +120,7 @@ export default function Home() {
           href="/hire-us"
           bg={MUSTARD}
           color={INK}
+          hover={hover}
           setHover={setHover}
           gridClass="col-start-1 col-end-3 row-start-1 row-end-2"
         >
@@ -122,6 +135,7 @@ export default function Home() {
           href="/video-editing"
           bg={PURPLE}
           color={CREAM}
+          hover={hover}
           setHover={setHover}
           gridClass="col-start-3 col-end-4 row-start-1 row-end-2"
         >
@@ -136,6 +150,7 @@ export default function Home() {
           href="/hire-us"
           bg={ORANGE}
           color={INK}
+          hover={hover}
           setHover={setHover}
           gridClass="col-start-4 col-end-5 row-start-1 row-end-3"
         >
@@ -154,6 +169,12 @@ export default function Home() {
           onMouseLeave={() => setHover(null)}
           onFocus={() => setHover("process")}
           onBlur={() => setHover(null)}
+          onTouchEnd={(e) => {
+            if (hover !== "process") {
+              e.preventDefault();
+              setHover("process");
+            }
+          }}
           className="group col-start-1 col-end-2 row-start-2 row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
         >
           <div
@@ -215,6 +236,7 @@ export default function Home() {
           href="/about"
           bg={GREEN}
           color={INK}
+          hover={hover}
           setHover={setHover}
           gridClass="col-start-4 col-end-5 row-start-3 row-end-4"
         >
@@ -235,6 +257,7 @@ export default function Home() {
           href="/about"
           bg={PURPLE}
           color={CREAM}
+          hover={hover}
           setHover={setHover}
           gridClass="col-start-1 col-end-2 row-start-4 row-end-5"
         >
@@ -249,6 +272,7 @@ export default function Home() {
           href="/about"
           bg={MUSTARD}
           color={INK}
+          hover={hover}
           setHover={setHover}
           gridClass="col-start-2 col-end-4 row-start-4 row-end-5"
         >
@@ -266,6 +290,7 @@ export default function Home() {
           href="/visual-branding"
           bg={BLUE}
           color={CREAM}
+          hover={hover}
           setHover={setHover}
           gridClass="col-start-4 col-end-5 row-start-4 row-end-5"
         >

@@ -179,6 +179,19 @@ precedent as `cursor-trail.tsx`/`cats.ts`.
   this build didn't wire up — no consumer needed it, so it wasn't added speculatively).
 - A visually-hidden (`sr-only`) `<h1>Silly Billi Studio</h1>` keeps the page's semantic heading,
   same as the previous homepage version.
+- **Touch gets the same preview-then-go interaction as mouse hover, via a `touchend`
+  preventDefault trick, not a separate touch UI.** Touch has no hover, so a plain tap would
+  navigate immediately with no chance to see the mascot change — client asked for tap to behave
+  like hover instead. Each card's `onTouchEnd`: if this card isn't already the previewed one
+  (`hover !== hoverKey`), call `e.preventDefault()` (suppresses the touch-compat `click` that
+  would otherwise follow) and set it as the preview; if it's already previewed, do nothing and
+  let the click through to navigate. So: first tap previews (cat + caption change, matching
+  hover), a second tap on that same card navigates. Desktop mouse is unaffected — `onMouseEnter`
+  already sets the preview before a real click fires, so `hover === hoverKey` by the time
+  `onTouchEnd`'s check would matter. Verified by dispatching real `TouchEvent`s and reading the
+  `dispatchEvent()` return value (`false` = preventDefault fired) rather than trusting the
+  Browser pane's synthetic click, since mobile-emulated clicks there resolve as plain mouse
+  clicks, not real touch events, and wouldn't exercise this code path at all.
 
 ## Mascot asset (`public/brand/mascot.png`)
 
