@@ -110,11 +110,9 @@ export default function Home() {
   const [expression, caption] = hover ? FACE_BY_HOVER[hover] : IDLE;
 
   return (
-    <main
-      className="h-dvh w-dvw overflow-hidden box-border bg-[#F1E5C7] text-[#141414] py-[clamp(16px,3vh,40px)] px-[clamp(16px,3vw,56px)]"
-    >
+    <main className="min-h-dvh w-dvw overflow-y-auto box-border bg-[#F1E5C7] text-[#141414] p-4 lg:h-dvh lg:min-h-0 lg:overflow-hidden lg:py-[clamp(16px,3vh,40px)] lg:px-[clamp(16px,3vw,56px)]">
       <h1 className="sr-only">Silly Billi Studio</h1>
-      <div className="grid h-full grid-cols-[1.2fr_1fr_1fr_0.9fr] grid-rows-[1fr_1.3fr_1.3fr_0.9fr] gap-[clamp(10px,1.6vw,24px)]">
+      <div className="grid gap-4 lg:h-full lg:grid-cols-[1.2fr_1fr_1fr_0.9fr] lg:grid-rows-[1fr_1.3fr_1.3fr_0.9fr] lg:gap-[clamp(10px,1.6vw,24px)]">
         <Card
           hoverKey="work"
           href="/hire-us"
@@ -122,7 +120,7 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="col-start-1 col-end-3 row-start-1 row-end-2"
+          gridClass="lg:col-start-1 lg:col-end-3 lg:row-start-1 lg:row-end-2"
         >
           <Eyebrow>01 — OUR PROCESS</Eyebrow>
           <span className={`${libreBaskerville.className} text-[clamp(24px,3vw,52px)] leading-[1.05]`}>
@@ -137,7 +135,7 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="col-start-3 col-end-4 row-start-1 row-end-2"
+          gridClass="lg:col-start-3 lg:col-end-4 lg:row-start-1 lg:row-end-2"
         >
           <Eyebrow>02 — SERVICES</Eyebrow>
           <span className={`${libreBaskerville.className} text-[clamp(18px,1.6vw,28px)] leading-[1.1]`}>
@@ -152,7 +150,7 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="col-start-4 col-end-5 row-start-1 row-end-3"
+          gridClass="lg:col-start-4 lg:col-end-5 lg:row-start-1 lg:row-end-3"
         >
           <Eyebrow>03 — CONTACT</Eyebrow>
           <span className={`${libreBaskerville.className} text-[clamp(22px,2.4vw,40px)] leading-[1.08]`}>
@@ -175,7 +173,7 @@ export default function Home() {
               setHover("process");
             }
           }}
-          className="group col-start-1 col-end-2 row-start-2 row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+          className="group lg:col-start-1 lg:col-end-2 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
         >
           <div
             className="flex-none text-[#F1E5C7] px-[clamp(14px,1.5vw,24px)] pt-[clamp(8px,1.2vh,14px)] pb-[clamp(4px,0.6vh,8px)]"
@@ -215,7 +213,7 @@ export default function Home() {
           </div>
         </Link>
 
-        <div className="col-start-2 col-end-4 row-start-2 row-end-4 flex min-h-0 flex-col items-center justify-center gap-1 overflow-hidden">
+        <div className="order-first py-2 lg:order-none lg:py-0 lg:col-start-2 lg:col-end-4 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col items-center justify-center gap-1 overflow-hidden">
           <Image
             src={`/homepage/expressions/orange/${expression}.webp`}
             alt=""
@@ -238,7 +236,7 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="col-start-4 col-end-5 row-start-3 row-end-4"
+          gridClass="lg:col-start-4 lg:col-end-5 lg:row-start-3 lg:row-end-4"
         >
           <Eyebrow>05 — RESULTS</Eyebrow>
           <span
@@ -259,7 +257,7 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="col-start-1 col-end-2 row-start-4 row-end-5"
+          gridClass="lg:col-start-1 lg:col-end-2 lg:row-start-4 lg:row-end-5"
         >
           <Eyebrow>06 — ABOUT</Eyebrow>
           <span className={`${libreBaskerville.className} text-[clamp(18px,1.8vw,30px)] leading-[1.1]`}>
@@ -274,7 +272,7 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="col-start-2 col-end-4 row-start-4 row-end-5"
+          gridClass="lg:col-start-2 lg:col-end-4 lg:row-start-4 lg:row-end-5"
         >
           <Eyebrow>{"07 — WHO WE'RE FOR"}</Eyebrow>
           <span className={`${libreBaskerville.className} text-[clamp(15px,1.4vw,19px)] leading-[1.15]`}>
@@ -292,7 +290,7 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="col-start-4 col-end-5 row-start-4 row-end-5"
+          gridClass="lg:col-start-4 lg:col-end-5 lg:row-start-4 lg:row-end-5"
         >
           <Eyebrow>08 — ECOSYSTEMS</Eyebrow>
           <span className={`${libreBaskerville.className} text-[clamp(15px,1.4vw,21px)] leading-[1.05]`}>

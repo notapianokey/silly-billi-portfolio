@@ -192,6 +192,25 @@ precedent as `cursor-trail.tsx`/`cats.ts`.
   `dispatchEvent()` return value (`false` = preventDefault fired) rather than trusting the
   Browser pane's synthetic click, since mobile-emulated clicks there resolve as plain mouse
   clicks, not real touch events, and wouldn't exercise this code path at all.
+- **Responsive: this page — and only this page so far — has a real breakpoint, the site-wide
+  "deferred" note above no longer applies to it.** Below `lg` (1024px), `<main>` switches from
+  the fixed no-scroll `h-dvh`/`overflow-hidden` viewport to a normal scrolling
+  `min-h-dvh`/`overflow-y-auto` page, and the grid drops every `lg:col-start-*`/`row-start-*`
+  placement class, collapsing to a single scrolling column in source order (01 → 08) with the
+  mascot pulled to the top via `order-first lg:order-none` (a plain flex column reads oddly with
+  the mascot buried mid-list; leading with it works like a small hero). The `clamp()` font sizes
+  already tuned for the desktop grid cells didn't need separate mobile values — their floors
+  read fine at full column width.
+  - **Breakpoint is `lg` (1024px), not the more obvious `md` (768px) — verified, not assumed.**
+    At `md` a real iPad-portrait width (768×1024) still got the fixed desktop grid, and its
+    `grid-rows-[1fr_1.3fr_1.3fr_0.9fr]` truly overflowed there: the Thesis card's "Content
+    Editor" band visibly bled text into the "Tool Operator" band below it. Confirmed both ways in
+    the Browser pane (768px broken, 1024px clean, no scroll) before picking `lg` — this is
+    specifically because this page's cards hold far more text than a typical nav-pill breakpoint
+    decision needs to account for, not a mistake to copy elsewhere without checking.
+  - Touch (previous entry) needed no changes for this — `onTouchEnd`'s preview-then-go logic is
+    layout-independent, and was re-verified with the same synthetic-`TouchEvent`-dispatch method
+    at the mobile viewport after this change.
 
 ## Mascot asset (`public/brand/mascot.png`)
 
@@ -863,9 +882,11 @@ engine from scratch.
 
 ## Deferred / explicitly not-now
 
-- **Mobile responsiveness:** desktop is the current priority. A simplified mobile view is
-  wanted, but not yet — don't spend time on responsive breakpoints until asked, but don't
-  write markup that would be painful to make responsive later either.
+- **Mobile responsiveness:** was fully deferred; now done for the homepage only (see its `lg`
+  breakpoint above), asked for and shipped 2026-09-23. Every other page (About, Hire Us,
+  video-editing shell, etc.) is still desktop-only — don't spend time on their responsive
+  breakpoints until asked, but don't write markup that would be painful to make responsive
+  later either.
 - ~~**Nav pills** (4 buttons homepage → service pages): deferred to Phase 3.~~ Done, in a
   different form than originally speced — see the Homepage section above. The client replaced
   the plain-button plan with clickable artifacts inside the new illustrated homepage scene.
