@@ -35,10 +35,10 @@ const FACE_BY_HOVER: Record<HoverKey, [Expression, string]> = {
 const IDLE: [Expression, string] = ["idle", "pick one. the cat is watching."];
 
 const CARD_BASE =
-  "group relative flex min-h-0 flex-col justify-between gap-1.5 lg:gap-2 overflow-hidden border-2 border-[#141414] " +
+  "group relative flex min-h-0 flex-col justify-between gap-1 lg:gap-2 overflow-hidden border-2 border-[#141414] " +
   "shadow-[3px_3px_0_0_#141414] lg:shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] " +
   "ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] " +
-  "active:translate-x-0.5 active:translate-y-0.5 active:shadow-none py-2 px-2.5 " +
+  "active:translate-x-0.5 active:translate-y-0.5 active:shadow-none p-2 " +
   "lg:py-[clamp(12px,2vh,22px)] lg:px-[clamp(14px,1.5vw,24px)]";
 
 function Card({
@@ -87,19 +87,26 @@ function Card({
 
 function Eyebrow({ children }: { children: ReactNode }) {
   return (
-    <span className={`${mulish.className} text-[9px] lg:text-[12px] font-extrabold tracking-[0.06em] lg:tracking-[0.08em]`}>
+    <span
+      className={`${mulish.className} text-[clamp(8px,2.2vw,11px)] lg:text-[12px] font-extrabold tracking-[0.06em] lg:tracking-[0.08em]`}
+    >
       {children}
     </span>
   );
 }
 
 function useMascotWidth() {
-  const [width, setWidth] = useState(220);
+  const [width, setWidth] = useState(140);
   useEffect(() => {
-    const recalc = () =>
+    const recalc = () => {
+      const { innerWidth: vw, innerHeight: vh } = window;
+      // Below lg the mascot sits in the middle grid column, not a viewport-height-limited cell.
       setWidth(
-        Math.round(Math.max(90, Math.min(window.innerWidth * 0.36, window.innerHeight * 0.52 - 50, 480))),
+        vw < 1024
+          ? Math.round(vw * 0.3)
+          : Math.round(Math.max(90, Math.min(vw * 0.36, vh * 0.52 - 50, 480))),
       );
+    };
     recalc();
     window.addEventListener("resize", recalc);
     return () => window.removeEventListener("resize", recalc);
@@ -113,9 +120,11 @@ export default function Home() {
   const [expression, caption] = hover ? FACE_BY_HOVER[hover] : IDLE;
 
   return (
-    <main className="min-h-dvh w-dvw overflow-y-auto box-border bg-[#F1E5C7] text-[#141414] p-3 lg:h-dvh lg:min-h-0 lg:overflow-hidden lg:py-[clamp(16px,3vh,40px)] lg:px-[clamp(16px,3vw,56px)]">
+    <main className="flex flex-col h-dvh w-dvw overflow-y-auto box-border bg-[#F1E5C7] text-[#141414] p-3 lg:overflow-hidden lg:py-[clamp(16px,3vh,40px)] lg:px-[clamp(16px,3vw,56px)]">
       <h1 className="sr-only">Silly Billi Studio</h1>
-      <div className="grid grid-cols-2 gap-2.5 lg:h-full lg:grid-cols-[1.2fr_1fr_1fr_0.9fr] lg:grid-rows-[1fr_1.3fr_1.3fr_0.9fr] lg:gap-[clamp(10px,1.6vw,24px)]">
+      {/* Below lg: one-screen 3-column grid with 6 boxes around the mascot (04 Thesis and 06
+          About are hidden — same /about link as 05/07). lg and up: the original 8-card grid. */}
+      <div className="grid my-auto grid-cols-3 gap-2 lg:my-0 lg:h-full lg:grid-cols-[1.2fr_1fr_1fr_0.9fr] lg:grid-rows-[1fr_1.3fr_1.3fr_0.9fr] lg:gap-[clamp(10px,1.6vw,24px)]">
         <Card
           hoverKey="work"
           href="/hire-us"
@@ -123,13 +132,16 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="col-span-2 lg:col-start-1 lg:col-end-3 lg:row-start-1 lg:row-end-2"
+          gridClass="col-start-1 col-end-3 row-start-1 row-end-2 lg:col-start-1 lg:col-end-3 lg:row-start-1 lg:row-end-2"
         >
-          <Eyebrow>01 — OUR PROCESS</Eyebrow>
+          <span className="max-lg:hidden">
+            <Eyebrow>01 — OUR PROCESS</Eyebrow>
+          </span>
           <span
-            className={`${libreBaskerville.className} text-xl leading-tight lg:text-[clamp(24px,3vw,52px)] lg:leading-[1.05]`}
+            className={`${libreBaskerville.className} text-[clamp(18px,5.2vw,34px)] leading-tight lg:text-[clamp(24px,3vw,52px)] lg:leading-[1.05]`}
           >
-            How we handle your content
+            <span className="lg:hidden">Our Process</span>
+            <span className="max-lg:hidden">How we handle your content</span>
           </span>
         </Card>
 
@@ -140,11 +152,11 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="col-span-1 lg:col-start-3 lg:col-end-4 lg:row-start-1 lg:row-end-2"
+          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-1 row-end-2 lg:col-start-3 lg:col-end-4 lg:row-start-1 lg:row-end-2"
         >
           <Eyebrow>02 — SERVICES</Eyebrow>
           <span
-            className={`${libreBaskerville.className} text-sm leading-snug lg:text-[clamp(18px,1.6vw,28px)] lg:leading-[1.1]`}
+            className={`${libreBaskerville.className} text-[clamp(12px,3.4vw,22px)] leading-snug lg:text-[clamp(18px,1.6vw,28px)] lg:leading-[1.1]`}
           >
             Video Portfolio
           </span>
@@ -157,16 +169,17 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="col-span-1 lg:col-start-4 lg:col-end-5 lg:row-start-1 lg:row-end-3"
+          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-2 row-end-3 lg:col-start-4 lg:col-end-5 lg:row-start-1 lg:row-end-3"
         >
           <Eyebrow>03 — CONTACT</Eyebrow>
           <span
-            className={`${libreBaskerville.className} text-sm leading-snug lg:text-[clamp(22px,2.4vw,40px)] lg:leading-[1.08]`}
+            className={`${libreBaskerville.className} text-[clamp(13px,3.8vw,26px)] leading-tight lg:text-[clamp(22px,2.4vw,40px)] lg:leading-[1.08]`}
           >
-            Send us the heavy stuff
+            <span className="lg:hidden">Claim your free content audit</span>
+            <span className="max-lg:hidden">Send us the heavy stuff</span>
           </span>
           <span
-            className={`${libreBaskerville.className} text-[10px] leading-snug lg:text-[clamp(13px,1.3vw,17px)] lg:leading-[1.3]`}
+            className={`${libreBaskerville.className} max-lg:hidden text-[clamp(13px,1.3vw,17px)] leading-[1.3]`}
           >
             Hand over the raw files and let us handle the narrative, without losing the nuance.
           </span>
@@ -184,57 +197,47 @@ export default function Home() {
               setHover("process");
             }
           }}
-          className="group col-span-2 lg:col-start-1 lg:col-end-2 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[3px_3px_0_0_#141414] lg:shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+          className="group max-lg:hidden lg:col-start-1 lg:col-end-2 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
         >
           <div
-            className="flex-none text-[#F1E5C7] px-2.5 pt-2 pb-1 lg:px-[clamp(14px,1.5vw,24px)] lg:pt-[clamp(8px,1.2vh,14px)] lg:pb-[clamp(4px,0.6vh,8px)]"
+            className="flex-none text-[#F1E5C7] px-[clamp(14px,1.5vw,24px)] pt-[clamp(8px,1.2vh,14px)] pb-[clamp(4px,0.6vh,8px)]"
             style={{ backgroundColor: BLUE }}
           >
             <Eyebrow>04 — THESIS</Eyebrow>
           </div>
           <div
-            className="flex min-h-0 flex-1 items-end text-[#F1E5C7] border-b-2 border-[#141414] px-2.5 pb-2.5 lg:px-[clamp(14px,1.5vw,24px)] lg:pb-[clamp(14px,2.2vh,24px)]"
+            className="flex min-h-0 flex-1 items-end text-[#F1E5C7] border-b-2 border-[#141414] px-[clamp(14px,1.5vw,24px)] pb-[clamp(14px,2.2vh,24px)]"
             style={{ backgroundColor: BLUE }}
           >
-            <span
-              className={`${libreBaskerville.className} text-base leading-snug lg:text-[clamp(22px,2.1vw,28px)] lg:leading-[1.25]`}
-            >
+            <span className={`${libreBaskerville.className} text-[clamp(22px,2.1vw,28px)] leading-[1.25]`}>
               We turn dense research and raw files into sharp, high-retention narratives.
             </span>
           </div>
           <div
-            className="flex flex-none items-center gap-2 text-[#F1E5C7] border-b-2 border-[#141414] px-2.5 py-2 lg:gap-[clamp(10px,1.2vw,20px)] lg:px-[clamp(14px,1.5vw,24px)] lg:py-[clamp(8px,1.2vh,14px)]"
+            className="flex flex-none items-center gap-[clamp(10px,1.2vw,20px)] text-[#F1E5C7] border-b-2 border-[#141414] px-[clamp(14px,1.5vw,24px)] py-[clamp(8px,1.2vh,14px)]"
             style={{ backgroundColor: GREEN }}
           >
-            <span
-              className={`${mulish.className} flex-shrink-0 text-[9px] lg:text-[11px] font-extrabold tracking-[0.06em] lg:tracking-[0.08em]`}
-            >
+            <span className={`${mulish.className} flex-shrink-0 text-[11px] font-extrabold tracking-[0.08em]`}>
               CONTENT EDITOR
             </span>
-            <span
-              className={`${libreBaskerville.className} text-xs leading-snug font-bold lg:text-[clamp(12px,1.1vw,16px)] lg:leading-[1.25]`}
-            >
+            <span className={`${libreBaskerville.className} text-[clamp(12px,1.1vw,16px)] font-bold leading-[1.25]`}>
               Knows the software + understands the nuance in your raw footage.
             </span>
           </div>
           <div
-            className="flex flex-none items-center gap-2 text-[#141414] px-2.5 py-2 lg:gap-[clamp(10px,1.2vw,20px)] lg:px-[clamp(14px,1.5vw,24px)] lg:py-[clamp(8px,1.2vh,14px)]"
+            className="flex flex-none items-center gap-[clamp(10px,1.2vw,20px)] text-[#141414] px-[clamp(14px,1.5vw,24px)] py-[clamp(8px,1.2vh,14px)]"
             style={{ backgroundColor: CREAM }}
           >
-            <span
-              className={`${mulish.className} flex-shrink-0 text-[9px] lg:text-[11px] font-extrabold tracking-[0.06em] lg:tracking-[0.08em]`}
-            >
+            <span className={`${mulish.className} flex-shrink-0 text-[11px] font-extrabold tracking-[0.08em]`}>
               TOOL OPERATOR
             </span>
-            <span
-              className={`${libreBaskerville.className} text-xs leading-snug lg:text-[clamp(13px,1.2vw,17px)] lg:leading-[1.2]`}
-            >
+            <span className={`${libreBaskerville.className} text-[clamp(13px,1.2vw,17px)] leading-[1.2]`}>
               Knows the software.
             </span>
           </div>
         </Link>
 
-        <div className="col-span-2 py-2 lg:py-0 lg:col-start-2 lg:col-end-4 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col items-center justify-center gap-1 overflow-hidden">
+        <div className="col-start-2 col-end-3 row-start-2 row-end-4 lg:col-start-2 lg:col-end-4 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col items-center justify-center gap-1 overflow-hidden">
           <Image
             src={`/homepage/expressions/orange/${expression}.webp`}
             alt=""
@@ -244,7 +247,7 @@ export default function Home() {
             style={{ width: mascotWidth, height: "auto" }}
           />
           <div
-            className={`${caveat.className} min-h-[1.2em] text-center text-base lg:text-[clamp(18px,2.4vh,28px)] leading-[1.2]`}
+            className={`${caveat.className} min-h-[1.2em] text-center text-[clamp(13px,3.6vw,22px)] lg:text-[clamp(18px,2.4vh,28px)] leading-[1.2]`}
           >
             {caption}
           </div>
@@ -257,16 +260,17 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="col-span-1 lg:col-start-4 lg:col-end-5 lg:row-start-3 lg:row-end-4"
+          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-2 row-end-3 lg:col-start-4 lg:col-end-5 lg:row-start-3 lg:row-end-4"
         >
           <Eyebrow>05 — RESULTS</Eyebrow>
           <span
-            className={`${libreBaskerville.className} text-xs leading-snug font-bold lg:text-[clamp(15px,1.4vw,20px)] lg:leading-[1.3]`}
+            className={`${libreBaskerville.className} text-[clamp(9px,2.7vw,17px)] leading-snug font-bold lg:text-[clamp(15px,1.4vw,20px)] lg:leading-[1.3]`}
             style={{ color: CREAM }}
           >
-            -1.5M+ subscribers gained across client channels
+            -1.5M+ subscribers gained
+            <span className="max-lg:hidden"> across client channels</span>
             <br />
-            <br />
+            <br className="max-lg:hidden" />
             -4000+ videos delivered
           </span>
         </Card>
@@ -278,11 +282,11 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="col-span-1 lg:col-start-1 lg:col-end-2 lg:row-start-4 lg:row-end-5"
+          gridClass="max-lg:hidden lg:col-start-1 lg:col-end-2 lg:row-start-4 lg:row-end-5"
         >
           <Eyebrow>06 — ABOUT</Eyebrow>
           <span
-            className={`${libreBaskerville.className} text-base leading-snug lg:text-[clamp(18px,1.8vw,30px)] lg:leading-[1.1]`}
+            className={`${libreBaskerville.className} text-[clamp(13px,3.8vw,24px)] leading-snug lg:text-[clamp(18px,1.8vw,30px)] lg:leading-[1.1]`}
           >
             Our Lore
           </span>
@@ -295,17 +299,16 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="col-span-2 lg:col-start-2 lg:col-end-4 lg:row-start-4 lg:row-end-5"
+          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-3 row-end-4 lg:col-start-2 lg:col-end-4 lg:row-start-4 lg:row-end-5"
         >
-          <Eyebrow>{"07 — WHO WE'RE FOR"}</Eyebrow>
-          <span
-            className={`${libreBaskerville.className} text-sm leading-snug lg:text-[clamp(15px,1.4vw,19px)] lg:leading-[1.15]`}
-          >
-            Podcasters. Analysts. Macro thinkers. Commentators. Journalists.
+          <span className="max-lg:hidden">
+            <Eyebrow>{"07 — WHO WE'RE FOR"}</Eyebrow>
           </span>
-          <span
-            className={`${libreBaskerville.className} text-[10px] leading-snug lg:text-[clamp(11px,0.95vw,14px)] lg:leading-[1.25]`}
-          >
+          <span className={`${libreBaskerville.className} text-[clamp(10px,2.8vw,17px)] leading-snug lg:text-[clamp(15px,1.4vw,19px)] lg:leading-[1.15]`}>
+            <span className="lg:hidden">For Analysts, Thought Leaders, Journalists, &amp; Commentators</span>
+            <span className="max-lg:hidden">Podcasters. Analysts. Macro thinkers. Commentators. Journalists.</span>
+          </span>
+          <span className={`${libreBaskerville.className} max-lg:hidden text-[clamp(11px,0.95vw,14px)] leading-[1.25]`}>
             Serious people with serious ideas.
           </span>
         </Card>
@@ -317,11 +320,11 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="col-span-2 lg:col-start-4 lg:col-end-5 lg:row-start-4 lg:row-end-5"
+          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-3 row-end-4 lg:col-start-4 lg:col-end-5 lg:row-start-4 lg:row-end-5"
         >
           <Eyebrow>08 — ECOSYSTEMS</Eyebrow>
           <span
-            className={`${libreBaskerville.className} text-sm leading-snug lg:text-[clamp(15px,1.4vw,21px)] lg:leading-[1.05]`}
+            className={`${libreBaskerville.className} text-[clamp(14px,4vw,24px)] leading-snug lg:text-[clamp(15px,1.4vw,21px)] lg:leading-[1.05]`}
           >
             Brand &amp; Strategy Systems
           </span>
