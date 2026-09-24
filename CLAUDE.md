@@ -209,17 +209,21 @@ precedent as `cursor-trail.tsx`/`cats.ts`.
   as "just a list"). What she asked for, and what shipped: **one screen, the cat in the middle
   surrounded by boxes**, boxes made smaller/squarer, text cut down, and boxes that duplicate a
   link removed.
-  - **Mobile shows 6 boxes, not 8.** Four cards link to `/about` (04 Thesis, 05 Results, 06
-    About, 07 Who We're For); client said to drop two, then chose the final mobile set herself:
-    **04 Thesis and 06 About are `max-lg:hidden`**, 05 and 07 stay. Desktop still renders all 8.
+  - **Mobile shows all 8 boxes again.** Four cards link to `/about` (04, 05, 06, 07); client
+    first said to drop two, then (after seeing the 6-box version leave empty screen space) said
+    to bring the cut boxes back if more were needed. Thesis and About are back as squares. Thesis
+    on mobile shows only its top two bands (eyebrow + a shortened statement); its "Content Editor"
+    and "Tool Operator" bands are `max-lg:hidden` and the statement band's bottom border is
+    `lg:border-b-2`, so desktop still gets all four bands and borders (checked via computed
+    style, not by eye).
   - **Mobile-only copy (client's exact wording; desktop copy unchanged):** 01 → just "Our
     Process" (eyebrow hidden); 03 → "Claim your free content audit" (body paragraph hidden);
     07 → "For Analysts, Thought Leaders, Journalists, & Commentators" (eyebrow hidden); 05
     drops "across client channels". Done with paired `<span className="lg:hidden">` /
     `<span className="max-lg:hidden">` variants inside the same card, not separate components.
-  - **Layout:** `grid-cols-3`, rows auto. Top row = 01 (2 cols) + 02; below it, 05/07 stacked on
-    the left and 03/08 stacked on the right, the mascot spanning both rows in the middle. 02, 03,
-    05, 07, 08 are `aspect-square lg:aspect-auto` (client: "cut these long boxes in half, make
+  - **Layout:** `grid-cols-3`, rows auto. Top row = 01 (2 cols) + 02; below it, three squares stacked on
+    each side (left 05 / 04 / 06, right 03 / 07 / 08), the mascot spanning all three rows in the middle. 02 and
+    every side box are `aspect-square lg:aspect-auto` (client: "cut these long boxes in half, make
     them squares" — the first version stretched the side boxes to fill the viewport height and
     they came out ~106×300). The grid is `my-auto` inside a `flex flex-col` `<main>` so it
     centers vertically; the trade-off is cream space above/below on tall phones, since squares

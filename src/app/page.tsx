@@ -122,8 +122,8 @@ export default function Home() {
   return (
     <main className="flex flex-col h-dvh w-dvw overflow-y-auto box-border bg-[#F1E5C7] text-[#141414] p-3 lg:overflow-hidden lg:py-[clamp(16px,3vh,40px)] lg:px-[clamp(16px,3vw,56px)]">
       <h1 className="sr-only">Silly Billi Studio</h1>
-      {/* Below lg: one-screen 3-column grid with 6 boxes around the mascot (04 Thesis and 06
-          About are hidden — same /about link as 05/07). lg and up: the original 8-card grid. */}
+      {/* Below lg: one-screen 3-column grid with 6 boxes around the mascot (Thesis shows only its
+          top two bands). lg and up: the original 8-card grid. */}
       <div className="grid my-auto grid-cols-3 gap-2 lg:my-0 lg:h-full lg:grid-cols-[1.2fr_1fr_1fr_0.9fr] lg:grid-rows-[1fr_1.3fr_1.3fr_0.9fr] lg:gap-[clamp(10px,1.6vw,24px)]">
         <Card
           hoverKey="work"
@@ -197,24 +197,25 @@ export default function Home() {
               setHover("process");
             }
           }}
-          className="group max-lg:hidden lg:col-start-1 lg:col-end-2 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+          className="group aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-3 row-end-4 lg:col-start-1 lg:col-end-2 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[3px_3px_0_0_#141414] lg:shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
         >
           <div
-            className="flex-none text-[#F1E5C7] px-[clamp(14px,1.5vw,24px)] pt-[clamp(8px,1.2vh,14px)] pb-[clamp(4px,0.6vh,8px)]"
+            className="flex-none text-[#F1E5C7] px-2 pt-2 pb-1 lg:px-[clamp(14px,1.5vw,24px)] lg:pt-[clamp(8px,1.2vh,14px)] lg:pb-[clamp(4px,0.6vh,8px)]"
             style={{ backgroundColor: BLUE }}
           >
             <Eyebrow>04 — THESIS</Eyebrow>
           </div>
           <div
-            className="flex min-h-0 flex-1 items-end text-[#F1E5C7] border-b-2 border-[#141414] px-[clamp(14px,1.5vw,24px)] pb-[clamp(14px,2.2vh,24px)]"
+            className="flex min-h-0 flex-1 items-end text-[#F1E5C7] lg:border-b-2 border-[#141414] px-2 pb-2 lg:px-[clamp(14px,1.5vw,24px)] lg:pb-[clamp(14px,2.2vh,24px)]"
             style={{ backgroundColor: BLUE }}
           >
-            <span className={`${libreBaskerville.className} text-[clamp(22px,2.1vw,28px)] leading-[1.25]`}>
-              We turn dense research and raw files into sharp, high-retention narratives.
+            <span className={`${libreBaskerville.className} text-[clamp(10px,2.9vw,17px)] leading-snug lg:text-[clamp(22px,2.1vw,28px)] lg:leading-[1.25]`}>
+              <span className="lg:hidden">We turn dense research into sharp narratives.</span>
+              <span className="max-lg:hidden">We turn dense research and raw files into sharp, high-retention narratives.</span>
             </span>
           </div>
           <div
-            className="flex flex-none items-center gap-[clamp(10px,1.2vw,20px)] text-[#F1E5C7] border-b-2 border-[#141414] px-[clamp(14px,1.5vw,24px)] py-[clamp(8px,1.2vh,14px)]"
+            className="flex max-lg:hidden flex-none items-center gap-[clamp(10px,1.2vw,20px)] text-[#F1E5C7] border-b-2 border-[#141414] px-[clamp(14px,1.5vw,24px)] py-[clamp(8px,1.2vh,14px)]"
             style={{ backgroundColor: GREEN }}
           >
             <span className={`${mulish.className} flex-shrink-0 text-[11px] font-extrabold tracking-[0.08em]`}>
@@ -225,7 +226,7 @@ export default function Home() {
             </span>
           </div>
           <div
-            className="flex flex-none items-center gap-[clamp(10px,1.2vw,20px)] text-[#141414] px-[clamp(14px,1.5vw,24px)] py-[clamp(8px,1.2vh,14px)]"
+            className="flex max-lg:hidden flex-none items-center gap-[clamp(10px,1.2vw,20px)] text-[#141414] px-[clamp(14px,1.5vw,24px)] py-[clamp(8px,1.2vh,14px)]"
             style={{ backgroundColor: CREAM }}
           >
             <span className={`${mulish.className} flex-shrink-0 text-[11px] font-extrabold tracking-[0.08em]`}>
@@ -237,7 +238,7 @@ export default function Home() {
           </div>
         </Link>
 
-        <div className="col-start-2 col-end-3 row-start-2 row-end-4 lg:col-start-2 lg:col-end-4 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col items-center justify-center gap-1 overflow-hidden">
+        <div className="col-start-2 col-end-3 row-start-2 row-end-5 lg:col-start-2 lg:col-end-4 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col items-center justify-center gap-1 overflow-hidden">
           <Image
             src={`/homepage/expressions/orange/${expression}.webp`}
             alt=""
@@ -282,7 +283,7 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="max-lg:hidden lg:col-start-1 lg:col-end-2 lg:row-start-4 lg:row-end-5"
+          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-4 row-end-5 lg:col-start-1 lg:col-end-2 lg:row-start-4 lg:row-end-5"
         >
           <Eyebrow>06 — ABOUT</Eyebrow>
           <span
@@ -299,7 +300,7 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-3 row-end-4 lg:col-start-2 lg:col-end-4 lg:row-start-4 lg:row-end-5"
+          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-3 row-end-4 lg:col-start-2 lg:col-end-4 lg:row-start-4 lg:row-end-5"
         >
           <span className="max-lg:hidden">
             <Eyebrow>{"07 — WHO WE'RE FOR"}</Eyebrow>
@@ -320,7 +321,7 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-3 row-end-4 lg:col-start-4 lg:col-end-5 lg:row-start-4 lg:row-end-5"
+          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-4 row-end-5 lg:col-start-4 lg:col-end-5 lg:row-start-4 lg:row-end-5"
         >
           <Eyebrow>08 — ECOSYSTEMS</Eyebrow>
           <span
