@@ -216,13 +216,21 @@ precedent as `cursor-trail.tsx`/`cats.ts`.
     and "Tool Operator" bands are `max-lg:hidden` and the statement band's bottom border is
     `lg:border-b-2`, so desktop still gets all four bands and borders (checked via computed
     style, not by eye).
-  - **Mobile-only copy (client's exact wording; desktop copy unchanged):** 01 → just "Our
-    Process" (eyebrow hidden); 03 → "Claim your free content audit" (body paragraph hidden);
-    07 → "For Analysts, Thought Leaders, Journalists, & Commentators" (eyebrow hidden); 05
-    drops "across client channels". Done with paired `<span className="lg:hidden">` /
-    `<span className="max-lg:hidden">` variants inside the same card, not separate components.
+  - **Mobile-only copy (client's exact wording; desktop copy unchanged):** 02's eyebrow reads
+    "02 — OUR WORK" instead of "02 — SERVICES"; 03 → "Claim your free content audit" (body
+    paragraph hidden); 07 → "For Analysts, Thought Leaders, Journalists, & Commentators"; 04
+    shows a shortened statement; 05 drops "across client channels". Every box keeps its number
+    eyebrow, and 01 keeps its full "How we handle your content" (client saw the shortened "Our
+    Process" version and asked for the original text back, plus the box number, since the box
+    had room). Done with paired `<span className="lg:hidden">` / `<span
+    className="max-lg:hidden">` variants inside the same card, not separate components. Only
+    02's label was changed on mobile, not desktop — she asked for the wording fix while
+    discussing mobile; confirm before touching the desktop label.
+  - **Boxes are ordered by number, reading left-to-right:** rows are (01, 02) / (03, 04) /
+    (05, 06) / (07, 08), so the left column is 03/05/07 and the right is 04/06/08 (client's
+    explicit request after a version that had them in an arbitrary order).
   - **Layout:** `grid-cols-3`, rows auto. Top row = 01 (2 cols) + 02; below it, three squares stacked on
-    each side (left 05 / 04 / 06, right 03 / 07 / 08), the mascot spanning all three rows in the middle. 02 and
+    each side (left 03 / 05 / 07, right 04 / 06 / 08), the mascot spanning all three rows in the middle. 02 and
     every side box are `aspect-square lg:aspect-auto` (client: "cut these long boxes in half, make
     them squares" — the first version stretched the side boxes to fill the viewport height and
     they came out ~106×300). The grid is `my-auto` inside a `flex flex-col` `<main>` so it

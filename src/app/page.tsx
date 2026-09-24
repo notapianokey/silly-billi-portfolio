@@ -134,14 +134,11 @@ export default function Home() {
           setHover={setHover}
           gridClass="col-start-1 col-end-3 row-start-1 row-end-2 lg:col-start-1 lg:col-end-3 lg:row-start-1 lg:row-end-2"
         >
-          <span className="max-lg:hidden">
-            <Eyebrow>01 — OUR PROCESS</Eyebrow>
-          </span>
+          <Eyebrow>01 — OUR PROCESS</Eyebrow>
           <span
-            className={`${libreBaskerville.className} text-[clamp(18px,5.2vw,34px)] leading-tight lg:text-[clamp(24px,3vw,52px)] lg:leading-[1.05]`}
+            className={`${libreBaskerville.className} text-[clamp(16px,4.6vw,30px)] leading-tight lg:text-[clamp(24px,3vw,52px)] lg:leading-[1.05]`}
           >
-            <span className="lg:hidden">Our Process</span>
-            <span className="max-lg:hidden">How we handle your content</span>
+            How we handle your content
           </span>
         </Card>
 
@@ -154,7 +151,10 @@ export default function Home() {
           setHover={setHover}
           gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-1 row-end-2 lg:col-start-3 lg:col-end-4 lg:row-start-1 lg:row-end-2"
         >
-          <Eyebrow>02 — SERVICES</Eyebrow>
+          <Eyebrow>
+            <span className="lg:hidden">02 — OUR WORK</span>
+            <span className="max-lg:hidden">02 — SERVICES</span>
+          </Eyebrow>
           <span
             className={`${libreBaskerville.className} text-[clamp(12px,3.4vw,22px)] leading-snug lg:text-[clamp(18px,1.6vw,28px)] lg:leading-[1.1]`}
           >
@@ -169,7 +169,7 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-2 row-end-3 lg:col-start-4 lg:col-end-5 lg:row-start-1 lg:row-end-3"
+          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-2 row-end-3 lg:col-start-4 lg:col-end-5 lg:row-start-1 lg:row-end-3"
         >
           <Eyebrow>03 — CONTACT</Eyebrow>
           <span
@@ -197,7 +197,7 @@ export default function Home() {
               setHover("process");
             }
           }}
-          className="group aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-3 row-end-4 lg:col-start-1 lg:col-end-2 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[3px_3px_0_0_#141414] lg:shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
+          className="group aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-2 row-end-3 lg:col-start-1 lg:col-end-2 lg:row-start-2 lg:row-end-4 flex min-h-0 flex-col overflow-hidden border-2 border-[#141414] shadow-[3px_3px_0_0_#141414] lg:shadow-[4px_4px_0_0_#141414] transition-[transform,box-shadow,filter] duration-[140ms] ease-[cubic-bezier(.34,1.4,.5,1)] hover:-translate-x-px hover:-translate-y-px hover:brightness-[1.06] active:translate-x-0.5 active:translate-y-0.5 active:shadow-none"
         >
           <div
             className="flex-none text-[#F1E5C7] px-2 pt-2 pb-1 lg:px-[clamp(14px,1.5vw,24px)] lg:pt-[clamp(8px,1.2vh,14px)] lg:pb-[clamp(4px,0.6vh,8px)]"
@@ -261,7 +261,7 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-2 row-end-3 lg:col-start-4 lg:col-end-5 lg:row-start-3 lg:row-end-4"
+          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-3 row-end-4 lg:col-start-4 lg:col-end-5 lg:row-start-3 lg:row-end-4"
         >
           <Eyebrow>05 — RESULTS</Eyebrow>
           <span
@@ -283,7 +283,7 @@ export default function Home() {
           color={CREAM}
           hover={hover}
           setHover={setHover}
-          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-4 row-end-5 lg:col-start-1 lg:col-end-2 lg:row-start-4 lg:row-end-5"
+          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-3 row-end-4 lg:col-start-1 lg:col-end-2 lg:row-start-4 lg:row-end-5"
         >
           <Eyebrow>06 — ABOUT</Eyebrow>
           <span
@@ -300,12 +300,10 @@ export default function Home() {
           color={INK}
           hover={hover}
           setHover={setHover}
-          gridClass="aspect-square lg:aspect-auto col-start-3 col-end-4 row-start-3 row-end-4 lg:col-start-2 lg:col-end-4 lg:row-start-4 lg:row-end-5"
+          gridClass="aspect-square lg:aspect-auto col-start-1 col-end-2 row-start-4 row-end-5 lg:col-start-2 lg:col-end-4 lg:row-start-4 lg:row-end-5"
         >
-          <span className="max-lg:hidden">
-            <Eyebrow>{"07 — WHO WE'RE FOR"}</Eyebrow>
-          </span>
-          <span className={`${libreBaskerville.className} text-[clamp(10px,2.8vw,17px)] leading-snug lg:text-[clamp(15px,1.4vw,19px)] lg:leading-[1.15]`}>
+          <Eyebrow>{"07 — WHO WE'RE FOR"}</Eyebrow>
+          <span className={`${libreBaskerville.className} text-[clamp(9px,2.5vw,17px)] leading-tight lg:text-[clamp(15px,1.4vw,19px)] lg:leading-[1.15] lg:leading-[1.15]`}>
             <span className="lg:hidden">For Analysts, Thought Leaders, Journalists, &amp; Commentators</span>
             <span className="max-lg:hidden">Podcasters. Analysts. Macro thinkers. Commentators. Journalists.</span>
           </span>
