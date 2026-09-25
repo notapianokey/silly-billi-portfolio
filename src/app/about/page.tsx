@@ -449,6 +449,13 @@ export default function AboutPage() {
           </div>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/about/logo-silly-studio.png" alt="Silly بِلّی Studio" className={styles.footerLogo} />
+          <div className={styles.footerLegal}>
+            <span>© 2026 Silly Billi Studio. All rights reserved.</span>
+            <span className={styles.footerLegalLinks}>
+              <Link href="/privacy-policy">Privacy Policy</Link>
+              <Link href="/cookies-policy">Cookies Policy</Link>
+            </span>
+          </div>
         </footer>
       </section>
     </div>

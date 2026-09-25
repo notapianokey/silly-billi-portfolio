@@ -736,6 +736,25 @@
   display: block;
   object-fit: contain;
 }
+/* Copyright + policy links — a full-width row under the columns and logo. */
+.footerLegal {
+  flex: 1 1 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 24px;
+  padding-top: clamp(16px, 2vw, 24px);
+  border-top: 1px solid color-mix(in srgb, var(--sb-cream) 25%, transparent);
+  font-size: 13px;
+  color: color-mix(in srgb, var(--sb-cream) 75%, transparent);
+}
+.footerLegalLinks {
+  display: flex;
+  gap: 20px;
+}
+.footerLegalLinks a:hover {
+  color: var(--sb-mustard);
+}
 
 /* --- Mobile: the nav/footer's implicit flex-wrap produces a squished CTA and an
    awkward 2-then-1 footer column split at phone widths — control both explicitly. */

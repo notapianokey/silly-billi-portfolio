@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 
+import { SiteFooter } from "@/components/site-footer";
 import { cn } from "@/lib/utils";
 
 type NavIcon = React.ComponentType<{ className?: string }>;
@@ -80,6 +81,9 @@ export function SidebarRail() {
       {BOTTOM_ITEMS.map((item) => (
         <NavLink key={item.label} {...item} />
       ))}
+
+      {/* Real YouTube ends its guide with the legal links + copyright — same spot here. */}
+      <SiteFooter className="mt-auto flex-col items-start justify-start gap-1 px-3 pb-2 pt-6" />
     </aside>
   );
 }

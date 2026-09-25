@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Caveat, Libre_Baskerville, Mulish } from "next/font/google";
 
+import { SiteFooter } from "@/components/site-footer";
+
 const libreBaskerville = Libre_Baskerville({ subsets: ["latin"], weight: ["400", "700"] });
 const mulish = Mulish({ subsets: ["latin"], weight: ["700", "800"] });
 const caveat = Caveat({ subsets: ["latin"], weight: ["500", "600"] });
@@ -120,7 +122,7 @@ export default function Home() {
   const [expression, caption] = hover ? FACE_BY_HOVER[hover] : IDLE;
 
   return (
-    <main className="flex flex-col h-dvh w-dvw overflow-y-auto box-border bg-[#F1E5C7] text-[#141414] p-3 lg:overflow-hidden lg:py-[clamp(16px,3vh,40px)] lg:px-[clamp(16px,3vw,56px)]">
+    <main className="flex flex-col h-dvh w-dvw overflow-y-auto box-border bg-[#F1E5C7] text-[#141414] p-3 lg:relative lg:overflow-hidden lg:py-[clamp(16px,3vh,40px)] lg:px-[clamp(16px,3vw,56px)]">
       <h1 className="sr-only">Silly Billi Studio</h1>
       {/* Below lg: one-screen 3-column grid with 6 boxes around the mascot (Thesis shows only its
           top two bands). lg and up: the original 8-card grid. */}
@@ -329,6 +331,12 @@ export default function Home() {
           </span>
         </Card>
       </div>
+
+      {/* Below lg: in normal flow under the grid. lg and up: tucked into the bottom padding so the
+          one-viewport grid above is untouched. */}
+      <SiteFooter
+        className={`${mulish.className} p-0 pt-2 text-[10px] font-extrabold uppercase leading-none tracking-[0.08em] text-[#141414]/70 lg:absolute lg:inset-x-0 lg:bottom-[2px] lg:pt-0`}
+      />
     </main>
   );
 }

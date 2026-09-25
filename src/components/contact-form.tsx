@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 interface ContactFormProps {
@@ -49,6 +50,7 @@ export function ContactForm({ source }: ContactFormProps) {
     <form onSubmit={handleSubmit} className="flex w-full max-w-md flex-col gap-3">
       <input
         required
+        maxLength={100}
         value={name}
         onChange={(event) => setName(event.target.value)}
         placeholder="Your name"
@@ -57,6 +59,7 @@ export function ContactForm({ source }: ContactFormProps) {
       <input
         required
         type="email"
+        maxLength={254}
         value={email}
         onChange={(event) => setEmail(event.target.value)}
         placeholder="Your email"
@@ -64,6 +67,7 @@ export function ContactForm({ source }: ContactFormProps) {
       />
       <textarea
         required
+        maxLength={5000}
         value={message}
         onChange={(event) => setMessage(event.target.value)}
         placeholder="What can we help with?"
@@ -78,6 +82,12 @@ export function ContactForm({ source }: ContactFormProps) {
       >
         {status === "sending" ? "Sending..." : "Send"}
       </button>
+      <p className="text-xs text-muted-foreground">
+        We only use your details to reply.{" "}
+        <Link href="/privacy-policy" className="underline underline-offset-2">
+          Privacy Policy
+        </Link>
+      </p>
     </form>
   );
 }

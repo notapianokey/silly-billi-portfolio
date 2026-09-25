@@ -21,6 +21,12 @@ interface ChannelData {
  * back as valid JSON.
  */
 export async function PATCH(request: Request) {
+  // Fail closed: unauthenticated disk writes — only ever answers under `next dev`, never on the
+  // deployed site (production and preview are both NODE_ENV=production).
+  if (process.env.NODE_ENV !== "development") {
+    return NextResponse.json({ error: LOCAL_ONLY_MESSAGE }, { status: 404 });
+  }
+
   try {
     const formData = await request.formData();
     const description = formData.get("description");

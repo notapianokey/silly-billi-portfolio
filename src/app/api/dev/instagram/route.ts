@@ -86,6 +86,14 @@ async function writeProfiles(profiles: InstagramProfile[]) {
 }
 
 export async function PATCH(request: Request) {
+  // Fail closed: this route writes to Vercel Blob with the server's write token and to disk, and
+  // has no auth. It must only ever answer under `next dev` — on the deployed site (production or
+  // preview, both NODE_ENV=production) anyone on the internet could otherwise overwrite/delete
+  // the profile's Blob media.
+  if (process.env.NODE_ENV !== "development") {
+    return NextResponse.json({ error: LOCAL_ONLY_MESSAGE }, { status: 404 });
+  }
+
   try {
     const formData = await request.formData();
     const action = formData.get("action");

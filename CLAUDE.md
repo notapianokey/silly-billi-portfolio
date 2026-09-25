@@ -712,6 +712,58 @@ load/SSG) that forwards the payload to a **Google Apps Script Web App** URL read
   generally — don't introduce anything (eager third-party embeds, client-side SDKs loaded on
   every route, etc.) that adds to initial page weight without a clear ask.
 
+## Security & legal pass (2026-09-26) — guarded dev routes, headers/CSP, policy pages, footer
+
+- **`/api/dev/*` routes fail closed** (`process.env.NODE_ENV !== "development"` → 404 + the local-only
+  message, first statement of both the `instagram` and `channel` handlers). They have no auth, and
+  the Blob write token is scoped to Production (see "Real playback"), so before this guard anyone
+  could `PATCH /api/dev/instagram` on the live site and overwrite/delete the profile's Blob media
+  (confirmed with a harmless nonexistent-handle probe; a read-only Blob listing afterwards showed no
+  tampering). **Every new `/api/dev/*` route must carry the same guard.** The local edit dialogs
+  (`EditProfileDialog`/`EditPostDialog` — pencil and "+ New" affordances) still render for public
+  visitors and just show the local-only error on save; hiding them in production is an open follow-up.
+- **Security headers + CSP live in `next.config.ts` and apply to production builds only** (dev needs
+  `'unsafe-eval'` and gains nothing). The CSP is nonce-free on purpose — nonces force dynamic
+  rendering, which would undo SSG/$0 (Next docs: `01-app/02-guides/content-security-policy.md`,
+  "Without Nonces") — so scripts/styles allow `'unsafe-inline'`. Also `X-Content-Type-Options`,
+  `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy: strict-origin-when-cross-origin` (not
+  `no-referrer` — YouTube embeds need the referrer), `Permissions-Policy`, `poweredByHeader: false`;
+  HSTS is Vercel's. **Any new third-party origin (embed, script, image/media host, `fetch` target)
+  must be added to `contentSecurityPolicy` or the browser silently blocks it.**
+  `images.remotePatterns` pins the Blob host to the exact store (`BLOB_HOST`), not a
+  `*.public.blob.vercel-storage.com` wildcard (that let anyone run *their* Blob images through this
+  site's optimizer) — a second Blob store must be added there. Verified with a production build and
+  a browser sweep of every route: no violations, and an off-list origin is correctly blocked.
+- **`/api/contact` hardening:** field/length validation (name 100, email 254, message 5000, with
+  matching `maxLength` on the inputs), single-line name/email, `source` allow-list, per-IP rate limit
+  (5 per 10 min, in-memory per serverless instance — Vercel Firewall rate limiting is the upgrade
+  path), 10s webhook timeout. Regression check: `node --no-warnings scripts/check-contact-route.mjs`
+  (stubs `fetch`, never touches the real webhook). To exercise the route by hand without emailing the
+  client, run the prod build with `CONTACT_WEBHOOK_URL` pointed at a local mock — `.env.local` holds
+  the real one.
+- **Policy pages** `/privacy-policy` and `/cookies-policy` (server components on the `LegalPage`
+  shell, `src/components/legal-page.tsx` — a plain readable column, no platform chrome). Each has a
+  hardcoded "Last updated" string: bump it whenever the text changes. Privacy requests go through the
+  Hire Us form (no email is published, per the never-visible-email rule). The text is a plain-language
+  general template — no legal entity, address or jurisdiction is stated; suggest a lawyer's review
+  before relying on it.
+- **Cookie stance — keep the policies true:** the site sets **no cookies and uses no local/session
+  storage** and has no analytics/trackers, so there is deliberately no consent banner (verified: no
+  `Set-Cookie` on any route; `document.cookie`/storage empty). The only live third-party embed is the
+  YouTube `youtube-nocookie.com` player on the documentary watch page (its entry has a `sourceUrl` but
+  no `videoUrl`); the Instagram embed path exists in `social-embed.tsx` but no entry uses it. **If
+  analytics, a new embed, or anything that sets cookies/storage is ever added, update both policy
+  pages and the CSP before shipping, and add consent where the law requires it.**
+- **Footer:** `SiteFooter` (`src/components/site-footer.tsx` — "© 2026 Silly Billi Studio. All rights
+  reserved." plus both policy links; 2026 is the fixed first-publication year, not a rolling one).
+  Placement is per-shell so no clone loses its look: the bottom of `SidebarRail` (where real YouTube
+  puts its legal links, so every YouTube-shell page gets it), the About page's own `<footer>` (a
+  `.footerLegal` row), the homepage (a tiny line — in normal flow under the grid on mobile,
+  absolutely positioned inside the bottom padding from `lg` up so the one-viewport grid is untouched;
+  checked from 1920×1080 down to 320×568), and the policy pages. The Instagram phone frame, Shorts
+  player, ads dashboard, `ComingSoon` and the Visual Branding index deliberately have none. Both
+  contact forms show "We only use your details to reply. Privacy Policy."
+
 ## Visual Branding index (`/visual-branding`) — real-content bento wall
 
 First built as one perfected profile template — **Evan Thomsen** (`/visual-branding/evan-thomsen`,
