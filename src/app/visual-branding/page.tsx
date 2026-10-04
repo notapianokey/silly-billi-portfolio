@@ -37,7 +37,19 @@ const CLIENT_COLOR: Record<string, string> = {
   "Shah’s Curated Vault": "#1E4FA0",
   "Music Video": "#1C9A5A",
 };
+// Each client's Instagram-style profile page (`/visual-branding/[handle]`, data in
+// `src/lib/instagram.data.json`). "Music Video" has none, so its tiles don't link.
+const CLIENT_HANDLE: Record<string, string> = {
+  "Dimitri Lascaris": "dimitri-lascaris",
+  "The Thomsen Company": "evan-thomsen",
+  "Eon Podcast": "eon-podcast",
+  "Shah’s Curated Vault": "shahs-curated-vault",
+};
 
+const profileHref = (client: string) =>
+  CLIENT_HANDLE[client]
+    ? `/visual-branding/${CLIENT_HANDLE[client]}`
+    : undefined;
 const round1 = (n: number) => Math.round(n * 10) / 10;
 
 interface Tile {
@@ -285,6 +297,7 @@ export default function VisualBrandingIndexPage() {
             tile={t}
             place={place(t.id)}
             accent={CLIENT_COLOR[t.client]}
+            href={profileHref(t.client)}
             opacity={dim(t)}
           />
         ))}
@@ -299,12 +312,19 @@ export default function VisualBrandingIndexPage() {
             return (
               <div
                 key={client}
-                className="group border-b px-5 py-[18px] transition-[background,padding] duration-[140ms] hover:bg-[#F1E5C7] hover:py-[26px] hover:text-[#141414]"
+                className="group relative border-b px-5 py-[18px] transition-[background,padding] duration-[140ms] hover:bg-[#F1E5C7] hover:py-[26px] hover:text-[#141414]"
                 style={{
                   borderColor: "rgba(241,229,199,0.25)",
                   opacity: items.length ? 1 : 0.12,
                 }}
               >
+                {profileHref(client) && (
+                  <Link
+                    href={profileHref(client)!}
+                    aria-label={`Open ${client}'s page`}
+                    className="absolute inset-0 z-[1]"
+                  />
+                )}
                 <div className="flex items-center gap-5">
                   <div
                     className="size-2.5 shrink-0 opacity-0 group-hover:opacity-100"
@@ -433,11 +453,13 @@ function TileCard({
   tile: t,
   place,
   accent,
+  href,
   opacity,
 }: {
   tile: Tile;
   place: TileLayout;
   accent: string;
+  href?: string;
   opacity: number;
 }) {
   const [i, setI] = useState(0);
@@ -477,6 +499,14 @@ function TileCard({
           fill
           sizes="40vw"
           className="object-contain"
+        />
+      )}
+      {href && (
+        <Link
+          href={href}
+          aria-label={`Open ${t.client}'s page`}
+          draggable={false}
+          className="absolute inset-0 z-[1]"
         />
       )}
       <div
