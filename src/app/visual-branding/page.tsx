@@ -355,7 +355,7 @@ export default function VisualBrandingIndexPage() {
                     setFilterOpen(false);
                   }}
                   className={`${LABEL} cursor-pointer border-2 px-[22px] py-3 hover:bg-[#F2A81D]`}
-                  style={{ borderColor: INK, background: CREAM }}
+                  style={{ borderColor: INK, background: CREAM, color: INK }}
                 >
                   {c}
                 </button>
