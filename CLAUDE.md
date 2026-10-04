@@ -790,13 +790,13 @@ control pill (Filter works / Grid / List). `page.tsx` is one client component.
   (respecting the active genre filter).
 - **Shadow colour is per client** (`CLIENT_COLOR` in `page.tsx`; palette: Dimitri purple, Thomsen red-orange
   `#E24A1E`, Eon mustard, Shah blue, Music Video green). A new client needs an entry or it gets no shadow.
-- **Layout lives in `src/lib/visual-branding-layout.data.json`** (`{x, y, w}` per tile id, all in **vw**,
-  top-left of the image, height from the ratio; page `minHeight` follows the lowest tile). The client placed
-  every tile by hand with a temporary drag/resize editor (since removed — it was dev-only and wrote this
-  file via a PATCH route). To move/resize now: edit the JSON. Carousel arrows hang 4vw outside the image, so
-  keep those tiles off the page's left/right edges. A new tile needs both a `TILES` entry in `page.tsx` and
-  a layout entry. The old design-slot spacing rules / `TILE-SPACING.md` are gone — superseded by the
-  client's own placement.
+- **Tile data lives in `src/lib/visual-branding-tiles.ts`** (what each piece is, tags, shape, client
+  colour/handle maps); **layout lives in `src/lib/visual-branding-layout.data.json`** (`{x, y, w}` per tile id,
+  all in **vw**, top-left of the image, height from the ratio; page `minHeight` follows the lowest tile). A new
+  tile needs a `TILES` entry and a layout entry. The client places tiles with a **local-only** drag/resize tool
+  that is deliberately kept out of the repo (untracked + `.git/info/exclude`) and writes the layout JSON —
+  don't recreate it in tracked code. Carousel arrows hang 4vw outside the image, so keep those tiles off the
+  page's left/right edges.
 - **Tiles and list rows link to the client's profile page** (`CLIENT_HANDLE` in `page.tsx`): Dimitri Lascaris →
   `/visual-branding/dimitri-lascaris`, The Thomsen Company → `evan-thomsen`, Eon Podcast → `eon-podcast`,
   Shah's Curated Vault → `shahs-curated-vault`. **"Music Video" has no page, so its tiles don't link.** The
