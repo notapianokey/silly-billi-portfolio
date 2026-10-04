@@ -764,59 +764,43 @@ load/SSG) that forwards the payload to a **Google Apps Script Web App** URL read
   player, ads dashboard, `ComingSoon` and the Visual Branding index deliberately have none. Both
   contact forms show "We only use your details to reply. Privacy Policy."
 
-## Visual Branding index (`/visual-branding`) — real-content bento wall
+## Visual Branding index (`/visual-branding`) — scattered media wall on black
 
-First built as one perfected profile template — **Evan Thomsen** (`/visual-branding/evan-thomsen`,
-see the next section) — per the client's explicit build order ("build this one page first and
-once we perfect it we will duplicate it for each brand"), with `/visual-branding` itself just
-`redirect()`ing to that one profile. Later rebuilt (2026-09-09) into a real index page, after the
-client provided a reference brand-book HTML export (12-column bento grid, mixed image/caption
-tiles, tile-shadow + hover-lift, rounded corners) and real delivered assets for a client project
-(`Visual Branding/The Thomsen Company/` — git-ignored raw folder, per the "real client content
-stays out of git" rule).
+Rebuilt (2026-10-04) from the client's Claude Design handoff (`Visual Branding/Visual Branding Portfolio
+Page.zip`, git-untracked), replacing the old 12-column bento wall. Black page, the Silly Billi Studio logo
+(`public/brand/logo-silly-studio.png`, transparent) fixed at dead centre behind scrolling tiles, a bottom
+control pill (Filter works / Grid / List). `page.tsx` is one client component.
 
-- **Content model, confirmed via two rounds of clarifying questions** (the client's first answer
-  — "redesign the index grid" — was ambiguous about which of two things she meant): the index is
-  **one continuous mosaic mixing many real asset tiles from a single brand's actual delivered
-  work**, not one tile per client brand. Currently 13 tiles, all from The Thomsen Company (coat
-  of arms, chess-set concept art, individual chess-piece illustrations, a construction blueprint,
-  workshop flat-lay photography). **Every tile still links out to that brand's own
-  `/visual-branding/[handle]` profile page** — the client's own words: "clicking any tile would
-  lead to its relevant IG page UI." All 13 currently point to `evan-thomsen`. As more brands' real
-  content lands, their tiles join this same wall rather than getting a separate index card each.
-- **Data model:** `src/lib/visual-branding-bento.data.json` + `visual-branding-bento.ts`
-  (`BENTO_TILES: BentoTile[]`) — separate from `instagram.data.json`/`instagram.ts`, which still
-  holds the individual profile pages' content. Each tile has `imageSrc`, `caption`/`subcaption`
-  (short, purely descriptive of what's depicted — no fabricated production claims; the reference
-  file included specific unverifiable claims like exact sketch counts and fabrication methods
-  that weren't reused), `background` (`"paper"`/`"dark"`/`"none"` — the tile backdrop behind a
-  transparent-PNG logo/heraldry cutout), `fit` (`"contain"` for logo-style assets, `"cover"` for
-  full-bleed photos), explicit `colStart`/`colEnd`/`rowStart`/`rowEnd` grid-line numbers, and
-  `linkedHandle`.
-- **Assets live on Vercel Blob**, not `public/` — `scripts/upload-thomsen-bento-assets.mjs`
-  compresses each source file via `sharp` (capped 1600px, webp) and uploads to
-  `visual-branding-bento/{id}.webp`, same reasoning as Instagram post media below (many images
-  added over time would bloat the git-committed `public/` folder). One-off content-population
-  script (prints URLs, no local edit UI), same category as the monetized-channels page's
-  population workflow — re-run/extend it the same way when the next brand's assets arrive.
-- **Layout lesson — explicit grid lines, not `grid-flow-dense` auto-placement, for an irregular
-  tile set.** The first attempt used Tailwind span classes + `grid-flow-dense` (this had worked
-  fine for an earlier, simpler 10-tile grid where every tile was the same provenance). With 13
-  tiles of genuinely varied size/shape, dense auto-placement left 32 empty cells — confirmed both
-  by a DOM cell-scan script and by screenshot, not assumed. Fixed by partitioning the grid into
-  row-bands where each band's tile areas are hand-verified to sum exactly to `width × height`
-  before writing any CSS (see the worked math in `visual-branding-bento.ts`'s doc comment), then
-  applying each tile's grid-line numbers via inline `style` — Tailwind can't generate
-  `col-span-${n}`-style classes from a runtime number; arbitrary-value classes must be literal
-  strings in source. Verify any future layout change here the same way: a JS scan of every grid
-  cell's occupancy, not just eyeballing a screenshot — a screenshot at small scale can also make a
-  correctly-rendering illustration tile look blank/black when the artwork has a lot of internal
-  negative space (happened here, was a false alarm, confirmed via canvas `getImageData` pixel
-  sampling rather than re-screenshotting).
-- **No text on tiles was the rule for the previous (one-tile-per-brand) version of this page** —
-  superseded by the client's own request for the brand-book style, which is caption-heavy by
-  design. The "back" chevron in `InstagramHeaderBar` (see the profile-page section below) now
-  links to `/visual-branding`, since that's a real destination to link back to.
+- **Content = the client's real media in `Visual Branding/ALL MEDIA/<folder>/`** (untracked, not gitignored
+  — never `git add .`; stage by name). Each is converted once into `public/visual-branding/` (webp ≤1080px;
+  videos 960–1280px H.264, **audio stripped**). Current tiles: Mark Carney carousel + West Asia carousel
+  (client Dimitri Lascaris), Eon Podcast carousels (Crowley, 9/11), The Thomsen Company (chess-set drawings
+  carousel, rose, chess render, coat of arms, logo-animation video), Shah's Curated Vault logo, and two
+  videos under the client **"Music Video"** (genres Music Video + Blender). Videos autoplay muted + loop like
+  a GIF. **New folder in ALL MEDIA ≠ process it unprompted** (same rule as other new root folders) — but
+  the client has been asking for each one explicitly. The 3 unnamed Thomsen Instagram files were named from
+  what they show ("Embossed Rose", "Chess Piece Render", "Coat of Arms Study"); client/genre labels for
+  Eon 9/11 ("Conspiracy"), Shah ("Collectibles", "Vintage") and "Music Video" client were partly guessed —
+  confirm with the client.
+- **Tiles are never cropped.** Each tile's `ratio` is its content's natural width/height (`object-contain`);
+  a carousel tile uses its first slide's shape. Don't reintroduce `object-cover` crops — client's rule.
+- **Tags:** `client` (shown in List view) and `genres[]` (what "Filter works" groups by; a tile can have
+  several). Dimitri content must carry Political + Journalism. Filtering fades non-matches to 12%.
+- **List view shows only client names**; hovering a client reveals thumbnails of that client's tiles
+  (respecting the active genre filter).
+- **Shadow colour is per client** (`CLIENT_COLOR` in `page.tsx`; palette: Dimitri purple, Thomsen red-orange
+  `#E24A1E`, Eon mustard, Shah blue, Music Video green). A new client needs an entry or it gets no shadow.
+- **Layout lives in `src/lib/visual-branding-layout.data.json`** (`{x, y, w}` per tile id, all in **vw**,
+  top-left of the image, height from the ratio; page `minHeight` follows the lowest tile). The client placed
+  every tile by hand with a temporary drag/resize editor (since removed — it was dev-only and wrote this
+  file via a PATCH route). To move/resize now: edit the JSON. Carousel arrows hang 4vw outside the image, so
+  keep those tiles off the page's left/right edges. A new tile needs both a `TILES` entry in `page.tsx` and
+  a layout entry. The old design-slot spacing rules / `TILE-SPACING.md` are gone — superseded by the
+  client's own placement.
+- Tiles don't link anywhere yet (no per-client subpage). `visual-branding-bento.ts`/`.data.json` and
+  `/visual-branding/[handle]` (Instagram clone, see below) are no longer reachable from this page.
+- Fonts: Mulish + Libre Baskerville via `next/font` in this file, same as the homepage. Colours hardcoded
+  hex (cream `#F1E5C7`, ink `#141414`, mustard `#F2A81D`).
 
 ## Visual Branding profile pages (`/visual-branding/[handle]`) — Instagram profile clone
 
