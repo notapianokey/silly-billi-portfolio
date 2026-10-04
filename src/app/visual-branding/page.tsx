@@ -78,7 +78,7 @@ const TILES: Tile[] = [
     id: "thomsen-chess-drawings",
     name: "Chess Set Drawings",
     client: "The Thomsen Company",
-    genres: ["Chess Set"],
+    genres: ["Chess Set", "Thought Leadership"],
     slides: [
       {
         src: "/visual-branding/thomsen-genghis-khan-knight.webp",
@@ -100,7 +100,7 @@ const TILES: Tile[] = [
     id: "thomsen-post-a",
     name: "Embossed Rose",
     client: "The Thomsen Company",
-    genres: ["Heraldry"],
+    genres: ["Heraldry", "Thought Leadership"],
     slides: [
       { src: "/visual-branding/thomsen-post-a.webp", alt: "Embossed Rose" },
     ],
@@ -110,7 +110,7 @@ const TILES: Tile[] = [
     id: "thomsen-post-b",
     name: "Chess Piece Render",
     client: "The Thomsen Company",
-    genres: ["Chess Set"],
+    genres: ["Chess Set", "Thought Leadership"],
     slides: [
       {
         src: "/visual-branding/thomsen-post-b.webp",
@@ -123,7 +123,7 @@ const TILES: Tile[] = [
     id: "thomsen-post-c",
     name: "Coat of Arms Study",
     client: "The Thomsen Company",
-    genres: ["Heraldry"],
+    genres: ["Heraldry", "Thought Leadership"],
     slides: [
       {
         src: "/visual-branding/thomsen-post-c.webp",
