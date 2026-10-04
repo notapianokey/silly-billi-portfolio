@@ -229,6 +229,20 @@ const TILES: Tile[] = [
     })),
     ratio: 1,
   },
+  {
+    id: "dimitri-video",
+    name: "Dimitri Lascaris — On-the-Ground Journalism",
+    client: "Dimitri Lascaris",
+    genres: ["Political", "Journalism"],
+    video: "/visual-branding/dimitri-video.mp4",
+    slides: [
+      {
+        src: "/visual-branding/dimitri-video.jpg",
+        alt: "Dimitri Lascaris on-the-ground journalism video",
+      },
+    ],
+    ratio: 1,
+  },
 ];
 const CLIENTS = [...new Set(TILES.map((t) => t.client))];
 const CATEGORIES = [...new Set(TILES.flatMap((t) => t.genres))];
