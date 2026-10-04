@@ -797,8 +797,13 @@ control pill (Filter works / Grid / List). `page.tsx` is one client component.
   keep those tiles off the page's left/right edges. A new tile needs both a `TILES` entry in `page.tsx` and
   a layout entry. The old design-slot spacing rules / `TILE-SPACING.md` are gone — superseded by the
   client's own placement.
-- Tiles don't link anywhere yet (no per-client subpage). `visual-branding-bento.ts`/`.data.json` and
-  `/visual-branding/[handle]` (Instagram clone, see below) are no longer reachable from this page.
+- **Tiles and list rows link to the client's profile page** (`CLIENT_HANDLE` in `page.tsx`): Dimitri Lascaris →
+  `/visual-branding/dimitri-lascaris`, The Thomsen Company → `evan-thomsen`, Eon Podcast → `eon-podcast`,
+  Shah's Curated Vault → `shahs-curated-vault`. **"Music Video" has no page, so its tiles don't link.** The
+  three new profiles were made by renaming the unused `brand-one/two/three` placeholders in
+  `instagram.data.json` (so those old URLs now 404; `brand-four`…`brand-nine` remain as placeholders). They are
+  empty — no posts/avatar/bio — until the client supplies images (via the local profile edit UI). The old
+  `visual-branding-bento.*` modules are unused.
 - Fonts: Mulish + Libre Baskerville via `next/font` in this file, same as the homepage. Colours hardcoded
   hex (cream `#F1E5C7`, ink `#141414`, mustard `#F2A81D`).
 
@@ -856,7 +861,7 @@ references, never as content to copy.
   `followedByLabel` (the "Followed by X, Y and N others" row — free text the client writes
   herself; this concept doesn't really exist for a portfolio site with no logged-in viewer, so
   it's never auto-generated or backed by real names), `pills[]` (the small chip row under the
-  bio, freeform strings), `highlights[]`, and `posts[]`. Ships with one empty profile
+  bio, freeform strings), `highlights[]`, and `posts[]`. Evan Thomsen has real posts; the Dimitri/Eon/Shah profiles ship empty (see the index section above). Originally shipped with one empty profile
   (`evan-thomsen`) — no invented posts, bio, or highlights; the two reference screenshots are
   structural references only.
 - **Highlights empty state is a dashed "+ New" circle**, not nothing — matches real Instagram's
