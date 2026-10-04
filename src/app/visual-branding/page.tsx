@@ -362,8 +362,11 @@ export default function VisualBrandingIndexPage() {
               ))}
             </div>
             <button
-              aria-label="Close filter"
-              onClick={() => setFilterOpen(false)}
+              aria-label="Clear filter and close"
+              onClick={() => {
+                setActive(null);
+                setFilterOpen(false);
+              }}
               className="pointer-events-auto flex size-11 cursor-pointer items-center justify-center rounded-full"
               style={{ background: MUSTARD }}
             >
